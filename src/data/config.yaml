@@ -1,0 +1,3 @@
+# Language setting: auto | fr | us
+# auto: detect from browser language
+language: auto

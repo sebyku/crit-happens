@@ -1,0 +1,12 @@
+reflections:
+  je: "vous"
+  me: "vous"
+  mon: "votre"
+  ma: "votre"
+  mes: "vos"
+  moi: "vous"
+  "j'ai": "vous avez"
+  "je suis": "vous etes"
+  vous: "je"
+  votre: "mon"
+  vos: "mes"

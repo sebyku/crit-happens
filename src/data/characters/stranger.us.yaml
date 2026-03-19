@@ -1,0 +1,79 @@
+greetings:
+  - "Psst... over here. I have something you might want to hear."
+  - "Ah, a fresh face. Sit down, I have a proposition for you."
+
+rules:
+  - keyword: "vault"
+    priority: 5
+    patterns:
+      - decomposition: ".*vault(.*)"
+        reassemblies:
+          - "The vault lies deep beneath the dungeon. Few know the way."
+          - "It's been sealed for centuries. But I have a key..."
+          - "@memory:You asked about the vault. We should come back to that."
+
+  - keyword: "key"
+    priority: 5
+    patterns:
+      - decomposition: ".*key(.*)"
+        reassemblies:
+          - "This key opens a door hidden behind the beast's lair."
+          - "Take it. You'll know when to use it."
+
+  - keyword: "dungeon"
+    priority: 4
+    patterns:
+      - decomposition: ".*dungeon(.*)"
+        reassemblies:
+          - "The dungeon holds many secrets. Not all of them pleasant."
+          - "Be careful in there. The walls have ears... and teeth."
+
+  - keyword: "beast"
+    priority: 4
+    patterns:
+      - decomposition: ".*beast(.*)"
+        reassemblies:
+          - "The beast guards the passage. It's not as fierce as it looks."
+          - "Show it no fear. It respects courage."
+
+  - keyword: "chest"
+    priority: 4
+    patterns:
+      - decomposition: ".*chest(.*)"
+        reassemblies:
+          - "Trust no chest that speaks. That's all I'll say."
+          - "If it hums, walk away. If it talks... run."
+
+  - keyword: "who are you"
+    priority: 5
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Names don't matter down here. Only survival."
+          - "I'm someone who's been where you're going. That's enough."
+
+  - keyword: "map"
+    priority: 4
+    patterns:
+      - decomposition: ".*map(.*)"
+        reassemblies:
+          - "This map shows a passage most have forgotten."
+          - "Follow the marks I've made. They'll keep you alive."
+
+  - keyword: "trust"
+    priority: 4
+    patterns:
+      - decomposition: ".*trust(.*)"
+        reassemblies:
+          - "Trust is a luxury in this place. But I mean you no harm."
+          - "You don't have to trust me. Just don't ignore my warnings."
+
+exits:
+  - keyword: "bye"
+    goto: 2_dark_corridor
+  - keyword: "goodbye"
+    goto: 2_dark_corridor
+  - keyword: "leave"
+    goto: 2_dark_corridor
+  - keyword: "go"
+    goto: 2_dark_corridor

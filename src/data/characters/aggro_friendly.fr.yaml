@@ -1,0 +1,25 @@
+rules:
+  - keyword: "aide"
+    priority: 4
+    patterns:
+      - decomposition: ".*aide(.*)"
+        reassemblies:
+          - "Bien sur, je suis heureux de vous aider."
+          - "Je ferai ce que je peux pour vous."
+
+  - keyword: "merci"
+    priority: 4
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "De rien, mon ami."
+          - "Ce n'est rien."
+          - "Content de pouvoir aider."
+
+  - keyword: "s'il vous plait"
+    priority: 2
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Pas besoin de politesses, mais j'apprecie."
+          - "Bien sur. De quoi avez-vous besoin ?"

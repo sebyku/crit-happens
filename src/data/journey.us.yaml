@@ -1,0 +1,118 @@
+title: Crit Happens
+description: A journey where every choice matters
+
+steps:
+  1_start:
+    description: You stand at the entrance of a dimly lit dungeon. The air smells of damp stone and old torches flicker on the walls.
+    reactions:
+      - label: Enter the dungeon
+        goto: 2_dark_corridor
+      - label: Turn back and head to the tavern
+        goto: 3_tavern
+
+  2_dark_corridor:
+    description: The corridor stretches ahead, splitting into two paths. From the left, you hear a faint growl. From the right, the glimmer of something shiny catches your eye.
+    reactions:
+      - label: Follow the growl
+        goto: 7_beast_lair
+      - label: Chase the glimmer
+        goto: 10_treasure_room
+      - label: Retreat to the entrance
+        goto: 1_start
+
+  3_tavern:
+    description: The tavern is warm and loud. A hooded stranger beckons you from a corner table, sliding a weathered map across the wood.
+    reactions:
+      - label: Sit with the stranger
+        goto: 4_stranger_quest
+      - label: Ignore them and order a drink
+        goto: 6_tavern_rest
+      - label: Head back to the dungeon
+        goto: 1_start
+
+  4_stranger_quest:
+    description: The stranger whispers of a hidden vault beneath the dungeon, accessible only through a secret passage. They hand you a rusted key.
+    character: stranger
+    reactions:
+      - label: Take the key and head to the dungeon
+        goto: 2_dark_corridor
+      - label: Ask for more details
+        goto: 5_stranger_details
+
+  5_stranger_details:
+    description: '"Trust no one down there," they say. "Especially not the chest that speaks." They vanish into the crowd before you can reply.'
+    reactions:
+      - label: Head to the dungeon with the key
+        goto: 2_dark_corridor
+
+  6_tavern_rest:
+    description: You enjoy a warm meal and a cold ale. Refreshed and ready, you feel the call of adventure pulling you back.
+    reactions:
+      - label: Head to the dungeon
+        goto: 1_start
+
+  7_beast_lair:
+    description: A massive wolf-like creature blocks the passage. Its eyes glow a faint blue — it seems more curious than aggressive.
+    reactions:
+      - label: Try to calm the beast
+        goto: 8_beast_ally
+      - label: Draw your weapon
+        goto: 9_beast_fight
+      - label: Back away slowly
+        goto: 2_dark_corridor
+
+  8_beast_ally:
+    description: You extend your hand. The beast sniffs cautiously, then nuzzles against it. It steps aside, revealing a hidden passage behind it.
+    reactions:
+      - label: Enter the hidden passage
+        goto: 12_secret_vault
+      - label: Continue down the corridor
+        goto: 10_treasure_room
+
+  9_beast_fight:
+    description: The creature lunges! After a fierce struggle, you manage to drive it off, but you are wounded. The passage behind it is now clear.
+    reactions:
+      - label: Press on despite your wounds
+        goto: 12_secret_vault
+      - label: Retreat and recover
+        goto: 6_tavern_rest
+
+  10_treasure_room:
+    description: A small chamber glitters with gold coins scattered across the floor. In the center sits a wooden chest — and it's... humming?
+    reactions:
+      - label: Open the chest
+        goto: 11_mimic_encounter
+      - label: Grab the loose coins and leave
+        goto: 13_ending_modest
+
+  11_mimic_encounter:
+    description: The chest springs open, revealing rows of teeth! It's a mimic! It snaps at you, but you dodge just in time.
+    reactions:
+      - label: Fight the mimic
+        goto: 14_ending_hero
+      - label: Run!
+        goto: 2_dark_corridor
+
+  12_secret_vault:
+    description: You descend into a vast underground vault. Ancient treasures line the walls — relics of a forgotten civilization. At the far end, a glowing crystal pulses with energy.
+    reactions:
+      - label: Take the crystal
+        goto: 15_ending_legendary
+      - label: Leave it undisturbed
+        goto: 16_ending_wise
+
+  13_ending_modest:
+    description: You leave the dungeon with pockets full of gold. Not the grandest haul, but enough to live comfortably for a while. Sometimes the smart play is knowing when to walk away.
+    reactions: []
+
+  14_ending_hero:
+    description: You defeat the mimic in an epic battle! Inside its hollow body, you find a legendary sword. Bards will sing of this day.
+    reactions: []
+
+  15_ending_legendary:
+    description: The crystal fills you with ancient power. You emerge from the dungeon forever changed — a living legend. But the crystal's whispers never quite stop...
+    reactions: []
+
+  16_ending_wise:
+    description: You leave the vault as you found it. Some treasures are not meant to be taken. The dungeon remembers your respect, and the path out is strangely easy.
+    reactions: []

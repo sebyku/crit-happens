@@ -1,0 +1,79 @@
+greetings:
+  - "Psst... par ici. J'ai quelque chose qui pourrait vous interesser."
+  - "Ah, un nouveau visage. Asseyez-vous, j'ai une proposition pour vous."
+
+rules:
+  - keyword: "chambre forte"
+    priority: 5
+    patterns:
+      - decomposition: ".*chambre forte(.*)"
+        reassemblies:
+          - "La chambre forte se trouve au plus profond du donjon. Peu connaissent le chemin."
+          - "Elle est scellee depuis des siecles. Mais j'ai une cle..."
+          - "@memory:Vous avez demande a propos de la chambre forte. Nous devrions y revenir."
+
+  - keyword: "cle"
+    priority: 5
+    patterns:
+      - decomposition: ".*cle(.*)"
+        reassemblies:
+          - "Cette cle ouvre une porte cachee derriere le repaire de la bete."
+          - "Prenez-la. Vous saurez quand l'utiliser."
+
+  - keyword: "donjon"
+    priority: 4
+    patterns:
+      - decomposition: ".*donjon(.*)"
+        reassemblies:
+          - "Le donjon recele bien des secrets. Pas tous agreables."
+          - "Soyez prudent la-dedans. Les murs ont des oreilles... et des dents."
+
+  - keyword: "bete"
+    priority: 4
+    patterns:
+      - decomposition: ".*bete(.*)"
+        reassemblies:
+          - "La bete garde le passage. Elle n'est pas aussi feroce qu'elle en a l'air."
+          - "Ne montrez aucune peur. Elle respecte le courage."
+
+  - keyword: "coffre"
+    priority: 4
+    patterns:
+      - decomposition: ".*coffre(.*)"
+        reassemblies:
+          - "Ne faites confiance a aucun coffre qui parle. C'est tout ce que je dirai."
+          - "S'il fredonne, partez. S'il parle... fuyez."
+
+  - keyword: "qui etes"
+    priority: 5
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Les noms n'ont pas d'importance ici. Seule la survie compte."
+          - "Je suis quelqu'un qui a ete la ou vous allez. Ca suffit."
+
+  - keyword: "carte"
+    priority: 4
+    patterns:
+      - decomposition: ".*carte(.*)"
+        reassemblies:
+          - "Cette carte montre un passage que la plupart ont oublie."
+          - "Suivez les marques que j'ai faites. Elles vous garderont en vie."
+
+  - keyword: "confiance"
+    priority: 4
+    patterns:
+      - decomposition: ".*confiance(.*)"
+        reassemblies:
+          - "La confiance est un luxe ici. Mais je ne vous veux aucun mal."
+          - "Vous n'avez pas a me faire confiance. Mais n'ignorez pas mes avertissements."
+
+exits:
+  - keyword: "au revoir"
+    goto: 2_dark_corridor
+  - keyword: "adieu"
+    goto: 2_dark_corridor
+  - keyword: "partir"
+    goto: 2_dark_corridor
+  - keyword: "quitter"
+    goto: 2_dark_corridor

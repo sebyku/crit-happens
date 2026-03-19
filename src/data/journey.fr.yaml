@@ -1,0 +1,118 @@
+title: Crit Happens
+description: Un voyage ou chaque choix compte
+
+steps:
+  1_start:
+    description: Vous vous tenez a l'entree d'un donjon faiblement eclaire. L'air sent la pierre humide et de vieilles torches vacillent sur les murs.
+    reactions:
+      - label: Entrer dans le donjon
+        goto: 2_dark_corridor
+      - label: Faire demi-tour et aller a la taverne
+        goto: 3_tavern
+
+  2_dark_corridor:
+    description: Le couloir s'etend devant vous, se divisant en deux chemins. A gauche, vous entendez un grognement sourd. A droite, l'eclat de quelque chose de brillant attire votre regard.
+    reactions:
+      - label: Suivre le grognement
+        goto: 7_beast_lair
+      - label: Suivre l'eclat
+        goto: 10_treasure_room
+      - label: Retourner a l'entree
+        goto: 1_start
+
+  3_tavern:
+    description: La taverne est chaleureuse et bruyante. Un etranger encapuchonne vous fait signe depuis une table dans un coin, glissant une carte usee sur le bois.
+    reactions:
+      - label: S'asseoir avec l'etranger
+        goto: 4_stranger_quest
+      - label: L'ignorer et commander a boire
+        goto: 6_tavern_rest
+      - label: Retourner au donjon
+        goto: 1_start
+
+  4_stranger_quest:
+    description: L'etranger murmure l'existence d'une chambre forte cachee sous le donjon, accessible uniquement par un passage secret. Il vous tend une cle rouillee.
+    character: stranger
+    reactions:
+      - label: Prendre la cle et aller au donjon
+        goto: 2_dark_corridor
+      - label: Demander plus de details
+        goto: 5_stranger_details
+
+  5_stranger_details:
+    description: '"Ne faites confiance a personne la-bas," dit-il. "Surtout pas au coffre qui parle." Il disparait dans la foule avant que vous ne puissiez repondre.'
+    reactions:
+      - label: Aller au donjon avec la cle
+        goto: 2_dark_corridor
+
+  6_tavern_rest:
+    description: Vous savourez un repas chaud et une biere fraiche. Repose et pret, vous sentez l'appel de l'aventure vous attirer a nouveau.
+    reactions:
+      - label: Aller au donjon
+        goto: 1_start
+
+  7_beast_lair:
+    description: Une creature massive semblable a un loup bloque le passage. Ses yeux luisent d'un bleu pale — elle semble plus curieuse qu'agressive.
+    reactions:
+      - label: Essayer de calmer la bete
+        goto: 8_beast_ally
+      - label: Degainer votre arme
+        goto: 9_beast_fight
+      - label: Reculer lentement
+        goto: 2_dark_corridor
+
+  8_beast_ally:
+    description: Vous tendez la main. La bete renifle prudemment, puis se blottit contre elle. Elle s'ecarte, revelant un passage cache derriere elle.
+    reactions:
+      - label: Entrer dans le passage cache
+        goto: 12_secret_vault
+      - label: Continuer dans le couloir
+        goto: 10_treasure_room
+
+  9_beast_fight:
+    description: La creature bondit ! Apres un combat feroce, vous parvenez a la repousser, mais vous etes blesse. Le passage derriere elle est maintenant degage.
+    reactions:
+      - label: Continuer malgre vos blessures
+        goto: 12_secret_vault
+      - label: Battre en retraite et recuperer
+        goto: 6_tavern_rest
+
+  10_treasure_room:
+    description: Une petite salle scintille de pieces d'or eparpillees sur le sol. Au centre trone un coffre en bois — et il... fredonne ?
+    reactions:
+      - label: Ouvrir le coffre
+        goto: 11_mimic_encounter
+      - label: Ramasser les pieces et partir
+        goto: 13_ending_modest
+
+  11_mimic_encounter:
+    description: Le coffre s'ouvre brusquement, revelant des rangees de dents ! C'est un mimic ! Il vous mord, mais vous esquivez juste a temps.
+    reactions:
+      - label: Combattre le mimic
+        goto: 14_ending_hero
+      - label: Fuir !
+        goto: 2_dark_corridor
+
+  12_secret_vault:
+    description: Vous descendez dans une vaste chambre forte souterraine. D'anciens tresors tapissent les murs — des reliques d'une civilisation oubliee. Au fond, un cristal lumineux pulse d'energie.
+    reactions:
+      - label: Prendre le cristal
+        goto: 15_ending_legendary
+      - label: Le laisser intact
+        goto: 16_ending_wise
+
+  13_ending_modest:
+    description: Vous quittez le donjon les poches pleines d'or. Pas le plus grand butin, mais assez pour vivre confortablement un moment. Parfois, le bon choix est de savoir quand partir.
+    reactions: []
+
+  14_ending_hero:
+    description: Vous terrassez le mimic dans un combat epique ! Dans son corps creux, vous trouvez une epee legendaire. Les bardes chanteront ce jour.
+    reactions: []
+
+  15_ending_legendary:
+    description: Le cristal vous remplit d'un pouvoir ancien. Vous emergez du donjon a jamais change — une legende vivante. Mais les murmures du cristal ne s'arretent jamais vraiment...
+    reactions: []
+
+  16_ending_wise:
+    description: Vous quittez la chambre forte telle que vous l'avez trouvee. Certains tresors ne sont pas faits pour etre pris. Le donjon se souvient de votre respect, et le chemin du retour est etrangement facile.
+    reactions: []
