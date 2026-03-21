@@ -36,6 +36,8 @@ steps:
     reactions:
       - label: Prendre la cle et aller au donjon
         goto: 2_dark_corridor
+        items_give:
+          - rusted_key
       - label: Demander plus de details
         goto: 5_stranger_details
 
@@ -44,6 +46,8 @@ steps:
     reactions:
       - label: Aller au donjon avec la cle
         goto: 2_dark_corridor
+        items_give:
+          - rusted_key
 
   6_tavern_rest:
     description: Vous savourez un repas chaud et une biere fraiche. Repose et pret, vous sentez l'appel de l'aventure vous attirer a nouveau.
@@ -66,6 +70,7 @@ steps:
     reactions:
       - label: Entrer dans le passage cache
         goto: 12_secret_vault
+        requires: rusted_key
       - label: Continuer dans le couloir
         goto: 10_treasure_room
 
@@ -95,6 +100,8 @@ steps:
 
   12_secret_vault:
     description: Vous descendez dans une vaste chambre forte souterraine. D'anciens tresors tapissent les murs — des reliques d'une civilisation oubliee. Au fond, un cristal lumineux pulse d'energie.
+    items_take:
+      - rusted_key
     reactions:
       - label: Prendre le cristal
         goto: 15_ending_legendary

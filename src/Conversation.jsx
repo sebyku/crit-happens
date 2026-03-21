@@ -29,11 +29,11 @@ function Conversation({ character, labels, reactions, onExit }) {
     inputRef.current?.focus()
   }, [])
 
-  function checkExit(text) {
+  function findExit(text) {
     const processed = preprocess(text)
     for (const exit of character.exits) {
       if (processed.includes(exit.keyword)) {
-        return exit.goto
+        return exit
       }
     }
     return null
@@ -45,9 +45,12 @@ function Conversation({ character, labels, reactions, onExit }) {
     if (!trimmed) return
 
     // Check for exit keywords
-    const exitGoto = checkExit(trimmed)
-    if (exitGoto) {
-      onExit(exitGoto)
+    const exit = findExit(trimmed)
+    if (exit) {
+      onExit(exit.goto, {
+        itemsGive: exit.items_give,
+        itemsTake: exit.items_take,
+      })
       return
     }
 
@@ -91,7 +94,10 @@ function Conversation({ character, labels, reactions, onExit }) {
             <button
               key={reaction.goto}
               className="reaction"
-              onClick={() => onExit(reaction.goto)}
+              onClick={() => onExit(reaction.goto, {
+                itemsGive: reaction.items_give,
+                itemsTake: reaction.items_take,
+              })}
             >
               {reaction.label}
             </button>

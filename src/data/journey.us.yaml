@@ -36,6 +36,8 @@ steps:
     reactions:
       - label: Take the key and head to the dungeon
         goto: 2_dark_corridor
+        items_give:
+          - rusted_key
       - label: Ask for more details
         goto: 5_stranger_details
 
@@ -44,6 +46,8 @@ steps:
     reactions:
       - label: Head to the dungeon with the key
         goto: 2_dark_corridor
+        items_give:
+          - rusted_key
 
   6_tavern_rest:
     description: You enjoy a warm meal and a cold ale. Refreshed and ready, you feel the call of adventure pulling you back.
@@ -66,6 +70,7 @@ steps:
     reactions:
       - label: Enter the hidden passage
         goto: 12_secret_vault
+        requires: rusted_key
       - label: Continue down the corridor
         goto: 10_treasure_room
 
@@ -95,6 +100,8 @@ steps:
 
   12_secret_vault:
     description: You descend into a vast underground vault. Ancient treasures line the walls — relics of a forgotten civilization. At the far end, a glowing crystal pulses with energy.
+    items_take:
+      - rusted_key
     reactions:
       - label: Take the crystal
         goto: 15_ending_legendary

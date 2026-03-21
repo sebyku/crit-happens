@@ -79,7 +79,10 @@ describe('Conversation', () => {
     await user.type(input, 'bye')
     await user.click(screen.getByText('Send'))
 
-    expect(onExit).toHaveBeenCalledWith('2_dark_corridor')
+    expect(onExit).toHaveBeenCalledWith('2_dark_corridor', {
+      itemsGive: undefined,
+      itemsTake: undefined,
+    })
   })
 
   it('renders journey reactions as action buttons', () => {
@@ -99,6 +102,9 @@ describe('Conversation', () => {
     render(<Conversation character={character} labels={labels} reactions={reactions} onExit={onExit} />)
 
     await user.click(screen.getByText('Take the key'))
-    expect(onExit).toHaveBeenCalledWith('2_dark_corridor')
+    expect(onExit).toHaveBeenCalledWith('2_dark_corridor', {
+      itemsGive: undefined,
+      itemsTake: undefined,
+    })
   })
 })

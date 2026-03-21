@@ -1,0 +1,5 @@
+items:
+  rusted_key:
+    name: Rusted Key
+    description: An old key given to you by a mysterious stranger. It looks like it opens something ancient.
+    icon: rusted_key.svg
