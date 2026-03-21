@@ -4,6 +4,7 @@ import './App.css'
 
 function App() {
   const config = useConfig()
+  if (!config) return null
   return <Journey language={config.language} />
 }
 

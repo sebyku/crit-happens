@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-import yaml from 'js-yaml'
-import configRaw from './data/config.yaml?raw'
+import { useYaml } from './useYaml.js'
 
 function resolveLang(lang) {
   if (lang === 'auto') {
@@ -12,11 +11,12 @@ function resolveLang(lang) {
 }
 
 export function useConfig() {
+  const raw = useYaml('data/config.yaml')
   return useMemo(() => {
-    const raw = yaml.load(configRaw)
+    if (!raw) return null
     return {
       ...raw,
       language: resolveLang(raw.language),
     }
-  }, [])
+  }, [raw])
 }

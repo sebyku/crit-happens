@@ -1,24 +1,10 @@
-import { useState, useMemo } from 'react'
-import yaml from 'js-yaml'
-import journeyUsRaw from './data/journey.us.yaml?raw'
-import journeyFrRaw from './data/journey.fr.yaml?raw'
-import messagesUsRaw from './data/messages.us.yaml?raw'
-import messagesFrRaw from './data/messages.fr.yaml?raw'
+import { useState } from 'react'
+import { useYaml } from './useYaml.js'
 import { useCharacter } from './useCharacter.js'
 import { useItems } from './useItems.js'
 import Conversation from './Conversation.jsx'
 import Inventory from './Inventory.jsx'
 import './Journey.css'
-
-const journeyFiles = {
-  us: journeyUsRaw,
-  fr: journeyFrRaw,
-}
-
-const messagesFiles = {
-  us: messagesUsRaw,
-  fr: messagesFrRaw,
-}
 
 function applyItemChanges(current, give = [], take = []) {
   const set = new Set(current)
@@ -28,16 +14,20 @@ function applyItemChanges(current, give = [], take = []) {
 }
 
 function Journey({ language = 'us' }) {
-  const journey = useMemo(() => yaml.load(journeyFiles[language] || journeyUsRaw), [language])
-  const labels = useMemo(() => yaml.load(messagesFiles[language] || messagesUsRaw), [language])
+  const journey = useYaml(`data/journey.${language}.yaml`)
+  const labels = useYaml(`data/messages.${language}.yaml`)
   const itemDefs = useItems(language)
   const [currentStepId, setCurrentStepId] = useState('1_start')
   const [history, setHistory] = useState([])
   const [inventory, setInventory] = useState([])
 
-  const step = journey.steps[currentStepId]
+  const step = journey?.steps?.[currentStepId]
+  const character = useCharacter(step?.character, language)
+
+  if (!journey || !labels || !step) return null
+
   const isEnding = !step.reactions || step.reactions.length === 0
-  const character = useCharacter(step.character, language)
+  const isConversation = step.character && character
 
   const visibleReactions = (step.reactions || []).filter((r) => {
     if (r.requires && !inventory.includes(r.requires)) return false
@@ -50,7 +40,6 @@ function Journey({ language = 'us' }) {
 
     setHistory((prev) => [...prev, { stepId: currentStepId, inventory: [...inventory] }])
 
-    // Apply reaction-level changes, then step-level changes on arrival
     let newInventory = applyItemChanges(
       inventory,
       itemChanges.itemsGive,
@@ -87,7 +76,7 @@ function Journey({ language = 'us' }) {
       <h1>{journey.title}</h1>
       <Inventory items={inventory} itemDefs={itemDefs} />
 
-      {character ? (
+      {isConversation ? (
         <div className="step">
           <p className="description">{step.description}</p>
           <Conversation
