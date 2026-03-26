@@ -51,17 +51,21 @@ export class Eliza {
       const response = this._applyRule(rule, text)
       storedMemory = storedMemory || this.memory.length > memSizeBefore
       if (response !== null) {
-        return response
+        return {
+          text: response,
+          items_give: rule.items_give,
+          items_take: rule.items_take,
+        }
       }
     }
 
     // Try memory recall (but not if we just stored one)
     if (!storedMemory && this.memory.length > 0) {
-      return this.memory.shift()
+      return { text: this.memory.shift() }
     }
 
     // Fallback
-    return this._applyFallback()
+    return { text: this._applyFallback() }
   }
 
   _applyRule(rule, text) {

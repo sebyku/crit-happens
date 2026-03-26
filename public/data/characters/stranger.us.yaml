@@ -14,10 +14,12 @@ rules:
 
   - keyword: "key"
     priority: 5
+    items_give:
+      - rusted_key
     patterns:
       - decomposition: ".*key(.*)"
         reassemblies:
-          - "This key opens a door hidden behind the beast's lair."
+          - "This key opens a door hidden behind the beast's lair. Here, take it."
           - "Take it. You'll know when to use it."
 
   - keyword: "dungeon"
@@ -67,6 +69,17 @@ rules:
         reassemblies:
           - "Trust is a luxury in this place. But I mean you no harm."
           - "You don't have to trust me. Just don't ignore my warnings."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Ask me about the vault, the key, or the beast. I know things."
+          - "The dungeon hides many secrets. Ask the right questions."
+          - "I have a key that might interest you. Just say the word."
+          - "There's a beast down there, and a chest that talks. Want to know more?"
+          - "You'll need to know about the vault if you want the real treasure."
 
 exits:
   - keyword: "bye"

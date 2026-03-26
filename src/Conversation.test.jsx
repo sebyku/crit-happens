@@ -93,6 +93,36 @@ describe('Conversation', () => {
     expect(screen.getByText('Take the key')).toBeInTheDocument()
   })
 
+  it('calls onItemChange when engine rule has items_give', async () => {
+    const onItemChange = vi.fn()
+    const charWithItems = {
+      ...character,
+      rules: [
+        {
+          keyword: 'key',
+          priority: 5,
+          items_give: ['rusted_key'],
+          patterns: [
+            { decomposition: '.*key(.*)', reassemblies: ['Here, take this key.'] },
+          ],
+        },
+        ...character.rules,
+      ],
+    }
+    const user = userEvent.setup()
+    render(<Conversation character={charWithItems} labels={labels} reactions={[]} onExit={() => {}} onItemChange={onItemChange} />)
+
+    const input = screen.getByPlaceholderText('Type something...')
+    await user.type(input, 'tell me about the key')
+    await user.click(screen.getByText('Send'))
+
+    expect(screen.getByText('Here, take this key.')).toBeInTheDocument()
+    expect(onItemChange).toHaveBeenCalledWith({
+      itemsGive: ['rusted_key'],
+      itemsTake: undefined,
+    })
+  })
+
   it('calls onExit when a reaction button is clicked', async () => {
     const onExit = vi.fn()
     const user = userEvent.setup()

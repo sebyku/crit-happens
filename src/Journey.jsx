@@ -85,6 +85,9 @@ function Journey({ language = 'us' }) {
             labels={labels}
             reactions={visibleReactions}
             onExit={handleChoice}
+            onItemChange={(changes) => setInventory((prev) =>
+              applyItemChanges(prev, changes.itemsGive, changes.itemsTake)
+            )}
           />
         </div>
       ) : (

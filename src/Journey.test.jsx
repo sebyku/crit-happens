@@ -64,7 +64,7 @@ describe('Journey', () => {
     expect(await screen.findByText(/tavern is warm and loud/)).toBeInTheDocument()
 
     await user.click(screen.getByText('Sit with the stranger'))
-    expect(await screen.findByText(/hidden vault beneath the dungeon/)).toBeInTheDocument()
+    expect(await screen.findByText(/stranger leans in and starts whispering/)).toBeInTheDocument()
   })
 
   it('reaches an ending and shows play again', async () => {

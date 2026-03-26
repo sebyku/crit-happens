@@ -31,23 +31,17 @@ steps:
         goto: 1_start
 
   4_stranger_quest:
-    description: L'etranger murmure l'existence d'une chambre forte cachee sous le donjon, accessible uniquement par un passage secret. Il vous tend une cle rouillee.
+    description: Un etranger encapuchonne se penche vers vous et commence a murmurer. Il semble connaitre des choses sur le donjon.
     character: stranger
     reactions:
-      - label: Prendre la cle et aller au donjon
+      - label: Quitter la taverne
         goto: 2_dark_corridor
-        items_give:
-          - rusted_key
-      - label: Demander plus de details
-        goto: 5_stranger_details
 
   5_stranger_details:
     description: '"Ne faites confiance a personne la-bas," dit-il. "Surtout pas au coffre qui parle." Il disparait dans la foule avant que vous ne puissiez repondre.'
     reactions:
       - label: Aller au donjon avec la cle
         goto: 2_dark_corridor
-        items_give:
-          - rusted_key
 
   6_tavern_rest:
     description: Vous savourez un repas chaud et une biere fraiche. Repose et pret, vous sentez l'appel de l'aventure vous attirer a nouveau.

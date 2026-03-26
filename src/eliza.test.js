@@ -40,7 +40,7 @@ describe('Eliza', () => {
         ],
       },
     ])
-    expect(engine.respond('hello')).toBe('Hi there!')
+    expect(engine.respond('hello').text).toBe('Hi there!')
   })
 
   it('falls back to @none when no keyword matches', () => {
@@ -53,7 +53,7 @@ describe('Eliza', () => {
         ],
       },
     ])
-    expect(engine.respond('random gibberish')).toBe('I do not understand.')
+    expect(engine.respond('random gibberish').text).toBe('I do not understand.')
   })
 
   it('cycles through reassemblies round-robin', () => {
@@ -66,10 +66,10 @@ describe('Eliza', () => {
         ],
       },
     ])
-    expect(engine.respond('test')).toBe('First')
-    expect(engine.respond('test')).toBe('Second')
-    expect(engine.respond('test')).toBe('Third')
-    expect(engine.respond('test')).toBe('First') // wraps around
+    expect(engine.respond('test').text).toBe('First')
+    expect(engine.respond('test').text).toBe('Second')
+    expect(engine.respond('test').text).toBe('Third')
+    expect(engine.respond('test').text).toBe('First') // wraps around
   })
 
   it('picks higher priority rules first', () => {
@@ -89,7 +89,7 @@ describe('Eliza', () => {
         ],
       },
     ])
-    expect(engine.respond('i am sad')).toBe('You seem sad.')
+    expect(engine.respond('i am sad').text).toBe('You seem sad.')
   })
 
   it('fills template placeholders with captured groups', () => {
@@ -105,7 +105,7 @@ describe('Eliza', () => {
         ],
       },
     ])
-    expect(engine.respond('i want peace')).toBe('Why do you want peace?')
+    expect(engine.respond('i want peace').text).toBe('Why do you want peace?')
   })
 
   it('reflects pronouns in captured text', () => {
@@ -124,7 +124,7 @@ describe('Eliza', () => {
       ],
       { my: 'your', i: 'you' }
     )
-    expect(engine.respond('i want my dog')).toBe('Why do you want your dog?')
+    expect(engine.respond('i want my dog').text).toBe('Why do you want your dog?')
   })
 
   it('stores @memory responses and recalls them later', () => {
@@ -148,9 +148,9 @@ describe('Eliza', () => {
       },
     ])
     // First input stores memory, falls back to @none
-    expect(engine.respond('tell me about the vault')).toBe('Go on.')
+    expect(engine.respond('tell me about the vault').text).toBe('Go on.')
     // Next unrecognized input recalls memory
-    expect(engine.respond('anything else')).toBe('You mentioned the vault.')
+    expect(engine.respond('anything else').text).toBe('You mentioned the vault.')
   })
 
   it('matches keywords with accents in input', () => {
@@ -163,11 +163,42 @@ describe('Eliza', () => {
         ],
       },
     ])
-    expect(engine.respond('je suis déprimé')).toBe('That sounds tough.')
+    expect(engine.respond('je suis déprimé').text).toBe('That sounds tough.')
   })
 
   it('returns hardcoded fallback when no @none rule exists', () => {
     const engine = makeEngine([])
-    expect(engine.respond('hello')).toBe('Please go on.')
+    expect(engine.respond('hello').text).toBe('Please go on.')
+  })
+
+  it('returns items_give when rule has them', () => {
+    const engine = makeEngine([
+      {
+        keyword: 'key',
+        priority: 5,
+        items_give: ['rusted_key'],
+        patterns: [
+          { decomposition: '.*key(.*)', reassemblies: ['Take this key.'] },
+        ],
+      },
+    ])
+    const response = engine.respond('tell me about the key')
+    expect(response.text).toBe('Take this key.')
+    expect(response.items_give).toEqual(['rusted_key'])
+  })
+
+  it('does not return items on fallback', () => {
+    const engine = makeEngine([
+      {
+        keyword: '@none',
+        priority: 0,
+        patterns: [
+          { decomposition: '.*', reassemblies: ['Hmm.'] },
+        ],
+      },
+    ])
+    const response = engine.respond('random')
+    expect(response.text).toBe('Hmm.')
+    expect(response.items_give).toBeUndefined()
   })
 })

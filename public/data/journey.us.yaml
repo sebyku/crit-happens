@@ -31,23 +31,17 @@ steps:
         goto: 1_start
 
   4_stranger_quest:
-    description: The stranger whispers of a hidden vault beneath the dungeon, accessible only through a secret passage. They hand you a rusted key.
+    description: A hooded stranger leans in and starts whispering to you. They seem to know things about the dungeon.
     character: stranger
     reactions:
-      - label: Take the key and head to the dungeon
+      - label: Leave the tavern
         goto: 2_dark_corridor
-        items_give:
-          - rusted_key
-      - label: Ask for more details
-        goto: 5_stranger_details
 
   5_stranger_details:
     description: '"Trust no one down there," they say. "Especially not the chest that speaks." They vanish into the crowd before you can reply.'
     reactions:
       - label: Head to the dungeon with the key
         goto: 2_dark_corridor
-        items_give:
-          - rusted_key
 
   6_tavern_rest:
     description: You enjoy a warm meal and a cold ale. Refreshed and ready, you feel the call of adventure pulling you back.

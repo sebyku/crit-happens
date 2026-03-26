@@ -14,10 +14,12 @@ rules:
 
   - keyword: "cle"
     priority: 5
+    items_give:
+      - rusted_key
     patterns:
       - decomposition: ".*cle(.*)"
         reassemblies:
-          - "Cette cle ouvre une porte cachee derriere le repaire de la bete."
+          - "Cette cle ouvre une porte cachee derriere le repaire de la bete. Tenez, prenez-la."
           - "Prenez-la. Vous saurez quand l'utiliser."
 
   - keyword: "donjon"
@@ -67,6 +69,17 @@ rules:
         reassemblies:
           - "La confiance est un luxe ici. Mais je ne vous veux aucun mal."
           - "Vous n'avez pas a me faire confiance. Mais n'ignorez pas mes avertissements."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Demandez-moi a propos de la chambre forte, de la cle, ou de la bete. Je sais des choses."
+          - "Le donjon cache bien des secrets. Posez les bonnes questions."
+          - "J'ai une cle qui pourrait vous interesser. Dites le mot."
+          - "Il y a une bete la-dessous, et un coffre qui parle. Vous voulez en savoir plus ?"
+          - "Il faut connaitre la chambre forte si vous voulez le vrai tresor."
 
 exits:
   - keyword: "au revoir"

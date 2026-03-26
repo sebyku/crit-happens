@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useMemo } from 'react'
 import { Eliza, preprocess } from './eliza.js'
 import './Conversation.css'
 
-function Conversation({ character, labels, reactions, onExit }) {
+function Conversation({ character, labels, reactions, onExit, onItemChange }) {
   const engine = useMemo(
     () => new Eliza(character.rules, character.reflections),
     [character]
@@ -55,10 +55,16 @@ function Conversation({ character, labels, reactions, onExit }) {
     }
 
     const response = engine.respond(trimmed)
+    if (response.items_give || response.items_take) {
+      onItemChange?.({
+        itemsGive: response.items_give,
+        itemsTake: response.items_take,
+      })
+    }
     setMessages((prev) => [
       ...prev,
       { from: 'player', text: trimmed },
-      { from: 'npc', text: response },
+      { from: 'npc', text: response.text },
     ])
     setInput('')
   }
