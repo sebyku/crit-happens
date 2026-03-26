@@ -70,8 +70,13 @@ export class Eliza {
 
   _applyRule(rule, text) {
     for (const pattern of rule.patterns) {
-      const regex = new RegExp(stripAccents(pattern.decomposition), 'i')
-      const match = text.match(regex)
+      let match
+      try {
+        const regex = new RegExp(stripAccents(pattern.decomposition), 'i')
+        match = text.match(regex)
+      } catch {
+        continue
+      }
       if (match) {
         const template = this._nextReassembly(pattern)
 

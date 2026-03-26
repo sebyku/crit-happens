@@ -32,7 +32,8 @@ function Conversation({ character, labels, reactions, onExit, onItemChange }) {
   function findExit(text) {
     const processed = preprocess(text)
     for (const exit of character.exits) {
-      if (processed.includes(exit.keyword)) {
+      const pattern = new RegExp(`\\b${exit.keyword}\\b`)
+      if (pattern.test(processed)) {
         return exit
       }
     }
@@ -71,7 +72,7 @@ function Conversation({ character, labels, reactions, onExit, onItemChange }) {
 
   return (
     <div className="conversation">
-      <div className="chat-messages">
+      <div className="chat-messages" role="log" aria-live="polite">
         {messages.map((msg, i) => (
           <div key={i} className={`chat-bubble ${msg.from}`}>
             {msg.text}
@@ -96,9 +97,9 @@ function Conversation({ character, labels, reactions, onExit, onItemChange }) {
 
       {reactions && reactions.length > 0 && (
         <div className="chat-reactions">
-          {reactions.map((reaction) => (
+          {reactions.map((reaction, i) => (
             <button
-              key={reaction.goto}
+              key={`${reaction.goto}-${i}`}
               className="reaction"
               onClick={() => onExit(reaction.goto, {
                 itemsGive: reaction.items_give,

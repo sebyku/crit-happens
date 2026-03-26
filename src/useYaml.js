@@ -12,7 +12,11 @@ export function fetchYaml(path) {
       if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`)
       return res.text()
     })
-    .then((text) => yaml.load(text))
+    .then((text) => yaml.load(text, { schema: yaml.JSON_SCHEMA }))
+    .catch((err) => {
+      cache.delete(url)
+      throw err
+    })
   cache.set(url, promise)
   return promise
 }
@@ -22,15 +26,20 @@ export function clearYamlCache() {
 }
 
 export function useYaml(path) {
-  const [data, setData] = useState(null)
+  const [result, setResult] = useState({ data: null, error: null })
 
   useEffect(() => {
     let cancelled = false
-    fetchYaml(path).then((parsed) => {
-      if (!cancelled) setData(parsed)
-    })
+    fetchYaml(path)
+      .then((parsed) => {
+        if (!cancelled) setResult({ data: parsed, error: null })
+      })
+      .catch((err) => {
+        if (!cancelled) setResult({ data: null, error: err })
+      })
     return () => { cancelled = true }
   }, [path])
 
-  return data
+  if (result.error) throw result.error
+  return result.data
 }

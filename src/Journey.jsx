@@ -27,6 +27,7 @@ function Journey({ language = 'us' }) {
   if (!journey || !labels || !step) return null
 
   const isEnding = !step.reactions || step.reactions.length === 0
+  const isCharacterLoading = step.character && !character
   const isConversation = step.character && character
 
   const visibleReactions = (step.reactions || []).filter((r) => {
@@ -56,13 +57,11 @@ function Journey({ language = 'us' }) {
   }
 
   function handleBack() {
-    setHistory((prev) => {
-      const next = [...prev]
-      const snapshot = next.pop()
-      setCurrentStepId(snapshot.stepId)
-      setInventory(snapshot.inventory)
-      return next
-    })
+    const snapshot = history[history.length - 1]
+    if (!snapshot) return
+    setCurrentStepId(snapshot.stepId)
+    setInventory(snapshot.inventory)
+    setHistory((prev) => prev.slice(0, -1))
   }
 
   function handleRestart() {
@@ -76,7 +75,11 @@ function Journey({ language = 'us' }) {
       <h1>{journey.title}</h1>
       <Inventory items={inventory} itemDefs={itemDefs} />
 
-      {isConversation ? (
+      {isCharacterLoading ? (
+        <div className="step">
+          <p className="description">{step.description}</p>
+        </div>
+      ) : isConversation ? (
         <div className="step">
           <p className="description">{step.description}</p>
           <Conversation
@@ -95,9 +98,9 @@ function Journey({ language = 'us' }) {
           <p className="description">{step.description}</p>
 
           <div className="reactions">
-            {visibleReactions.map((reaction) => (
+            {visibleReactions.map((reaction, i) => (
               <button
-                key={reaction.goto}
+                key={`${reaction.goto}-${i}`}
                 className="reaction"
                 onClick={() => handleChoice(reaction.goto, {
                   itemsGive: reaction.items_give,

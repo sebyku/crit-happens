@@ -35,9 +35,13 @@ export function useCharacter(characterId, language) {
   useEffect(() => {
     if (!characterId) return
     let cancelled = false
-    loadCharacter(characterId, language).then((result) => {
-      if (!cancelled) setCharacter(result)
-    })
+    loadCharacter(characterId, language)
+      .then((result) => {
+        if (!cancelled) setCharacter(result)
+      })
+      .catch((err) => {
+        if (!cancelled) console.error(`Failed to load character "${characterId}":`, err)
+      })
     return () => { cancelled = true }
   }, [characterId, language])
 

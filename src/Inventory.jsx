@@ -8,7 +8,9 @@ function Inventory({ items, itemDefs }) {
     setSelectedItem((prev) => (prev === itemId ? null : itemId))
   }
 
-  const selected = selectedItem ? itemDefs[selectedItem] : null
+  // Clear selection if item was removed from inventory
+  const activeSelection = selectedItem && items.includes(selectedItem) ? selectedItem : null
+  const selected = activeSelection ? itemDefs[activeSelection] : null
 
   return (
     <div className="inventory">
@@ -19,7 +21,7 @@ function Inventory({ items, itemDefs }) {
           return (
             <button
               key={itemId}
-              className={`inventory-slot${selectedItem === itemId ? ' selected' : ''}`}
+              className={`inventory-slot${activeSelection === itemId ? ' selected' : ''}`}
               onClick={() => handleClick(itemId)}
               title={def.name}
             >
