@@ -4,7 +4,7 @@ rules:
     patterns:
       - decomposition: ".*aide(.*)"
         reassemblies:
-          - "Bien sur, je suis heureux de vous aider."
+          - "Bien sûr, je suis heureux de vous aider."
           - "Je ferai ce que je peux pour vous."
 
   - keyword: "merci"
@@ -21,5 +21,5 @@ rules:
     patterns:
       - decomposition: ".*"
         reassemblies:
-          - "Pas besoin de politesses, mais j'apprecie."
-          - "Bien sur. De quoi avez-vous besoin ?"
+          - "Pas besoin de politesses, mais j'apprécie."
+          - "Bien sûr. De quoi avez-vous besoin ?"

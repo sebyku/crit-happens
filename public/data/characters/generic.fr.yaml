@@ -5,7 +5,7 @@ rules:
       - decomposition: ".*"
         reassemblies:
           - "Bonjour, aventurier."
-          - "Salutations. Qu'est-ce qui vous amene ?"
+          - "Salutations. Qu'est-ce qui vous amène ?"
 
   - keyword: "salut"
     priority: 3
@@ -21,7 +21,7 @@ rules:
       - decomposition: ".*"
         reassemblies:
           - "Pas besoin de vous excuser."
-          - "Il n'y a pas de quoi etre desole."
+          - "Il n'y a pas de quoi être désolé."
 
   - keyword: "oui"
     priority: 1
@@ -38,14 +38,14 @@ rules:
       - decomposition: ".*"
         reassemblies:
           - "Pourquoi pas ?"
-          - "Vous etes sur ?"
+          - "Vous êtes sûr ?"
 
   - keyword: "@none"
     priority: 0
     patterns:
       - decomposition: ".*"
         reassemblies:
-          - "Interessant... dites-m'en plus."
+          - "Intéressant... dites-m'en plus."
           - "Je vois. Continuez."
           - "Hmm, quoi d'autre ?"
-          - "Pouvez-vous developper ?"
+          - "Pouvez-vous développer ?"

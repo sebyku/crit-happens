@@ -1,5 +1,5 @@
 items:
   rusted_key:
-    name: Cle rouillee
-    description: Une vieille cle donnee par un mysterieux etranger. On dirait qu'elle ouvre quelque chose d'ancien.
+    name: Clé rouillée
+    description: Une vieille clé donnée par un mystérieux étranger. On dirait qu'elle ouvre quelque chose d'ancien.
     icon: rusted_key.svg

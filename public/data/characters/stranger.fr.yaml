@@ -1,5 +1,5 @@
 greetings:
-  - "Psst... par ici. J'ai quelque chose qui pourrait vous interesser."
+  - "Psst... par ici. J'ai quelque chose qui pourrait vous intéresser."
   - "Ah, un nouveau visage. Asseyez-vous, j'ai une proposition pour vous."
 
 rules:
@@ -9,8 +9,8 @@ rules:
       - decomposition: ".*chambre forte(.*)"
         reassemblies:
           - "La chambre forte se trouve au plus profond du donjon. Peu connaissent le chemin."
-          - "Elle est scellee depuis des siecles. Mais j'ai une cle..."
-          - "@memory:Vous avez demande a propos de la chambre forte. Nous devrions y revenir."
+          - "Elle est scellée depuis des siècles. Mais j'ai une clé..."
+          - "@memory:Vous avez demandé à propos de la chambre forte. Nous devrions y revenir."
 
   - keyword: "cle"
     priority: 5
@@ -19,7 +19,7 @@ rules:
     patterns:
       - decomposition: ".*cle(.*)"
         reassemblies:
-          - "Cette cle ouvre une porte cachee derriere le repaire de la bete. Tenez, prenez-la."
+          - "Cette clé ouvre une porte cachée derrière le repaire de la bête. Tenez, prenez-la."
           - "Prenez-la. Vous saurez quand l'utiliser."
 
   - keyword: "donjon"
@@ -27,15 +27,15 @@ rules:
     patterns:
       - decomposition: ".*donjon(.*)"
         reassemblies:
-          - "Le donjon recele bien des secrets. Pas tous agreables."
-          - "Soyez prudent la-dedans. Les murs ont des oreilles... et des dents."
+          - "Le donjon recèle bien des secrets. Pas tous agréables."
+          - "Soyez prudent là-dedans. Les murs ont des oreilles... et des dents."
 
   - keyword: "bete"
     priority: 4
     patterns:
       - decomposition: ".*bete(.*)"
         reassemblies:
-          - "La bete garde le passage. Elle n'est pas aussi feroce qu'elle en a l'air."
+          - "La bête garde le passage. Elle n'est pas aussi féroce qu'elle en a l'air."
           - "Ne montrez aucune peur. Elle respecte le courage."
 
   - keyword: "coffre"
@@ -43,7 +43,7 @@ rules:
     patterns:
       - decomposition: ".*coffre(.*)"
         reassemblies:
-          - "Ne faites confiance a aucun coffre qui parle. C'est tout ce que je dirai."
+          - "Ne faites confiance à aucun coffre qui parle. C'est tout ce que je dirai."
           - "S'il fredonne, partez. S'il parle... fuyez."
 
   - keyword: "qui etes"
@@ -52,14 +52,14 @@ rules:
       - decomposition: ".*"
         reassemblies:
           - "Les noms n'ont pas d'importance ici. Seule la survie compte."
-          - "Je suis quelqu'un qui a ete la ou vous allez. Ca suffit."
+          - "Je suis quelqu'un qui a été là où vous allez. Ça suffit."
 
   - keyword: "carte"
     priority: 4
     patterns:
       - decomposition: ".*carte(.*)"
         reassemblies:
-          - "Cette carte montre un passage que la plupart ont oublie."
+          - "Cette carte montre un passage que la plupart ont oublié."
           - "Suivez les marques que j'ai faites. Elles vous garderont en vie."
 
   - keyword: "confiance"
@@ -68,18 +68,18 @@ rules:
       - decomposition: ".*confiance(.*)"
         reassemblies:
           - "La confiance est un luxe ici. Mais je ne vous veux aucun mal."
-          - "Vous n'avez pas a me faire confiance. Mais n'ignorez pas mes avertissements."
+          - "Vous n'avez pas à me faire confiance. Mais n'ignorez pas mes avertissements."
 
   - keyword: "@none"
     priority: 0
     patterns:
       - decomposition: ".*"
         reassemblies:
-          - "Demandez-moi a propos de la chambre forte, de la cle, ou de la bete. Je sais des choses."
+          - "Demandez-moi à propos de la chambre forte, de la clé, ou de la bête. Je sais des choses."
           - "Le donjon cache bien des secrets. Posez les bonnes questions."
-          - "J'ai une cle qui pourrait vous interesser. Dites le mot."
-          - "Il y a une bete la-dessous, et un coffre qui parle. Vous voulez en savoir plus ?"
-          - "Il faut connaitre la chambre forte si vous voulez le vrai tresor."
+          - "J'ai une clé qui pourrait vous intéresser. Dites le mot."
+          - "Il y a une bête là-dessous, et un coffre qui parle. Vous voulez en savoir plus ?"
+          - "Il faut connaître la chambre forte si vous voulez le vrai trésor."
 
 exits:
   - keyword: "au revoir"

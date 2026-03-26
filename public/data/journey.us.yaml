@@ -3,12 +3,40 @@ description: A journey where every choice matters
 
 steps:
   1_start:
-    description: You stand at the entrance of a dimly lit dungeon. The air smells of damp stone and old torches flicker on the walls.
+    description: You stand in the square of a small village. A fountain trickles softly at the center. Around you, a few buildings catch your eye.
+    reactions:
+      - label: Go to the tavern
+        goto: 3_tavern
+      - label: Visit the armorer
+        goto: 17_armorer
+      - label: Enter the church
+        goto: 18_church
+      - label: Leave the village
+        goto: 19_village_exit
+
+  17_armorer:
+    description: The armorer's shop is small but well-kept. Swords, shields and armor line the walls. The blacksmith eyes you gruffly.
+    reactions:
+      - label: Browse the weapons
+        goto: 17_armorer
+      - label: Return to the square
+        goto: 1_start
+
+  18_church:
+    description: The church is quiet and cool. Light filters through stained glass, casting colors across the wooden pews. A priest prays silently near the altar.
+    reactions:
+      - label: Pray for a moment
+        goto: 18_church
+      - label: Return to the square
+        goto: 1_start
+
+  19_village_exit:
+    description: You leave the village along a dirt path. In the distance, through the trees, you spot the dark entrance of a dungeon. The path leads straight to it.
     reactions:
       - label: Enter the dungeon
         goto: 2_dark_corridor
-      - label: Turn back and head to the tavern
-        goto: 3_tavern
+      - label: Go back to the village
+        goto: 1_start
 
   2_dark_corridor:
     description: The corridor stretches ahead, splitting into two paths. From the left, you hear a faint growl. From the right, the glimmer of something shiny catches your eye.
@@ -17,7 +45,7 @@ steps:
         goto: 7_beast_lair
       - label: Chase the glimmer
         goto: 10_treasure_room
-      - label: Retreat to the entrance
+      - label: Go back to the village
         goto: 1_start
 
   3_tavern:
@@ -27,7 +55,7 @@ steps:
         goto: 4_stranger_quest
       - label: Ignore them and order a drink
         goto: 6_tavern_rest
-      - label: Head back to the dungeon
+      - label: Return to the square
         goto: 1_start
 
   4_stranger_quest:
@@ -35,18 +63,18 @@ steps:
     character: stranger
     reactions:
       - label: Leave the tavern
-        goto: 2_dark_corridor
+        goto: 1_start
 
   5_stranger_details:
     description: '"Trust no one down there," they say. "Especially not the chest that speaks." They vanish into the crowd before you can reply.'
     reactions:
-      - label: Head to the dungeon with the key
-        goto: 2_dark_corridor
+      - label: Return to the square
+        goto: 1_start
 
   6_tavern_rest:
     description: You enjoy a warm meal and a cold ale. Refreshed and ready, you feel the call of adventure pulling you back.
     reactions:
-      - label: Head to the dungeon
+      - label: Return to the square
         goto: 1_start
 
   7_beast_lair:
