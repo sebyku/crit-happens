@@ -72,20 +72,3 @@
   text-align: center;
   font-weight: 500;
 }
-
-.back {
-  font-family: var(--sans);
-  font-size: 14px;
-  padding: 8px 16px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-  align-self: center;
-  transition: color 0.2s;
-
-  &:hover {
-    color: var(--text-h);
-  }
-}

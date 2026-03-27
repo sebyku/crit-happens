@@ -80,6 +80,54 @@
   }
 }
 
+.confirm-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 2px solid var(--accent-border);
+  border-radius: 6px;
+  background: var(--accent-bg);
+}
+
+.confirm-text {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.confirm-yes,
+.confirm-no {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid var(--border);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.confirm-yes {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-color: var(--accent);
+
+  &:hover {
+    background: var(--accent-border);
+  }
+}
+
+.confirm-no {
+  background: var(--bg);
+  color: var(--text);
+
+  &:hover {
+    border-color: var(--text);
+  }
+}
+
 .chat-reactions {
   display: flex;
   flex-direction: column;

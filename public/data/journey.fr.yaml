@@ -15,10 +15,9 @@ steps:
         goto: 19_village_exit
 
   17_armorer:
-    description: L'échoppe de l'armurier est petite mais bien rangée. Des épées, boucliers et armures s'alignent sur les murs. Le forgeron vous regarde d'un air bourru.
+    description: L'échoppe de l'armurier est petite mais bien rangée. Des épées, boucliers et casques s'alignent sur les murs. Le forgeron vous accueille avec un sourire chaleureux.
+    character: blacksmith
     reactions:
-      - label: Regarder les armes
-        goto: 17_armorer
       - label: Retourner sur la place
         goto: 1_start
 
@@ -73,6 +72,8 @@ steps:
 
   6_tavern_rest:
     description: Vous savourez un repas chaud et une bière fraîche. Reposé et prêt, vous sentez l'appel de l'aventure vous attirer à nouveau.
+    gold: -2
+    hp: 20
     reactions:
       - label: Retourner sur la place
         goto: 1_start
@@ -98,6 +99,7 @@ steps:
 
   9_beast_fight:
     description: La créature bondit ! Après un combat féroce, vous parvenez à la repousser, mais vous êtes blessé. Le passage derrière elle est maintenant dégagé.
+    hp: -30
     reactions:
       - label: Continuer malgré vos blessures
         goto: 12_secret_vault
@@ -111,6 +113,7 @@ steps:
         goto: 11_mimic_encounter
       - label: Ramasser les pièces et partir
         goto: 13_ending_modest
+        gold: 15
 
   11_mimic_encounter:
     description: Le coffre s'ouvre brusquement, révélant des rangées de dents ! C'est un mimic ! Il vous mord, mais vous esquivez juste à temps.

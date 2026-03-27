@@ -110,7 +110,7 @@ describe('Conversation', () => {
       ],
     }
     const user = userEvent.setup()
-    render(<Conversation character={charWithItems} labels={labels} reactions={[]} onExit={() => {}} onItemChange={onItemChange} />)
+    render(<Conversation character={charWithItems} labels={labels} reactions={[]} onExit={() => {}} onItemChange={onItemChange} gold={100} inventory={[]} />)
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'tell me about the key')
@@ -121,6 +121,168 @@ describe('Conversation', () => {
       itemsGive: ['rusted_key'],
       itemsTake: undefined,
     })
+  })
+
+  it('shows confirmation when rule has confirm: true', async () => {
+    const onItemChange = vi.fn()
+    const onStatsChange = vi.fn()
+    const shopChar = {
+      ...character,
+      rules: [
+        {
+          keyword: 'sword',
+          priority: 5,
+          confirm: true,
+          gold: -8,
+          items_give: ['iron_sword'],
+          patterns: [
+            { decomposition: '.*sword(.*)', reassemblies: ['A fine sword. 8 gold.'] },
+          ],
+        },
+        ...character.rules,
+      ],
+    }
+    const user = userEvent.setup()
+    render(<Conversation character={shopChar} labels={{ ...labels, confirmPrompt: 'Accept?', confirmYes: 'Yes', confirmNo: 'No' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} onStatsChange={onStatsChange} gold={20} inventory={[]} />)
+
+    const input = screen.getByPlaceholderText('Type something...')
+    await user.type(input, 'show me a sword')
+    await user.click(screen.getByText('Send'))
+
+    expect(screen.getByText('A fine sword. 8 gold.')).toBeInTheDocument()
+    expect(screen.getByText('Accept?')).toBeInTheDocument()
+    expect(screen.getByText('Yes')).toBeInTheDocument()
+    expect(screen.getByText('No')).toBeInTheDocument()
+    // Not applied yet
+    expect(onItemChange).not.toHaveBeenCalled()
+    expect(onStatsChange).not.toHaveBeenCalled()
+  })
+
+  it('applies changes when confirmation is accepted', async () => {
+    const onItemChange = vi.fn()
+    const onStatsChange = vi.fn()
+    const shopChar = {
+      ...character,
+      rules: [
+        {
+          keyword: 'sword',
+          priority: 5,
+          confirm: true,
+          gold: -8,
+          items_give: ['iron_sword'],
+          patterns: [
+            { decomposition: '.*sword(.*)', reassemblies: ['A fine sword. 8 gold.'] },
+          ],
+        },
+        ...character.rules,
+      ],
+    }
+    const user = userEvent.setup()
+    render(<Conversation character={shopChar} labels={{ ...labels, confirmYes: 'Yes', confirmNo: 'No' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} onStatsChange={onStatsChange} gold={20} inventory={[]} />)
+
+    const input = screen.getByPlaceholderText('Type something...')
+    await user.type(input, 'sword')
+    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByText('Yes'))
+
+    expect(onItemChange).toHaveBeenCalledWith({
+      itemsGive: ['iron_sword'],
+      itemsTake: undefined,
+    })
+    expect(onStatsChange).toHaveBeenCalledWith({ gold: -8, hp: undefined })
+  })
+
+  it('does not apply changes when confirmation is declined', async () => {
+    const onItemChange = vi.fn()
+    const onStatsChange = vi.fn()
+    const shopChar = {
+      ...character,
+      rules: [
+        {
+          keyword: 'sword',
+          priority: 5,
+          confirm: true,
+          gold: -8,
+          items_give: ['iron_sword'],
+          patterns: [
+            { decomposition: '.*sword(.*)', reassemblies: ['A fine sword. 8 gold.'] },
+          ],
+        },
+        ...character.rules,
+      ],
+    }
+    const user = userEvent.setup()
+    render(<Conversation character={shopChar} labels={{ ...labels, confirmYes: 'Yes', confirmNo: 'No' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} onStatsChange={onStatsChange} gold={20} inventory={[]} />)
+
+    const input = screen.getByPlaceholderText('Type something...')
+    await user.type(input, 'sword')
+    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByText('No'))
+
+    expect(onItemChange).not.toHaveBeenCalled()
+    expect(onStatsChange).not.toHaveBeenCalled()
+    // Input should be back
+    expect(screen.getByPlaceholderText('Type something...')).toBeInTheDocument()
+  })
+
+  it('shows not enough gold message when player cannot afford', async () => {
+    const onItemChange = vi.fn()
+    const shopChar = {
+      ...character,
+      rules: [
+        {
+          keyword: 'sword',
+          priority: 5,
+          confirm: true,
+          gold: -8,
+          items_give: ['iron_sword'],
+          patterns: [
+            { decomposition: '.*sword(.*)', reassemblies: ['A fine sword. 8 gold.'] },
+          ],
+        },
+        ...character.rules,
+      ],
+    }
+    const user = userEvent.setup()
+    render(<Conversation character={shopChar} labels={{ ...labels, notEnoughGold: 'Not enough gold!' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} gold={3} inventory={[]} />)
+
+    const input = screen.getByPlaceholderText('Type something...')
+    await user.type(input, 'sword')
+    await user.click(screen.getByText('Send'))
+
+    expect(screen.getByText('A fine sword. 8 gold.')).toBeInTheDocument()
+    expect(screen.getByText('Not enough gold!')).toBeInTheDocument()
+    expect(onItemChange).not.toHaveBeenCalled()
+  })
+
+  it('shows already owned message when player has the item', async () => {
+    const onItemChange = vi.fn()
+    const shopChar = {
+      ...character,
+      rules: [
+        {
+          keyword: 'sword',
+          priority: 5,
+          confirm: true,
+          gold: -8,
+          items_give: ['iron_sword'],
+          patterns: [
+            { decomposition: '.*sword(.*)', reassemblies: ['A fine sword. 8 gold.'] },
+          ],
+        },
+        ...character.rules,
+      ],
+    }
+    const user = userEvent.setup()
+    render(<Conversation character={shopChar} labels={{ ...labels, alreadyOwned: 'You already have that.' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} gold={20} inventory={['iron_sword']} />)
+
+    const input = screen.getByPlaceholderText('Type something...')
+    await user.type(input, 'sword')
+    await user.click(screen.getByText('Send'))
+
+    expect(screen.getByText('You already have that.')).toBeInTheDocument()
+    expect(screen.queryByText('A fine sword. 8 gold.')).not.toBeInTheDocument()
+    expect(onItemChange).not.toHaveBeenCalled()
   })
 
   it('calls onExit when a reaction button is clicked', async () => {

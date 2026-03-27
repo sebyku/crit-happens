@@ -1,4 +1,8 @@
 playAgain: Rejouer
-goBack: Retour
 chatPlaceholder: Écrivez quelque chose...
 send: Envoyer
+confirmPrompt: Accepter ?
+confirmYes: Oui
+confirmNo: Non
+notEnoughGold: "Vous n'avez pas assez d'or pour ça."
+alreadyOwned: "Vous avez déjà cet objet."

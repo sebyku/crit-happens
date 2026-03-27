@@ -55,6 +55,9 @@ export class Eliza {
           text: response,
           items_give: rule.items_give,
           items_take: rule.items_take,
+          gold: rule.gold,
+          hp: rule.hp,
+          confirm: rule.confirm,
         }
       }
     }

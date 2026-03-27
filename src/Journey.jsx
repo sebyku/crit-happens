@@ -13,13 +13,24 @@ function applyItemChanges(current, give = [], take = []) {
   return [...set]
 }
 
-function Journey({ language = 'us' }) {
+function applyStats(current, ...changes) {
+  let gold = current.gold
+  let hp = current.hp
+  for (const c of changes) {
+    if (!c) continue
+    if (c.gold) gold += c.gold
+    if (c.hp) hp += c.hp
+  }
+  return { gold: Math.max(0, gold), hp: Math.max(0, hp) }
+}
+
+function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
   const journey = useYaml(`data/journey.${language}.yaml`)
   const labels = useYaml(`data/messages.${language}.yaml`)
   const itemDefs = useItems(language)
   const [currentStepId, setCurrentStepId] = useState('1_start')
-  const [history, setHistory] = useState([])
   const [inventory, setInventory] = useState([])
+  const [stats, setStats] = useState({ gold: startGold, hp: startHp })
 
   const step = journey?.steps?.[currentStepId]
   const character = useCharacter(step?.character, language)
@@ -33,47 +44,44 @@ function Journey({ language = 'us' }) {
   const visibleReactions = (step.reactions || []).filter((r) => {
     if (r.requires && !inventory.includes(r.requires)) return false
     if (r.requires_not && inventory.includes(r.requires_not)) return false
+    if (r.min_gold != null && stats.gold < r.min_gold) return false
+    if (r.min_hp != null && stats.hp < r.min_hp) return false
     return true
   })
 
-  function handleChoice(goto, itemChanges = {}) {
+  function handleChoice(goto, changes = {}) {
     const targetStep = journey.steps[goto]
 
-    setHistory((prev) => [...prev, { stepId: currentStepId, inventory: [...inventory] }])
-
+    // Items
     let newInventory = applyItemChanges(
       inventory,
-      itemChanges.itemsGive,
-      itemChanges.itemsTake
+      changes.itemsGive,
+      changes.itemsTake
     )
     newInventory = applyItemChanges(
       newInventory,
       targetStep?.items_give,
       targetStep?.items_take
     )
-
     setInventory(newInventory)
-    setCurrentStepId(goto)
-  }
 
-  function handleBack() {
-    const snapshot = history[history.length - 1]
-    if (!snapshot) return
-    setCurrentStepId(snapshot.stepId)
-    setInventory(snapshot.inventory)
-    setHistory((prev) => prev.slice(0, -1))
+    // Stats
+    const newStats = applyStats(stats, changes, targetStep)
+    setStats(newStats)
+
+    setCurrentStepId(goto)
   }
 
   function handleRestart() {
     setCurrentStepId('1_start')
-    setHistory([])
     setInventory([])
+    setStats({ gold: startGold, hp: startHp })
   }
 
   return (
     <div className="journey">
       <h1>{journey.title}</h1>
-      <Inventory items={inventory} itemDefs={itemDefs} />
+      <Inventory items={inventory} itemDefs={itemDefs} gold={stats.gold} hp={stats.hp} />
 
       {isCharacterLoading ? (
         <div className="step">
@@ -87,9 +95,14 @@ function Journey({ language = 'us' }) {
             character={character}
             labels={labels}
             reactions={visibleReactions}
+            gold={stats.gold}
+            inventory={inventory}
             onExit={handleChoice}
             onItemChange={(changes) => setInventory((prev) =>
               applyItemChanges(prev, changes.itemsGive, changes.itemsTake)
+            )}
+            onStatsChange={(changes) => setStats((prev) =>
+              applyStats(prev, changes)
             )}
           />
         </div>
@@ -105,6 +118,8 @@ function Journey({ language = 'us' }) {
                 onClick={() => handleChoice(reaction.goto, {
                   itemsGive: reaction.items_give,
                   itemsTake: reaction.items_take,
+                  gold: reaction.gold,
+                  hp: reaction.hp,
                 })}
               >
                 {reaction.label}
@@ -118,11 +133,6 @@ function Journey({ language = 'us' }) {
             </button>
           )}
 
-          {history.length > 0 && !isEnding && (
-            <button className="back" onClick={handleBack}>
-              {labels.goBack}
-            </button>
-          )}
         </div>
       )}
     </div>

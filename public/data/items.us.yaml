@@ -3,3 +3,18 @@ items:
     name: Rusted Key
     description: An old key given to you by a mysterious stranger. It looks like it opens something ancient.
     icon: rusted_key.svg
+
+  iron_sword:
+    name: Iron Sword
+    description: A well-forged iron sword, sharp and balanced. Ready for battle.
+    icon: iron_sword.svg
+
+  wooden_shield:
+    name: Wooden Shield
+    description: A sturdy wooden shield reinforced with iron bands. Good for blocking blows.
+    icon: wooden_shield.svg
+
+  iron_helmet:
+    name: Iron Helmet
+    description: A simple but reliable iron helmet. Protects the head from most strikes.
+    icon: iron_helmet.svg

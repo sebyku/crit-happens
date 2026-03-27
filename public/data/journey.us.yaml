@@ -15,10 +15,9 @@ steps:
         goto: 19_village_exit
 
   17_armorer:
-    description: The armorer's shop is small but well-kept. Swords, shields and armor line the walls. The blacksmith eyes you gruffly.
+    description: The armorer's shop is small but well-kept. Swords, shields and helmets line the walls. The blacksmith greets you with a warm smile.
+    character: blacksmith
     reactions:
-      - label: Browse the weapons
-        goto: 17_armorer
       - label: Return to the square
         goto: 1_start
 
@@ -73,6 +72,8 @@ steps:
 
   6_tavern_rest:
     description: You enjoy a warm meal and a cold ale. Refreshed and ready, you feel the call of adventure pulling you back.
+    gold: -2
+    hp: 20
     reactions:
       - label: Return to the square
         goto: 1_start
@@ -98,6 +99,7 @@ steps:
 
   9_beast_fight:
     description: The creature lunges! After a fierce struggle, you manage to drive it off, but you are wounded. The passage behind it is now clear.
+    hp: -30
     reactions:
       - label: Press on despite your wounds
         goto: 12_secret_vault
@@ -111,6 +113,7 @@ steps:
         goto: 11_mimic_encounter
       - label: Grab the loose coins and leave
         goto: 13_ending_modest
+        gold: 15
 
   11_mimic_encounter:
     description: The chest springs open, revealing rows of teeth! It's a mimic! It snaps at you, but you dodge just in time.

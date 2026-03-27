@@ -20,12 +20,6 @@ describe('Journey', () => {
     expect(screen.getByText('Leave the village')).toBeInTheDocument()
   })
 
-  it('does not show a back button on the first step', async () => {
-    render(<Journey />)
-    await screen.findByText('Crit Happens')
-    expect(screen.queryByText('Go back')).not.toBeInTheDocument()
-  })
-
   it('navigates to the village exit', async () => {
     const user = userEvent.setup()
     render(<Journey />)
@@ -35,26 +29,6 @@ describe('Journey', () => {
     expect(await screen.findByText(/dark entrance of a dungeon/)).toBeInTheDocument()
     expect(screen.getByText('Enter the dungeon')).toBeInTheDocument()
     expect(screen.getByText('Go back to the village')).toBeInTheDocument()
-  })
-
-  it('shows a back button after navigating', async () => {
-    const user = userEvent.setup()
-    render(<Journey />)
-
-    await user.click(await screen.findByText('Leave the village'))
-
-    expect(await screen.findByText('Go back')).toBeInTheDocument()
-  })
-
-  it('goes back to the previous step', async () => {
-    const user = userEvent.setup()
-    render(<Journey />)
-
-    await user.click(await screen.findByText('Leave the village'))
-    await user.click(await screen.findByText('Go back'))
-
-    expect(await screen.findByText(/square of a small village/)).toBeInTheDocument()
-    expect(screen.queryByText('Go back')).not.toBeInTheDocument()
   })
 
   it('navigates through multiple steps to the tavern', async () => {
@@ -79,7 +53,6 @@ describe('Journey', () => {
 
     expect(await screen.findByText(/pockets full of gold/)).toBeInTheDocument()
     expect(screen.getByText('Play again')).toBeInTheDocument()
-    expect(screen.queryByText('Go back')).not.toBeInTheDocument()
   })
 
   it('restarts the game from an ending', async () => {
@@ -93,23 +66,6 @@ describe('Journey', () => {
     await user.click(await screen.findByText('Play again'))
 
     expect(await screen.findByText(/square of a small village/)).toBeInTheDocument()
-    expect(screen.queryByText('Go back')).not.toBeInTheDocument()
-  })
-
-  it('back button preserves full history', async () => {
-    const user = userEvent.setup()
-    render(<Journey />)
-
-    await user.click(await screen.findByText('Leave the village'))
-    await user.click(await screen.findByText('Enter the dungeon'))
-    await user.click(await screen.findByText('Follow the growl'))
-    expect(await screen.findByText(/wolf-like creature/)).toBeInTheDocument()
-
-    await user.click(screen.getByText('Go back'))
-    expect(await screen.findByText(/corridor stretches ahead/)).toBeInTheDocument()
-
-    await user.click(screen.getByText('Go back'))
-    expect(await screen.findByText(/dark entrance of a dungeon/)).toBeInTheDocument()
   })
 
   it('renders in French when language is fr', async () => {
@@ -124,8 +80,6 @@ describe('Journey', () => {
     render(<Journey language="fr" />)
 
     await user.click(await screen.findByText('Sortir du village'))
-    expect(await screen.findByText('Retour')).toBeInTheDocument()
-
     await user.click(await screen.findByText('Entrer dans le donjon'))
     await user.click(await screen.findByText(/Suivre l'éclat/))
     await user.click(await screen.findByText('Ramasser les pièces et partir'))
