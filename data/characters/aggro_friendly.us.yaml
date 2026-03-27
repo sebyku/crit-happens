@@ -1,0 +1,25 @@
+rules:
+  - keyword: "help"
+    priority: 4
+    patterns:
+      - decomposition: ".*help(.*)"
+        reassemblies:
+          - "Of course, I'm happy to help."
+          - "I'll do what I can for you."
+
+  - keyword: "thank"
+    priority: 4
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "You're most welcome, friend."
+          - "Think nothing of it."
+          - "Glad I could be of help."
+
+  - keyword: "please"
+    priority: 2
+    patterns:
+      - decomposition: ".*please(.*)"
+        reassemblies:
+          - "No need for pleasantries, but I appreciate the manners."
+          - "Of course. What do you need?"

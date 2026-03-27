@@ -1,0 +1,100 @@
+greetings:
+  - "Bienvenue dans ma forge ! Vous cherchez quelque chose de solide ?"
+  - "Ah, un client ! Regardez autour de vous — j'ai le meilleur acier du village."
+
+rules:
+  - keyword: "epee"
+    priority: 5
+    confirm: true
+    gold: -8
+    items_give:
+      - iron_sword
+    patterns:
+      - decomposition: ".*epee(.*)"
+        reassemblies:
+          - "Une belle épée en fer, tranchante et équilibrée. 8 pièces d'or. Elle est à vous !"
+          - "Cette lame a servi bien des aventuriers. 8 pièces d'or et elle est à vous."
+
+  - keyword: "bouclier"
+    priority: 5
+    confirm: true
+    gold: -6
+    items_give:
+      - wooden_shield
+    patterns:
+      - decomposition: ".*bouclier(.*)"
+        reassemblies:
+          - "Un solide bouclier en bois, renforcé de bandes de fer. 6 pièces d'or. Tenez !"
+          - "Ce bouclier peut encaisser des coups. 6 pièces d'or et il est à vous."
+
+  - keyword: "casque"
+    priority: 5
+    confirm: true
+    gold: -5
+    items_give:
+      - iron_helmet
+    patterns:
+      - decomposition: ".*casque(.*)"
+        reassemblies:
+          - "Un casque en fer, solide et fiable. 5 pièces d'or. Protégez cette tête !"
+          - "Rien d'extraordinaire, mais ça vous gardera en vie. 5 pièces d'or."
+
+  - keyword: "armure"
+    priority: 4
+    patterns:
+      - decomposition: ".*armure(.*)"
+        reassemblies:
+          - "J'ai des boucliers et des casques pour la protection. Qu'est-ce qui vous intéresse ?"
+          - "Pour une armure complète, il faudrait une plus grande forge. Mais j'ai des casques et des boucliers !"
+
+  - keyword: "arme"
+    priority: 4
+    patterns:
+      - decomposition: ".*arme(.*)"
+        reassemblies:
+          - "J'ai des épées — les meilleures de la région. Vous en voulez une ?"
+          - "Une bonne arme vaut son pesant d'or. Demandez-moi pour les épées."
+
+  - keyword: "prix"
+    priority: 4
+    patterns:
+      - decomposition: ".*prix(.*)"
+        reassemblies:
+          - "Les épées à 8 pièces d'or, les boucliers à 6, et les casques à 5. Des prix honnêtes !"
+          - "Je ne marchande pas, mais mes prix sont justes. Épées 8, boucliers 6, casques 5."
+
+  - keyword: "donjon"
+    priority: 3
+    patterns:
+      - decomposition: ".*donjon(.*)"
+        reassemblies:
+          - "Vous allez au donjon ? Prenez au moins une bonne épée et un bouclier."
+          - "Beaucoup y sont allés sans préparation. Ne faites pas la même erreur — équipez-vous d'abord."
+
+  - keyword: "qui etes"
+    priority: 5
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Je suis le forgeron du village. Je forge l'acier depuis mon enfance."
+          - "Mon nom importe peu. Ce qui compte, c'est la qualité de mon travail."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Je vends des épées, des boucliers et des casques. Que désirez-vous ?"
+          - "Une épée ? Un bouclier ? Un casque ? Dites le mot."
+          - "Tout ici est forgé à la main. Demandez pour les épées, boucliers ou casques."
+          - "Le donjon n'est pas un endroit pour les désarmés. Puis-je vous proposer quelque chose ?"
+
+exits:
+  - keyword: "au revoir"
+    goto: 1_start
+  - keyword: "adieu"
+    goto: 1_start
+  - keyword: "partir"
+    goto: 1_start
+  - keyword: "merci"
+    goto: 1_start

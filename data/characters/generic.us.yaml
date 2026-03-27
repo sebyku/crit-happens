@@ -1,0 +1,51 @@
+rules:
+  - keyword: "hello"
+    priority: 3
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Hello there, adventurer."
+          - "Greetings. What brings you here?"
+
+  - keyword: "hi"
+    priority: 3
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Hello. What can I do for you?"
+          - "Hi there."
+
+  - keyword: "sorry"
+    priority: 1
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "No need to apologize."
+          - "There's nothing to be sorry about."
+
+  - keyword: "yes"
+    priority: 1
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "I see."
+          - "Go on."
+          - "You seem certain."
+
+  - keyword: "no"
+    priority: 1
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Why not?"
+          - "Are you sure?"
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Interesting... tell me more."
+          - "I see. Go on."
+          - "Hmm, what else is on your mind?"
+          - "Can you elaborate on that?"

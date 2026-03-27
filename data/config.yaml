@@ -1,0 +1,7 @@
+# Language setting: auto | fr | us
+# auto: detect from browser language
+language: auto
+
+# Starting stats
+startGold: 10
+startHp: 100

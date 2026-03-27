@@ -1,0 +1,20 @@
+items:
+  rusted_key:
+    name: Clé rouillée
+    description: Une vieille clé donnée par un mystérieux étranger. On dirait qu'elle ouvre quelque chose d'ancien.
+    icon: rusted_key.svg
+
+  iron_sword:
+    name: Épée en fer
+    description: Une épée en fer bien forgée, tranchante et équilibrée. Prête pour le combat.
+    icon: iron_sword.svg
+
+  wooden_shield:
+    name: Bouclier en bois
+    description: Un solide bouclier en bois renforcé de bandes de fer. Idéal pour parer les coups.
+    icon: wooden_shield.svg
+
+  iron_helmet:
+    name: Casque en fer
+    description: Un casque en fer simple mais fiable. Protège la tête de la plupart des coups.
+    icon: iron_helmet.svg

@@ -1,0 +1,100 @@
+greetings:
+  - "Welcome to my forge! Looking for something sturdy?"
+  - "Ah, a customer! Have a look around — I've got the finest steel in the village."
+
+rules:
+  - keyword: "sword"
+    priority: 5
+    confirm: true
+    gold: -8
+    items_give:
+      - iron_sword
+    patterns:
+      - decomposition: ".*sword(.*)"
+        reassemblies:
+          - "A fine iron sword, sharp and balanced. That'll be 8 gold. It's yours!"
+          - "This blade has served many adventurers well. 8 gold and it's yours."
+
+  - keyword: "shield"
+    priority: 5
+    confirm: true
+    gold: -6
+    items_give:
+      - wooden_shield
+    patterns:
+      - decomposition: ".*shield(.*)"
+        reassemblies:
+          - "A solid wooden shield, reinforced with iron bands. 6 gold. Here you go!"
+          - "This shield can take a beating. 6 gold and it's yours."
+
+  - keyword: "helmet"
+    priority: 5
+    confirm: true
+    gold: -5
+    items_give:
+      - iron_helmet
+    patterns:
+      - decomposition: ".*helmet(.*)"
+        reassemblies:
+          - "An iron helmet, sturdy and reliable. 5 gold. Protect that head of yours!"
+          - "Nothing fancy, but it'll keep you alive. 5 gold."
+
+  - keyword: "armor"
+    priority: 4
+    patterns:
+      - decomposition: ".*armor(.*)"
+        reassemblies:
+          - "I've got shields and helmets for protection. What catches your eye?"
+          - "For full armor, you'd need a bigger forge. But I've got helmets and shields!"
+
+  - keyword: "weapon"
+    priority: 4
+    patterns:
+      - decomposition: ".*weapon(.*)"
+        reassemblies:
+          - "I've got swords — the finest in the region. Want one?"
+          - "A good weapon is worth its weight in gold. Ask me about swords."
+
+  - keyword: "price"
+    priority: 4
+    patterns:
+      - decomposition: ".*price(.*)"
+        reassemblies:
+          - "Swords go for 8 gold, shields for 6, and helmets for 5. Fair prices!"
+          - "I don't haggle, but my prices are honest. Swords 8, shields 6, helmets 5."
+
+  - keyword: "dungeon"
+    priority: 3
+    patterns:
+      - decomposition: ".*dungeon(.*)"
+        reassemblies:
+          - "Heading to the dungeon? You'll want a good sword and a shield at least."
+          - "Many have gone in unprepared. Don't be one of them — buy some gear first."
+
+  - keyword: "who are you"
+    priority: 5
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "I'm the village blacksmith. Been forging steel since I was a boy."
+          - "Name's not important. What matters is the quality of my work."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "I sell swords, shields, and helmets. What would you like?"
+          - "Need a sword? A shield? A helmet? Just say the word."
+          - "Everything here is hand-forged. Ask about my swords, shields, or helmets."
+          - "The dungeon is no place for the unarmed. Can I interest you in something?"
+
+exits:
+  - keyword: "bye"
+    goto: 1_start
+  - keyword: "goodbye"
+    goto: 1_start
+  - keyword: "leave"
+    goto: 1_start
+  - keyword: "thanks"
+    goto: 1_start

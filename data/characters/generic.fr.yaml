@@ -1,0 +1,51 @@
+rules:
+  - keyword: "bonjour"
+    priority: 3
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Bonjour, aventurier."
+          - "Salutations. Qu'est-ce qui vous amène ?"
+
+  - keyword: "salut"
+    priority: 3
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Salut. Que puis-je faire pour vous ?"
+          - "Salut."
+
+  - keyword: "desole"
+    priority: 1
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Pas besoin de vous excuser."
+          - "Il n'y a pas de quoi être désolé."
+
+  - keyword: "oui"
+    priority: 1
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Je vois."
+          - "Continuez."
+          - "Vous semblez certain."
+
+  - keyword: "non"
+    priority: 1
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Pourquoi pas ?"
+          - "Vous êtes sûr ?"
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Intéressant... dites-m'en plus."
+          - "Je vois. Continuez."
+          - "Hmm, quoi d'autre ?"
+          - "Pouvez-vous développer ?"

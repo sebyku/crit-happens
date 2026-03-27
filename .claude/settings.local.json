@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(find /c/workspace/eliza/src -type f -name *.ts -o -name *.tsx -o -name *.js)",
+      "Bash(ls:*)"
+    ]
+  }
+}

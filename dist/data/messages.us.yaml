@@ -1,0 +1,8 @@
+playAgain: Play again
+chatPlaceholder: Type something...
+send: Send
+confirmPrompt: Accept?
+confirmYes: Yes
+confirmNo: No
+notEnoughGold: "You don't have enough gold for that."
+alreadyOwned: "You already have that."
