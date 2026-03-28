@@ -14,7 +14,8 @@
   padding: 6px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  background: var(--code-bg);
+  background: color-mix(in srgb, var(--code-bg) 90%, transparent);
+  backdrop-filter: blur(8px);
   width: 100%;
   box-sizing: border-box;
 }

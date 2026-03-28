@@ -18,7 +18,8 @@
   padding: 16px;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: var(--code-bg);
+  background: color-mix(in srgb, var(--code-bg) 90%, transparent);
+  backdrop-filter: blur(8px);
 }
 
 .chat-bubble {
