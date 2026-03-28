@@ -69,7 +69,7 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  background: color-mix(in srgb, var(--bg) 60%, transparent);
 }
 
 h1,
