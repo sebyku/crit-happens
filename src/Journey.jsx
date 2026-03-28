@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useYaml } from './useYaml.js'
 import { useCharacter } from './useCharacter.js'
 import { useItems } from './useItems.js'
@@ -34,6 +34,24 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
 
   const step = journey?.steps?.[currentStepId]
   const character = useCharacter(step?.character, language)
+  const [bgImage, setBgImage] = useState(null)
+
+  // Track background image — keep last one if step has no image
+  const stepImage = step?.image
+    ? `${import.meta.env.BASE_URL}images/${step.image}`
+    : null
+  if (stepImage && stepImage !== bgImage) {
+    setBgImage(stepImage)
+  }
+
+  useEffect(() => {
+    if (bgImage) {
+      document.body.style.backgroundImage = `url(${bgImage})`
+    }
+    return () => {
+      document.body.style.backgroundImage = ''
+    }
+  }, [bgImage])
 
   if (!journey || !labels || !step) return null
 

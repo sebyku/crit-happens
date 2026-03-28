@@ -158,8 +158,8 @@ function Conversation({ character, labels, reactions, onExit, onItemChange, onSt
             onChange={(e) => setInput(e.target.value)}
             placeholder={labels.chatPlaceholder || '...'}
           />
-          <button type="submit" className="chat-send">
-            {labels.send || '>'}
+          <button type="submit" className="chat-send" aria-label="Send">
+            ➤
           </button>
         </form>
       )}

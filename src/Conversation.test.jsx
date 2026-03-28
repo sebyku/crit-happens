@@ -30,7 +30,6 @@ const character = {
 
 const labels = {
   chatPlaceholder: 'Type something...',
-  send: 'Send',
 }
 
 describe('Conversation', () => {
@@ -44,7 +43,7 @@ describe('Conversation', () => {
   it('shows the chat input', () => {
     render(<Conversation character={character} labels={labels} reactions={[]} onExit={() => {}} />)
     expect(screen.getByPlaceholderText('Type something...')).toBeInTheDocument()
-    expect(screen.getByText('Send')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Send' })).toBeInTheDocument() // aria-label
   })
 
   it('sends a message and gets a response', async () => {
@@ -53,7 +52,7 @@ describe('Conversation', () => {
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'tell me about the vault')
-    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByRole('button', { name: 'Send' }))
 
     expect(screen.getByText('tell me about the vault')).toBeInTheDocument()
     expect(screen.getByText('The vault is hidden.')).toBeInTheDocument()
@@ -65,7 +64,7 @@ describe('Conversation', () => {
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'random stuff')
-    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByRole('button', { name: 'Send' }))
 
     expect(screen.getByText('Interesting...')).toBeInTheDocument()
   })
@@ -77,7 +76,7 @@ describe('Conversation', () => {
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'bye')
-    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByRole('button', { name: 'Send' }))
 
     expect(onExit).toHaveBeenCalledWith('2_dark_corridor', {
       itemsGive: undefined,
@@ -114,7 +113,7 @@ describe('Conversation', () => {
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'tell me about the key')
-    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByRole('button', { name: 'Send' }))
 
     expect(screen.getByText('Here, take this key.')).toBeInTheDocument()
     expect(onItemChange).toHaveBeenCalledWith({
@@ -147,7 +146,7 @@ describe('Conversation', () => {
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'show me a sword')
-    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByRole('button', { name: 'Send' }))
 
     expect(screen.getByText('A fine sword. 8 gold.')).toBeInTheDocument()
     expect(screen.getByText('Accept?')).toBeInTheDocument()
@@ -182,7 +181,7 @@ describe('Conversation', () => {
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'sword')
-    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByRole('button', { name: 'Send' }))
     await user.click(screen.getByText('Yes'))
 
     expect(onItemChange).toHaveBeenCalledWith({
@@ -216,7 +215,7 @@ describe('Conversation', () => {
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'sword')
-    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByRole('button', { name: 'Send' }))
     await user.click(screen.getByText('No'))
 
     expect(onItemChange).not.toHaveBeenCalled()
@@ -248,7 +247,7 @@ describe('Conversation', () => {
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'sword')
-    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByRole('button', { name: 'Send' }))
 
     expect(screen.getByText('A fine sword. 8 gold.')).toBeInTheDocument()
     expect(screen.getByText('Not enough gold!')).toBeInTheDocument()
@@ -278,7 +277,7 @@ describe('Conversation', () => {
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'sword')
-    await user.click(screen.getByText('Send'))
+    await user.click(screen.getByRole('button', { name: 'Send' }))
 
     expect(screen.getByText('You already have that.')).toBeInTheDocument()
     expect(screen.queryByText('A fine sword. 8 gold.')).not.toBeInTheDocument()

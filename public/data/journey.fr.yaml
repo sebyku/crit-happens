@@ -4,6 +4,7 @@ description: Un voyage où chaque choix compte
 steps:
   1_start:
     description: Vous êtes sur la place d'un petit village. Une fontaine coule doucement au centre. Autour de vous, quelques bâtiments attirent votre attention.
+    image: village_square.jpg
     reactions:
       - label: Aller à la taverne
         goto: 3_tavern
@@ -16,6 +17,7 @@ steps:
 
   17_armorer:
     description: L'échoppe de l'armurier est petite mais bien rangée. Des épées, boucliers et casques s'alignent sur les murs. Le forgeron vous accueille avec un sourire chaleureux.
+    image: armorer.jpg
     character: blacksmith
     reactions:
       - label: Retourner sur la place
@@ -23,6 +25,7 @@ steps:
 
   18_church:
     description: L'église est calme et fraîche. La lumière filtre à travers les vitraux, projetant des couleurs sur les bancs de bois. Un prêtre prie en silence près de l'autel.
+    image: church.jpg
     reactions:
       - label: Prier un moment
         goto: 18_church
@@ -31,6 +34,7 @@ steps:
 
   19_village_exit:
     description: Vous quittez le village par un chemin de terre. Au loin, à travers les arbres, vous apercevez l'entrée sombre d'un donjon. Le chemin y mène directement.
+    image: way_to_dungeon.jpg
     reactions:
       - label: Entrer dans le donjon
         goto: 2_dark_corridor
@@ -39,6 +43,7 @@ steps:
 
   2_dark_corridor:
     description: Le couloir s'étend devant vous, se divisant en deux chemins. À gauche, vous entendez un grognement sourd. À droite, l'éclat de quelque chose de brillant attire votre regard.
+    image: dark_corridor.jpg
     reactions:
       - label: Suivre le grognement
         goto: 7_beast_lair
@@ -49,6 +54,7 @@ steps:
 
   3_tavern:
     description: La taverne est chaleureuse et bruyante. Un étranger encapuchonné vous fait signe depuis une table dans un coin, glissant une carte usée sur le bois.
+    image: tavern.jpg
     reactions:
       - label: S'asseoir avec l'étranger
         goto: 4_stranger_quest
@@ -59,6 +65,7 @@ steps:
 
   4_stranger_quest:
     description: Un étranger encapuchonné se penche vers vous et commence à murmurer. Il semble connaître des choses sur le donjon.
+    image: tavern_stranger.jpg
     character: stranger
     reactions:
       - label: Quitter la taverne
@@ -80,6 +87,7 @@ steps:
 
   7_beast_lair:
     description: Une créature massive semblable à un loup bloque le passage. Ses yeux luisent d'un bleu pâle — elle semble plus curieuse qu'agressive.
+    image: beast_lair.jpg
     reactions:
       - label: Essayer de calmer la bête
         goto: 8_beast_ally
@@ -90,6 +98,7 @@ steps:
 
   8_beast_ally:
     description: Vous tendez la main. La bête renifle prudemment, puis se blottit contre elle. Elle s'écarte, révélant un passage caché derrière elle.
+    image: beast_ally.jpg
     reactions:
       - label: Entrer dans le passage caché
         goto: 12_secret_vault
@@ -108,6 +117,7 @@ steps:
 
   10_treasure_room:
     description: Une petite salle scintille de pièces d'or éparpillées sur le sol. Au centre trône un coffre en bois — et il... fredonne ?
+    image: treasure_room.jpg
     reactions:
       - label: Ouvrir le coffre
         goto: 11_mimic_encounter
@@ -117,6 +127,7 @@ steps:
 
   11_mimic_encounter:
     description: Le coffre s'ouvre brusquement, révélant des rangées de dents ! C'est un mimic ! Il vous mord, mais vous esquivez juste à temps.
+    image: mimic.jpg
     reactions:
       - label: Combattre le mimic
         goto: 14_ending_hero

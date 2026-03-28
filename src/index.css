@@ -52,6 +52,11 @@
 
 body {
   margin: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  transition: background-image 0.5s ease-in-out;
 }
 
 #root {
@@ -64,6 +69,7 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
 }
 
 h1,

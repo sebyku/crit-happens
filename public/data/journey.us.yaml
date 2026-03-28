@@ -4,6 +4,7 @@ description: A journey where every choice matters
 steps:
   1_start:
     description: You stand in the square of a small village. A fountain trickles softly at the center. Around you, a few buildings catch your eye.
+    image: village_square.jpg
     reactions:
       - label: Go to the tavern
         goto: 3_tavern
@@ -16,6 +17,7 @@ steps:
 
   17_armorer:
     description: The armorer's shop is small but well-kept. Swords, shields and helmets line the walls. The blacksmith greets you with a warm smile.
+    image: armorer.jpg
     character: blacksmith
     reactions:
       - label: Return to the square
@@ -23,6 +25,7 @@ steps:
 
   18_church:
     description: The church is quiet and cool. Light filters through stained glass, casting colors across the wooden pews. A priest prays silently near the altar.
+    image: church.jpg
     reactions:
       - label: Pray for a moment
         goto: 18_church
@@ -31,6 +34,7 @@ steps:
 
   19_village_exit:
     description: You leave the village along a dirt path. In the distance, through the trees, you spot the dark entrance of a dungeon. The path leads straight to it.
+    image: way_to_dungeon.jpg
     reactions:
       - label: Enter the dungeon
         goto: 2_dark_corridor
@@ -39,6 +43,7 @@ steps:
 
   2_dark_corridor:
     description: The corridor stretches ahead, splitting into two paths. From the left, you hear a faint growl. From the right, the glimmer of something shiny catches your eye.
+    image: dark_corridor.jpg
     reactions:
       - label: Follow the growl
         goto: 7_beast_lair
@@ -49,6 +54,7 @@ steps:
 
   3_tavern:
     description: The tavern is warm and loud. A hooded stranger beckons you from a corner table, sliding a weathered map across the wood.
+    image: tavern.jpg
     reactions:
       - label: Sit with the stranger
         goto: 4_stranger_quest
@@ -59,6 +65,7 @@ steps:
 
   4_stranger_quest:
     description: A hooded stranger leans in and starts whispering to you. They seem to know things about the dungeon.
+    image: tavern_stranger.jpg
     character: stranger
     reactions:
       - label: Leave the tavern
@@ -80,6 +87,7 @@ steps:
 
   7_beast_lair:
     description: A massive wolf-like creature blocks the passage. Its eyes glow a faint blue — it seems more curious than aggressive.
+    image: beast_lair.jpg
     reactions:
       - label: Try to calm the beast
         goto: 8_beast_ally
@@ -90,6 +98,7 @@ steps:
 
   8_beast_ally:
     description: You extend your hand. The beast sniffs cautiously, then nuzzles against it. It steps aside, revealing a hidden passage behind it.
+    image: beast_ally.jpg
     reactions:
       - label: Enter the hidden passage
         goto: 12_secret_vault
@@ -108,6 +117,7 @@ steps:
 
   10_treasure_room:
     description: A small chamber glitters with gold coins scattered across the floor. In the center sits a wooden chest — and it's... humming?
+    image: treasure_room.jpg
     reactions:
       - label: Open the chest
         goto: 11_mimic_encounter
@@ -117,6 +127,7 @@ steps:
 
   11_mimic_encounter:
     description: The chest springs open, revealing rows of teeth! It's a mimic! It snaps at you, but you dodge just in time.
+    image: mimic.jpg
     reactions:
       - label: Fight the mimic
         goto: 14_ending_hero
