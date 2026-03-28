@@ -1,0 +1,166 @@
+.combat {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: 100%;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+.combat-monster {
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--code-bg) 90%, transparent);
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+
+.combat-monster-name {
+  font-family: var(--heading);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-h);
+  margin-bottom: 8px;
+}
+
+.combat-hp-bar {
+  height: 12px;
+  background: var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.combat-hp-fill {
+  height: 100%;
+  background: #e53e3e;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.combat-hp-text {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+}
+
+.combat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 80px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--code-bg) 90%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.combat-log-entry {
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--text);
+}
+
+.combat-log-entry.hit,
+.combat-log-entry.crit {
+  color: #38a169;
+}
+
+.combat-log-entry.crit {
+  font-weight: 600;
+}
+
+.combat-log-entry.miss {
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.combat-log-entry.fumble,
+.combat-log-entry.stumble {
+  color: #e53e3e;
+}
+
+.combat-log-entry.enemy-hit,
+.combat-log-entry.enemy-crit {
+  color: #e53e3e;
+}
+
+.combat-log-entry.enemy-miss,
+.combat-log-entry.enemy-fumble,
+.combat-log-entry.enemy-stumble {
+  color: #38a169;
+  opacity: 0.8;
+}
+
+.combat-log-entry.victory {
+  font-weight: 600;
+  color: #d69e2e;
+  font-size: 16px;
+  text-align: center;
+  padding: 8px;
+}
+
+.combat-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.combat-btn {
+  flex: 1;
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  backdrop-filter: blur(8px);
+}
+
+.combat-btn.attack {
+  background: color-mix(in srgb, var(--accent-bg) 80%, transparent);
+  color: var(--accent);
+  border-color: var(--accent);
+
+  &:hover {
+    background: var(--accent-border);
+  }
+}
+
+.combat-btn.flee {
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  color: var(--text);
+
+  &:hover {
+    border-color: var(--text);
+  }
+}
+
+.combat-btn.victory {
+  background: color-mix(in srgb, #d69e2e 15%, transparent);
+  color: #d69e2e;
+  border-color: #d69e2e;
+  font-size: 20px;
+
+  &:hover {
+    background: color-mix(in srgb, #d69e2e 25%, transparent);
+  }
+}
+
+.combat-btn.defeat {
+  background: color-mix(in srgb, #e53e3e 15%, transparent);
+  color: #e53e3e;
+  border-color: #e53e3e;
+
+  &:hover {
+    background: color-mix(in srgb, #e53e3e 25%, transparent);
+  }
+}

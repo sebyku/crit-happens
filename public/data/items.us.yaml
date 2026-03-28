@@ -6,15 +6,24 @@ items:
 
   iron_sword:
     name: Iron Sword
-    description: A well-forged iron sword, sharp and balanced. Ready for battle.
+    description: A well-forged iron sword, sharp and balanced. +6 Attack.
     icon: iron_sword.svg
+    attack: 6
+    slots:
+      - right_hand
 
   wooden_shield:
     name: Wooden Shield
-    description: A sturdy wooden shield reinforced with iron bands. Good for blocking blows.
+    description: A sturdy wooden shield reinforced with iron bands. +2 AC.
     icon: wooden_shield.svg
+    ac: 2
+    slots:
+      - left_hand
 
   iron_helmet:
     name: Iron Helmet
-    description: A simple but reliable iron helmet. Protects the head from most strikes.
+    description: A simple but reliable iron helmet. +1 AC.
     icon: iron_helmet.svg
+    ac: 1
+    slots:
+      - head

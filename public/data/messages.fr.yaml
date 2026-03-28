@@ -5,3 +5,9 @@ confirmYes: Oui
 confirmNo: Non
 notEnoughGold: "Vous n'avez pas assez d'or pour ça."
 alreadyOwned: "Vous avez déjà cet objet."
+combatAttack: Attaquer
+combatFlee: Fuir
+combatVictory: "Vous avez vaincu {name} !"
+combatDefeat: "Vous avez été vaincu..."
+equipButton: Équiper
+unequipButton: Retirer

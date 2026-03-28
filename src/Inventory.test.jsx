@@ -16,24 +16,40 @@ const itemDefs = {
   },
 }
 
+const emptyEquipment = {
+  head: null, torso: null, legs: null,
+  feet: null, right_hand: null, left_hand: null,
+}
+
+const defaultProps = {
+  itemDefs,
+  gold: 10,
+  hp: 100,
+  playerAc: 10,
+  playerAttack: 1,
+  equipment: emptyEquipment,
+  onEquip: () => {},
+  labels: {},
+}
+
 describe('Inventory', () => {
   afterEach(cleanup)
 
   it('renders an empty bar when no items', () => {
-    const { container } = render(<Inventory items={[]} itemDefs={itemDefs} />)
+    const { container } = render(<Inventory items={[]} {...defaultProps} />)
     expect(container.querySelector('.inventory-bar')).toBeInTheDocument()
     expect(container.querySelectorAll('.inventory-slot')).toHaveLength(0)
   })
 
   it('renders item slots for each item in inventory', () => {
     const { container } = render(
-      <Inventory items={['rusted_key', 'crystal_shard']} itemDefs={itemDefs} />
+      <Inventory items={['rusted_key', 'crystal_shard']} {...defaultProps} />
     )
     expect(container.querySelectorAll('.inventory-slot')).toHaveLength(2)
   })
 
   it('shows item icon with alt text', () => {
-    render(<Inventory items={['rusted_key']} itemDefs={itemDefs} />)
+    render(<Inventory items={['rusted_key']} {...defaultProps} />)
     const img = screen.getByAltText('Rusted Key')
     expect(img).toBeInTheDocument()
     expect(img).toHaveAttribute('src', '/items/rusted_key.svg')
@@ -41,7 +57,7 @@ describe('Inventory', () => {
 
   it('shows item description popover on click', async () => {
     const user = userEvent.setup()
-    render(<Inventory items={['rusted_key']} itemDefs={itemDefs} />)
+    render(<Inventory items={['rusted_key']} {...defaultProps} />)
 
     await user.click(screen.getByTitle('Rusted Key'))
 
@@ -51,7 +67,7 @@ describe('Inventory', () => {
 
   it('hides popover on second click', async () => {
     const user = userEvent.setup()
-    render(<Inventory items={['rusted_key']} itemDefs={itemDefs} />)
+    render(<Inventory items={['rusted_key']} {...defaultProps} />)
 
     await user.click(screen.getByTitle('Rusted Key'))
     expect(screen.getByText('An old key given by a mysterious stranger.')).toBeInTheDocument()
@@ -63,7 +79,7 @@ describe('Inventory', () => {
   it('switches popover when clicking a different item', async () => {
     const user = userEvent.setup()
     render(
-      <Inventory items={['rusted_key', 'crystal_shard']} itemDefs={itemDefs} />
+      <Inventory items={['rusted_key', 'crystal_shard']} {...defaultProps} />
     )
 
     await user.click(screen.getByTitle('Rusted Key'))

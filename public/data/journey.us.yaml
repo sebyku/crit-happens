@@ -107,13 +107,21 @@ steps:
         goto: 10_treasure_room
 
   9_beast_fight:
-    description: The creature lunges! After a fierce struggle, you manage to drive it off, but you are wounded. The passage behind it is now clear.
-    hp: -30
+    description: The creature lunges at you! Prepare for battle!
+    monster: shadow_wolf
+    victory_goto: 20_beast_defeated
+    flee_goto: 2_dark_corridor
+    reactions: []
+
+  20_beast_defeated:
+    description: The beast collapses. Its blue eyes dim as it lets out a final whimper. Behind its body, you notice a hidden passage carved into the stone wall.
+    image: beast_dead.jpg
     reactions:
-      - label: Press on despite your wounds
+      - label: Enter the hidden passage
         goto: 12_secret_vault
-      - label: Retreat and recover
-        goto: 6_tavern_rest
+        requires: rusted_key
+      - label: Continue down the corridor
+        goto: 10_treasure_room
 
   10_treasure_room:
     description: A small chamber glitters with gold coins scattered across the floor. In the center sits a wooden chest — and it's... humming?
@@ -126,13 +134,12 @@ steps:
         gold: 15
 
   11_mimic_encounter:
-    description: The chest springs open, revealing rows of teeth! It's a mimic! It snaps at you, but you dodge just in time.
+    description: The chest springs open, revealing rows of teeth! It's a mimic! Prepare for battle!
     image: mimic.jpg
-    reactions:
-      - label: Fight the mimic
-        goto: 14_ending_hero
-      - label: Run!
-        goto: 2_dark_corridor
+    monster: mimic
+    victory_goto: 14_ending_hero
+    flee_goto: 2_dark_corridor
+    reactions: []
 
   12_secret_vault:
     description: You descend into a vast underground vault. Ancient treasures line the walls — relics of a forgotten civilization. At the far end, a glowing crystal pulses with energy.
@@ -158,4 +165,9 @@ steps:
 
   16_ending_wise:
     description: You leave the vault as you found it. Some treasures are not meant to be taken. The dungeon remembers your respect, and the path out is strangely easy.
+    reactions: []
+
+  game_over:
+    description: Your vision fades to black. The dungeon claims another soul...
+    image: game_over.jpg
     reactions: []

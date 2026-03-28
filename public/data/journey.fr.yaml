@@ -107,13 +107,21 @@ steps:
         goto: 10_treasure_room
 
   9_beast_fight:
-    description: La créature bondit ! Après un combat féroce, vous parvenez à la repousser, mais vous êtes blessé. Le passage derrière elle est maintenant dégagé.
-    hp: -30
+    description: La créature bondit sur vous ! Préparez-vous au combat !
+    monster: shadow_wolf
+    victory_goto: 20_beast_defeated
+    flee_goto: 2_dark_corridor
+    reactions: []
+
+  20_beast_defeated:
+    description: La bête s'effondre. Ses yeux bleus s'éteignent alors qu'elle pousse un dernier gémissement. Derrière son corps, vous remarquez un passage caché creusé dans la paroi de pierre.
+    image: beast_dead.jpg
     reactions:
-      - label: Continuer malgré vos blessures
+      - label: Entrer dans le passage caché
         goto: 12_secret_vault
-      - label: Battre en retraite et récupérer
-        goto: 6_tavern_rest
+        requires: rusted_key
+      - label: Continuer dans le couloir
+        goto: 10_treasure_room
 
   10_treasure_room:
     description: Une petite salle scintille de pièces d'or éparpillées sur le sol. Au centre trône un coffre en bois — et il... fredonne ?
@@ -126,13 +134,12 @@ steps:
         gold: 15
 
   11_mimic_encounter:
-    description: Le coffre s'ouvre brusquement, révélant des rangées de dents ! C'est un mimic ! Il vous mord, mais vous esquivez juste à temps.
+    description: Le coffre s'ouvre brusquement, révélant des rangées de dents ! C'est un mimic ! Préparez-vous au combat !
     image: mimic.jpg
-    reactions:
-      - label: Combattre le mimic
-        goto: 14_ending_hero
-      - label: Fuir !
-        goto: 2_dark_corridor
+    monster: mimic
+    victory_goto: 14_ending_hero
+    flee_goto: 2_dark_corridor
+    reactions: []
 
   12_secret_vault:
     description: Vous descendez dans une vaste chambre forte souterraine. D'anciens trésors tapissent les murs — des reliques d'une civilisation oubliée. Au fond, un cristal lumineux pulse d'énergie.
@@ -158,4 +165,9 @@ steps:
 
   16_ending_wise:
     description: Vous quittez la chambre forte telle que vous l'avez trouvée. Certains trésors ne sont pas faits pour être pris. Le donjon se souvient de votre respect, et le chemin du retour est étrangement facile.
+    reactions: []
+
+  game_over:
+    description: Votre vision s'assombrit. Le donjon réclame une âme de plus...
+    image: game_over.jpg
     reactions: []

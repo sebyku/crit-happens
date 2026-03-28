@@ -73,6 +73,28 @@
     border-color: var(--accent);
     background: var(--accent-bg);
   }
+
+  &.equipped {
+    border-color: #38a169;
+  }
+
+  position: relative;
+}
+
+.equipped-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  background: #38a169;
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
 
 .inventory-icon {
@@ -171,6 +193,33 @@
 
   &:hover {
     color: var(--text-h);
+  }
+}
+
+.item-card-equip {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 24px;
+  border-radius: 6px;
+  border: 2px solid #38a169;
+  background: rgba(56, 161, 105, 0.1);
+  color: #38a169;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(56, 161, 105, 0.2);
+  }
+
+  &.unequip {
+    border-color: var(--border);
+    background: var(--bg);
+    color: var(--text);
+
+    &:hover {
+      border-color: var(--text);
+    }
   }
 }
 
