@@ -25,8 +25,10 @@ export function resolveAttack(roll, attackerAttack, defenderAC) {
 export function computePlayerStats(equipment, itemDefs) {
   let ac = 10
   let attack = 1
+  const seen = new Set()
   for (const itemId of Object.values(equipment)) {
-    if (!itemId) continue
+    if (!itemId || seen.has(itemId)) continue
+    seen.add(itemId)
     const def = itemDefs[itemId]
     if (def?.ac) ac += def.ac
     if (def?.attack) attack = Math.max(attack, def.attack)

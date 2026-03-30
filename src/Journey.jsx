@@ -26,8 +26,8 @@ function applyStats(current, ...changes) {
   let hp = current.hp
   for (const c of changes) {
     if (!c) continue
-    if (c.gold) gold += c.gold
-    if (c.hp) hp += c.hp
+    if (c.gold != null) gold += c.gold
+    if (c.hp != null) hp += c.hp
   }
   return { gold: Math.max(0, gold), hp: Math.max(0, hp) }
 }
@@ -44,26 +44,24 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
   const step = journey?.steps?.[currentStepId]
   const character = useCharacter(step?.character, language)
   const monster = useMonster(step?.monster, language)
-  const [bgImage, setBgImage] = useState(null)
-
   const playerStats = computePlayerStats(equipment, itemDefs)
 
   // Track background image — keep last one if step has no image
   const stepImage = step?.image
     ? `${import.meta.env.BASE_URL}images/${step.image}`
     : null
-  if (stepImage && stepImage !== bgImage) {
-    setBgImage(stepImage)
-  }
 
   useEffect(() => {
-    if (bgImage) {
-      document.body.style.backgroundImage = `url(${bgImage})`
+    if (stepImage) {
+      document.body.style.backgroundImage = `url(${stepImage})`
     }
-    return () => {
-      document.body.style.backgroundImage = ''
-    }
-  }, [bgImage])
+    // No cleanup — keep last image when step has none
+  }, [stepImage])
+
+  // Cleanup on unmount only
+  useEffect(() => {
+    return () => { document.body.style.backgroundImage = '' }
+  }, [])
 
   if (!journey || !labels || !step) return null
 
@@ -81,6 +79,18 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
     return true
   })
 
+  function cleanEquipment(inv, equip) {
+    const cleaned = { ...equip }
+    let changed = false
+    for (const [slot, itemId] of Object.entries(cleaned)) {
+      if (itemId && !inv.includes(itemId)) {
+        cleaned[slot] = null
+        changed = true
+      }
+    }
+    return changed ? cleaned : equip
+  }
+
   function handleChoice(goto, changes = {}) {
     const targetStep = journey.steps[goto]
 
@@ -95,6 +105,9 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
       targetStep?.items_take
     )
     setInventory(newInventory)
+
+    const cleaned = cleanEquipment(newInventory, equipment)
+    if (cleaned !== equipment) setEquipment(cleaned)
 
     const newStats = applyStats(stats, changes, targetStep)
     setStats(newStats)
@@ -160,7 +173,7 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
               applyStats(prev, { hp })
             )}
             onDefeat={() => {
-              setBgImage(`${import.meta.env.BASE_URL}images/game_over.jpg`)
+              document.body.style.backgroundImage = `url(${import.meta.env.BASE_URL}images/game_over.jpg)`
               setCurrentStepId('game_over')
             }}
           />
@@ -176,9 +189,14 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
             gold={stats.gold}
             inventory={inventory}
             onExit={handleChoice}
-            onItemChange={(changes) => setInventory((prev) =>
-              applyItemChanges(prev, changes.itemsGive, changes.itemsTake)
-            )}
+            onItemChange={(changes) => {
+              setInventory((prev) => {
+                const newInv = applyItemChanges(prev, changes.itemsGive, changes.itemsTake)
+                const cleaned = cleanEquipment(newInv, equipment)
+                if (cleaned !== equipment) setEquipment(cleaned)
+                return newInv
+              })
+            }}
             onStatsChange={(changes) => setStats((prev) =>
               applyStats(prev, changes)
             )}

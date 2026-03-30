@@ -6,7 +6,7 @@ items:
 
   iron_sword:
     name: Iron Sword
-    description: A well-forged iron sword, sharp and balanced. +6 Attack.
+    description: A well-forged iron sword, sharp and balanced.
     icon: iron_sword.svg
     attack: 6
     slots:
@@ -14,7 +14,7 @@ items:
 
   wooden_shield:
     name: Wooden Shield
-    description: A sturdy wooden shield reinforced with iron bands. +2 AC.
+    description: A sturdy wooden shield reinforced with iron bands.
     icon: wooden_shield.svg
     ac: 2
     slots:
@@ -22,7 +22,7 @@ items:
 
   iron_helmet:
     name: Iron Helmet
-    description: A simple but reliable iron helmet. +1 AC.
+    description: A simple but reliable iron helmet.
     icon: iron_helmet.svg
     ac: 1
     slots:

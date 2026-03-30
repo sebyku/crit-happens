@@ -37,7 +37,8 @@ function Conversation({ character, labels, reactions, onExit, onItemChange, onSt
   function findExit(text) {
     const processed = preprocess(text)
     for (const exit of character.exits) {
-      const pattern = new RegExp(`\\b${exit.keyword}\\b`)
+      const escaped = exit.keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      const pattern = new RegExp(`\\b${escaped}\\b`)
       if (pattern.test(processed)) {
         return exit
       }

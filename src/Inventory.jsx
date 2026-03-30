@@ -1,5 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './Inventory.css'
+
+function StatValue({ value }) {
+  const [prev, setPrev] = useState(value)
+  const [flash, setFlash] = useState('')
+  const [counter, setCounter] = useState(0)
+
+  if (prev !== value) {
+    setFlash(value > prev ? 'flash-green' : 'flash-red')
+    setCounter((c) => c + 1)
+    setPrev(value)
+  }
+
+  return (
+    <span
+      key={counter}
+      className={`stat-value${flash ? ` ${flash}` : ''}`}
+      onAnimationEnd={() => setFlash('')}
+    >
+      {value}
+    </span>
+  )
+}
 
 function isEquipped(itemId, equipment) {
   return Object.values(equipment).includes(itemId)
@@ -7,6 +29,15 @@ function isEquipped(itemId, equipment) {
 
 function Inventory({ items, itemDefs, gold, hp, playerAc, playerAttack, equipment, onEquip, labels }) {
   const [selectedItem, setSelectedItem] = useState(null)
+
+  useEffect(() => {
+    if (!selectedItem) return
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') setSelectedItem(null)
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [selectedItem])
 
   function handleClick(itemId) {
     setSelectedItem((prev) => (prev === itemId ? null : itemId))
@@ -42,19 +73,19 @@ function Inventory({ items, itemDefs, gold, hp, playerAc, playerAttack, equipmen
         <div className="inventory-stats">
           <div className="stat">
             <span className="stat-icon">❤️</span>
-            <span className="stat-value">{hp}</span>
+            <StatValue value={hp} />
           </div>
           <div className="stat">
             <span className="stat-icon">🛡️</span>
-            <span className="stat-value">{playerAc}</span>
+            <StatValue value={playerAc} />
           </div>
           <div className="stat">
             <span className="stat-icon">⚔️</span>
-            <span className="stat-value">{playerAttack}</span>
+            <StatValue value={playerAttack} />
           </div>
           <div className="stat">
             <span className="stat-icon">💰</span>
-            <span className="stat-value">{gold}</span>
+            <StatValue value={gold} />
           </div>
         </div>
       </div>
@@ -68,6 +99,12 @@ function Inventory({ items, itemDefs, gold, hp, playerAc, playerAttack, equipmen
             <div className="item-card-divider" />
             <h2 className="item-card-name">{selected.name}</h2>
             <p className="item-card-description">{selected.description}</p>
+            {(selected.ac || selected.attack) && (
+              <div className="item-card-stats">
+                {selected.attack > 0 && <span className="item-stat">⚔️ +{selected.attack}</span>}
+                {selected.ac > 0 && <span className="item-stat">🛡️ +{selected.ac}</span>}
+              </div>
+            )}
             {selected.slots && (
               <button
                 className={`item-card-equip${selectedEquipped ? ' unequip' : ''}`}

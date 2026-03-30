@@ -4,14 +4,10 @@ import './Combat.css'
 
 function Combat({ monster, playerStats, playerHp, labels, onVictory, onFlee, onPlayerDamage, onDefeat }) {
   const [monsterHp, setMonsterHp] = useState(monster.hp)
+  const [localPlayerHp, setLocalPlayerHp] = useState(playerHp)
   const [log, setLog] = useState([])
   const [phase, setPhase] = useState('player_turn')
   const logEndRef = useRef(null)
-  const playerHpRef = useRef(playerHp)
-
-  useEffect(() => {
-    playerHpRef.current = playerHp
-  }, [playerHp])
 
   useEffect(() => {
     if (logEndRef.current?.scrollIntoView) {
@@ -23,20 +19,13 @@ function Combat({ monster, playerStats, playerHp, labels, onVictory, onFlee, onP
     setLog((prev) => [...prev, { text, type }])
   }
 
-  function applyPlayerDamage(amount) {
-    onPlayerDamage(amount)
-    const newHp = Math.max(0, playerHpRef.current + amount)
-    if (newHp <= 0) {
-      addLog(labels.combatDefeat || 'You have been defeated...', 'defeat')
-      setPhase('defeat')
-      return true
-    }
-    return false
-  }
-
   function handleAttack() {
     if (phase !== 'player_turn') return
 
+    let currentPlayerHp = localPlayerHp
+    let currentMonsterHp = monsterHp
+
+    // Player attacks
     const playerRoll = rollD20()
     const playerResult = resolveAttack(playerRoll, playerStats.attack, monster.ac)
 
@@ -53,29 +42,31 @@ function Combat({ monster, playerStats, playerHp, labels, onVictory, onFlee, onP
     }
 
     // Apply player attack damage to monster
-    let newMonsterHp = monsterHp
     if (playerResult.hit) {
-      newMonsterHp = Math.max(0, monsterHp - playerResult.damage)
-      setMonsterHp(newMonsterHp)
+      currentMonsterHp = Math.max(0, currentMonsterHp - playerResult.damage)
+      setMonsterHp(currentMonsterHp)
     }
 
     // Apply self-damage to player
     if (playerResult.selfDamage) {
-      if (applyPlayerDamage(-playerResult.selfDamage)) return
+      currentPlayerHp = Math.max(0, currentPlayerHp - playerResult.selfDamage)
+      setLocalPlayerHp(currentPlayerHp)
+      onPlayerDamage(-playerResult.selfDamage)
+      if (currentPlayerHp <= 0) {
+        addLog(labels.combatDefeat || 'You have been defeated...', 'defeat')
+        setPhase('defeat')
+        return
+      }
     }
 
     // Check monster defeated
-    if (newMonsterHp <= 0) {
+    if (currentMonsterHp <= 0) {
       addLog(labels.combatVictory?.replace('{name}', monster.name) || `You defeated ${monster.name}!`, 'victory')
       setPhase('victory')
       return
     }
 
     // Monster turn
-    monsterTurn()
-  }
-
-  function monsterTurn() {
     const monsterRoll = rollD20()
     const monsterResult = resolveAttack(monsterRoll, monster.attack, playerStats.ac)
 
@@ -92,13 +83,20 @@ function Combat({ monster, playerStats, playerHp, labels, onVictory, onFlee, onP
     }
 
     if (monsterResult.hit) {
-      if (applyPlayerDamage(-monsterResult.damage)) return
+      currentPlayerHp = Math.max(0, currentPlayerHp - monsterResult.damage)
+      setLocalPlayerHp(currentPlayerHp)
+      onPlayerDamage(-monsterResult.damage)
+      if (currentPlayerHp <= 0) {
+        addLog(labels.combatDefeat || 'You have been defeated...', 'defeat')
+        setPhase('defeat')
+        return
+      }
     }
 
     if (monsterResult.selfDamage) {
-      const newHp = Math.max(0, monsterHp - monsterResult.selfDamage)
-      setMonsterHp(newHp)
-      if (newHp <= 0) {
+      currentMonsterHp = Math.max(0, currentMonsterHp - monsterResult.selfDamage)
+      setMonsterHp(currentMonsterHp)
+      if (currentMonsterHp <= 0) {
         addLog(labels.combatVictory?.replace('{name}', monster.name) || `You defeated ${monster.name}!`, 'victory')
         setPhase('victory')
       }
@@ -117,7 +115,7 @@ function Combat({ monster, playerStats, playerHp, labels, onVictory, onFlee, onP
         <div className="combat-hp-text">{monsterHp} / {monster.hp}</div>
       </div>
 
-      <div className="combat-log">
+      <div className="combat-log" role="log" aria-live="polite">
         {log.map((entry, i) => (
           <div key={i} className={`combat-log-entry ${entry.type}`}>
             {entry.text}

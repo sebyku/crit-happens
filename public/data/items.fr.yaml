@@ -6,7 +6,7 @@ items:
 
   iron_sword:
     name: Épée en fer
-    description: Une épée en fer bien forgée, tranchante et équilibrée. +6 Attaque.
+    description: Une épée en fer bien forgée, tranchante et équilibrée.
     icon: iron_sword.svg
     attack: 6
     slots:
@@ -14,7 +14,7 @@ items:
 
   wooden_shield:
     name: Bouclier en bois
-    description: Un solide bouclier en bois renforcé de bandes de fer. +2 CA.
+    description: Un solide bouclier en bois renforcé de bandes de fer.
     icon: wooden_shield.svg
     ac: 2
     slots:
@@ -22,7 +22,7 @@ items:
 
   iron_helmet:
     name: Casque en fer
-    description: Un casque en fer simple mais fiable. +1 CA.
+    description: Un casque en fer simple mais fiable.
     icon: iron_helmet.svg
     ac: 1
     slots:
