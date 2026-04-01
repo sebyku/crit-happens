@@ -24,11 +24,10 @@ steps:
         goto: 1_start
 
   18_church:
-    description: The church is quiet and cool. Light filters through stained glass, casting colors across the wooden pews. A priest prays silently near the altar.
+    description: The church is quiet and cool. Light filters through stained glass, casting colors across the wooden pews. A priest notices you and approaches with a gentle smile.
     image: church.jpg
+    character: priest
     reactions:
-      - label: Pray for a moment
-        goto: 18_church
       - label: Return to the square
         goto: 1_start
 

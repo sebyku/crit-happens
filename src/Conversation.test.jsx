@@ -109,7 +109,7 @@ describe('Conversation', () => {
       ],
     }
     const user = userEvent.setup()
-    render(<Conversation character={charWithItems} labels={labels} reactions={[]} onExit={() => {}} onItemChange={onItemChange} gold={100} inventory={[]} />)
+    render(<Conversation character={charWithItems} labels={labels} reactions={[]} onExit={() => {}} onItemChange={onItemChange} gold={100} inventory={{}} itemDefs={{}} />)
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'tell me about the key')
@@ -142,7 +142,7 @@ describe('Conversation', () => {
       ],
     }
     const user = userEvent.setup()
-    render(<Conversation character={shopChar} labels={{ ...labels, confirmPrompt: 'Accept?', confirmYes: 'Yes', confirmNo: 'No' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} onStatsChange={onStatsChange} gold={20} inventory={[]} />)
+    render(<Conversation character={shopChar} labels={{ ...labels, confirmPrompt: 'Accept?', confirmYes: 'Yes', confirmNo: 'No' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} onStatsChange={onStatsChange} gold={20} inventory={{}} itemDefs={{}} />)
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'show me a sword')
@@ -177,7 +177,7 @@ describe('Conversation', () => {
       ],
     }
     const user = userEvent.setup()
-    render(<Conversation character={shopChar} labels={{ ...labels, confirmYes: 'Yes', confirmNo: 'No' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} onStatsChange={onStatsChange} gold={20} inventory={[]} />)
+    render(<Conversation character={shopChar} labels={{ ...labels, confirmYes: 'Yes', confirmNo: 'No' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} onStatsChange={onStatsChange} gold={20} inventory={{}} itemDefs={{}} />)
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'sword')
@@ -211,7 +211,7 @@ describe('Conversation', () => {
       ],
     }
     const user = userEvent.setup()
-    render(<Conversation character={shopChar} labels={{ ...labels, confirmYes: 'Yes', confirmNo: 'No' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} onStatsChange={onStatsChange} gold={20} inventory={[]} />)
+    render(<Conversation character={shopChar} labels={{ ...labels, confirmYes: 'Yes', confirmNo: 'No' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} onStatsChange={onStatsChange} gold={20} inventory={{}} itemDefs={{}} />)
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'sword')
@@ -243,7 +243,7 @@ describe('Conversation', () => {
       ],
     }
     const user = userEvent.setup()
-    render(<Conversation character={shopChar} labels={{ ...labels, notEnoughGold: 'Not enough gold!' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} gold={3} inventory={[]} />)
+    render(<Conversation character={shopChar} labels={{ ...labels, notEnoughGold: 'Not enough gold!' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} gold={3} inventory={{}} itemDefs={{}} />)
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'sword')
@@ -273,7 +273,7 @@ describe('Conversation', () => {
       ],
     }
     const user = userEvent.setup()
-    render(<Conversation character={shopChar} labels={{ ...labels, alreadyOwned: 'You already have that.' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} gold={20} inventory={['iron_sword']} />)
+    render(<Conversation character={shopChar} labels={{ ...labels, alreadyOwned: 'You already have that.' }} reactions={[]} onExit={() => {}} onItemChange={onItemChange} gold={20} inventory={{ iron_sword: 1 }} itemDefs={{ iron_sword: { max: 1 } }} />)
 
     const input = screen.getByPlaceholderText('Type something...')
     await user.type(input, 'sword')

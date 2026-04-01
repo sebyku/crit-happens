@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useMemo } from 'react'
 import { Eliza, preprocess } from './eliza.js'
 import './Conversation.css'
 
-function Conversation({ character, labels, reactions, onExit, onItemChange, onStatsChange, gold, inventory }) {
+function Conversation({ character, labels, reactions, onExit, onItemChange, onStatsChange, gold, inventory, itemDefs }) {
   const engine = useMemo(
     () => new Eliza(character.rules, character.reflections),
     [character]
@@ -77,11 +77,15 @@ function Conversation({ character, labels, reactions, onExit, onItemChange, onSt
 
     const response = engine.respond(trimmed)
 
-    // Check if items are already owned
-    const alreadyOwned = response.items_give?.length > 0 &&
-      response.items_give.every((id) => inventory.includes(id))
+    // Check if items are at max capacity
+    const atMax = response.items_give?.length > 0 &&
+      response.items_give.every((id) => {
+        const current = inventory[id] || 0
+        const max = itemDefs?.[id]?.max ?? 1
+        return current >= max
+      })
 
-    if (alreadyOwned) {
+    if (atMax) {
       setMessages((prev) => [
         ...prev,
         { from: 'player', text: trimmed },

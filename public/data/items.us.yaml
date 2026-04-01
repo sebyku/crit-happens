@@ -3,12 +3,14 @@ items:
     name: Rusted Key
     description: An old key given to you by a mysterious stranger. It looks like it opens something ancient.
     icon: rusted_key.svg
+    max: 1
 
   iron_sword:
     name: Iron Sword
     description: A well-forged iron sword, sharp and balanced.
     icon: iron_sword.svg
     attack: 6
+    max: 1
     slots:
       - right_hand
 
@@ -17,13 +19,22 @@ items:
     description: A sturdy wooden shield reinforced with iron bands.
     icon: wooden_shield.svg
     ac: 2
+    max: 1
     slots:
       - left_hand
+
+  holy_water:
+    name: Holy Water
+    description: A vial of blessed water. Throw it at a monster to deal damage.
+    icon: holy_water.svg
+    combat_damage: 10
+    max: 5
 
   iron_helmet:
     name: Iron Helmet
     description: A simple but reliable iron helmet.
     icon: iron_helmet.svg
     ac: 1
+    max: 1
     slots:
       - head

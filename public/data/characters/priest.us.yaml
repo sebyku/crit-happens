@@ -1,0 +1,80 @@
+greetings:
+  - "Peace be with you, child. How may I help?"
+  - "Welcome to this humble house of worship. What brings you here?"
+
+rules:
+  - keyword: "holy water"
+    priority: 5
+    confirm: true
+    gold: -3
+    items_give:
+      - holy_water
+    patterns:
+      - decomposition: ".*holy water(.*)"
+        reassemblies:
+          - "Holy water, blessed by the divine. 3 gold as a donation to the church."
+          - "This vial holds sacred power. 3 gold for the church, and it is yours."
+
+  - keyword: "water"
+    priority: 4
+    confirm: true
+    gold: -3
+    items_give:
+      - holy_water
+    patterns:
+      - decomposition: ".*water(.*)"
+        reassemblies:
+          - "I can offer you holy water, blessed against evil. 3 gold as a donation."
+          - "A vial of holy water? 3 gold for the church."
+
+  - keyword: "bless"
+    priority: 4
+    patterns:
+      - decomposition: ".*bless(.*)"
+        reassemblies:
+          - "May the light protect you on your journey."
+          - "I can bless you with holy water. It burns creatures of darkness."
+
+  - keyword: "pray"
+    priority: 3
+    patterns:
+      - decomposition: ".*pray(.*)"
+        reassemblies:
+          - "Prayer strengthens the soul. Take a moment of peace."
+          - "The divine hears all prayers. What weighs on your heart?"
+
+  - keyword: "dungeon"
+    priority: 3
+    patterns:
+      - decomposition: ".*dungeon(.*)"
+        reassemblies:
+          - "The dungeon is a dark place. Holy water may save your life down there."
+          - "Many have gone and never returned. Take holy water — it burns the wicked."
+
+  - keyword: "who are you"
+    priority: 5
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "I am the village priest. I tend to this church and its people."
+          - "A humble servant of the divine. Nothing more."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "I offer holy water to those who need it. Just ask."
+          - "The church welcomes all. Would you like some holy water?"
+          - "If you face darkness, holy water will be your light."
+          - "A small donation of 3 gold, and holy water is yours."
+
+exits:
+  - keyword: "bye"
+    goto: 1_start
+  - keyword: "goodbye"
+    goto: 1_start
+  - keyword: "leave"
+    goto: 1_start
+  - keyword: "thanks"
+    goto: 1_start

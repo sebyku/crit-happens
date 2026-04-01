@@ -118,6 +118,23 @@
   border-radius: 50%;
 }
 
+.count-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 0 3px;
+}
+
 .inventory-icon {
   width: 28px;
   height: 28px;

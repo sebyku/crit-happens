@@ -43,7 +43,8 @@ function Inventory({ items, itemDefs, gold, hp, playerAc, playerAttack, equipmen
     setSelectedItem((prev) => (prev === itemId ? null : itemId))
   }
 
-  const activeSelection = selectedItem && items.includes(selectedItem) ? selectedItem : null
+  const itemIds = Object.keys(items).filter((id) => items[id] > 0)
+  const activeSelection = selectedItem && items[selectedItem] > 0 ? selectedItem : null
   const selected = activeSelection ? itemDefs[activeSelection] : null
   const selectedEquipped = activeSelection && isEquipped(activeSelection, equipment)
 
@@ -51,9 +52,10 @@ function Inventory({ items, itemDefs, gold, hp, playerAc, playerAttack, equipmen
     <div className="inventory">
       <div className="inventory-bar">
         <div className="inventory-items">
-          {items.map((itemId) => {
+          {itemIds.map((itemId) => {
             const def = itemDefs[itemId]
             if (!def) return null
+            const count = items[itemId]
             const equipped = isEquipped(itemId, equipment)
             return (
               <button
@@ -66,6 +68,7 @@ function Inventory({ items, itemDefs, gold, hp, playerAc, playerAttack, equipmen
                   <img src={def.iconUrl} alt={def.name} className="inventory-icon" />
                 )}
                 {equipped && <span className="equipped-badge">E</span>}
+                {count > 1 && <span className="count-badge">{count}</span>}
               </button>
             )
           })}
@@ -99,10 +102,11 @@ function Inventory({ items, itemDefs, gold, hp, playerAc, playerAttack, equipmen
             <div className="item-card-divider" />
             <h2 className="item-card-name">{selected.name}</h2>
             <p className="item-card-description">{selected.description}</p>
-            {(selected.ac || selected.attack) && (
+            {(selected.ac || selected.attack || selected.combat_damage) && (
               <div className="item-card-stats">
                 {selected.attack > 0 && <span className="item-stat">⚔️ +{selected.attack}</span>}
                 {selected.ac > 0 && <span className="item-stat">🛡️ +{selected.ac}</span>}
+                {selected.combat_damage > 0 && <span className="item-stat">💥 {selected.combat_damage}</span>}
               </div>
             )}
             {selected.slots && (

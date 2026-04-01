@@ -3,12 +3,14 @@ items:
     name: Clé rouillée
     description: Une vieille clé donnée par un mystérieux étranger. On dirait qu'elle ouvre quelque chose d'ancien.
     icon: rusted_key.svg
+    max: 1
 
   iron_sword:
     name: Épée en fer
     description: Une épée en fer bien forgée, tranchante et équilibrée.
     icon: iron_sword.svg
     attack: 6
+    max: 1
     slots:
       - right_hand
 
@@ -17,13 +19,22 @@ items:
     description: Un solide bouclier en bois renforcé de bandes de fer.
     icon: wooden_shield.svg
     ac: 2
+    max: 1
     slots:
       - left_hand
+
+  holy_water:
+    name: Eau bénite
+    description: Une fiole d'eau consacrée. Lancez-la sur un monstre pour infliger des dégâts.
+    icon: holy_water.svg
+    combat_damage: 10
+    max: 5
 
   iron_helmet:
     name: Casque en fer
     description: Un casque en fer simple mais fiable.
     icon: iron_helmet.svg
     ac: 1
+    max: 1
     slots:
       - head

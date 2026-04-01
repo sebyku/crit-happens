@@ -14,11 +14,23 @@ const EMPTY_EQUIPMENT = {
   feet: null, right_hand: null, left_hand: null,
 }
 
-function applyItemChanges(current, give = [], take = []) {
-  const set = new Set(current)
-  for (const id of give) set.add(id)
-  for (const id of take) set.delete(id)
-  return [...set]
+function applyItemChanges(current, give = [], take = [], itemDefs = {}) {
+  const next = { ...current }
+  for (const id of give) {
+    const max = itemDefs[id]?.max ?? 1
+    next[id] = Math.min((next[id] || 0) + 1, max)
+  }
+  for (const id of take) {
+    if (next[id]) {
+      next[id] -= 1
+      if (next[id] <= 0) delete next[id]
+    }
+  }
+  return next
+}
+
+function hasItem(inventory, itemId) {
+  return (inventory[itemId] || 0) > 0
 }
 
 function applyStats(current, ...changes) {
@@ -37,7 +49,7 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
   const labels = useYaml(`data/messages.${language}.yaml`)
   const itemDefs = useItems(language)
   const [currentStepId, setCurrentStepId] = useState('1_start')
-  const [inventory, setInventory] = useState([])
+  const [inventory, setInventory] = useState({})
   const [stats, setStats] = useState({ gold: startGold, hp: startHp })
   const [equipment, setEquipment] = useState({ ...EMPTY_EQUIPMENT })
 
@@ -46,7 +58,6 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
   const monster = useMonster(step?.monster, language)
   const playerStats = computePlayerStats(equipment, itemDefs)
 
-  // Track background image — keep last one if step has no image
   const stepImage = step?.image
     ? `${import.meta.env.BASE_URL}images/${step.image}`
     : null
@@ -55,10 +66,8 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
     if (stepImage) {
       document.body.style.backgroundImage = `url(${stepImage})`
     }
-    // No cleanup — keep last image when step has none
   }, [stepImage])
 
-  // Cleanup on unmount only
   useEffect(() => {
     return () => { document.body.style.backgroundImage = '' }
   }, [])
@@ -72,8 +81,8 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
   const isCombat = step.monster && monster
 
   const visibleReactions = (step.reactions || []).filter((r) => {
-    if (r.requires && !inventory.includes(r.requires)) return false
-    if (r.requires_not && inventory.includes(r.requires_not)) return false
+    if (r.requires && !hasItem(inventory, r.requires)) return false
+    if (r.requires_not && hasItem(inventory, r.requires_not)) return false
     if (r.min_gold != null && stats.gold < r.min_gold) return false
     if (r.min_hp != null && stats.hp < r.min_hp) return false
     return true
@@ -83,7 +92,7 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
     const cleaned = { ...equip }
     let changed = false
     for (const [slot, itemId] of Object.entries(cleaned)) {
-      if (itemId && !inv.includes(itemId)) {
+      if (itemId && !hasItem(inv, itemId)) {
         cleaned[slot] = null
         changed = true
       }
@@ -97,12 +106,14 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
     let newInventory = applyItemChanges(
       inventory,
       changes.itemsGive,
-      changes.itemsTake
+      changes.itemsTake,
+      itemDefs
     )
     newInventory = applyItemChanges(
       newInventory,
       targetStep?.items_give,
-      targetStep?.items_take
+      targetStep?.items_take,
+      itemDefs
     )
     setInventory(newInventory)
 
@@ -120,13 +131,11 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
     if (!def?.slots) return
     setEquipment((prev) => {
       const next = { ...prev }
-      // Check if already equipped — unequip
       const alreadyEquipped = def.slots.every((slot) => next[slot] === itemId)
       if (alreadyEquipped) {
         for (const slot of def.slots) next[slot] = null
         return next
       }
-      // Equip in all required slots
       for (const slot of def.slots) next[slot] = itemId
       return next
     })
@@ -134,7 +143,7 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
 
   function handleRestart() {
     setCurrentStepId('1_start')
-    setInventory([])
+    setInventory({})
     setStats({ gold: startGold, hp: startHp })
     setEquipment({ ...EMPTY_EQUIPMENT })
   }
@@ -167,10 +176,15 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
             playerStats={playerStats}
             playerHp={stats.hp}
             labels={labels}
+            inventory={inventory}
+            itemDefs={itemDefs}
             onVictory={() => handleChoice(step.victory_goto)}
             onFlee={() => handleChoice(step.flee_goto)}
             onPlayerDamage={(hp) => setStats((prev) =>
               applyStats(prev, { hp })
+            )}
+            onUseItem={(itemId) => setInventory((prev) =>
+              applyItemChanges(prev, [], [itemId], itemDefs)
             )}
             onDefeat={() => {
               document.body.style.backgroundImage = `url(${import.meta.env.BASE_URL}images/game_over.jpg)`
@@ -188,10 +202,11 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
             reactions={visibleReactions}
             gold={stats.gold}
             inventory={inventory}
+            itemDefs={itemDefs}
             onExit={handleChoice}
             onItemChange={(changes) => {
               setInventory((prev) => {
-                const newInv = applyItemChanges(prev, changes.itemsGive, changes.itemsTake)
+                const newInv = applyItemChanges(prev, changes.itemsGive, changes.itemsTake, itemDefs)
                 const cleaned = cleanEquipment(newInv, equipment)
                 if (cleaned !== equipment) setEquipment(cleaned)
                 return newInv

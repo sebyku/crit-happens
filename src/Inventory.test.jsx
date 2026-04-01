@@ -36,20 +36,20 @@ describe('Inventory', () => {
   afterEach(cleanup)
 
   it('renders an empty bar when no items', () => {
-    const { container } = render(<Inventory items={[]} {...defaultProps} />)
+    const { container } = render(<Inventory items={{}} {...defaultProps} />)
     expect(container.querySelector('.inventory-bar')).toBeInTheDocument()
     expect(container.querySelectorAll('.inventory-slot')).toHaveLength(0)
   })
 
   it('renders item slots for each item in inventory', () => {
     const { container } = render(
-      <Inventory items={['rusted_key', 'crystal_shard']} {...defaultProps} />
+      <Inventory items={{ rusted_key: 1, crystal_shard: 1 }} {...defaultProps} />
     )
     expect(container.querySelectorAll('.inventory-slot')).toHaveLength(2)
   })
 
   it('shows item icon with alt text', () => {
-    render(<Inventory items={['rusted_key']} {...defaultProps} />)
+    render(<Inventory items={{ rusted_key: 1 }} {...defaultProps} />)
     const img = screen.getByAltText('Rusted Key')
     expect(img).toBeInTheDocument()
     expect(img).toHaveAttribute('src', '/items/rusted_key.svg')
@@ -57,7 +57,7 @@ describe('Inventory', () => {
 
   it('shows item description popover on click', async () => {
     const user = userEvent.setup()
-    render(<Inventory items={['rusted_key']} {...defaultProps} />)
+    render(<Inventory items={{ rusted_key: 1 }} {...defaultProps} />)
 
     await user.click(screen.getByTitle('Rusted Key'))
 
@@ -67,7 +67,7 @@ describe('Inventory', () => {
 
   it('hides popover on second click', async () => {
     const user = userEvent.setup()
-    render(<Inventory items={['rusted_key']} {...defaultProps} />)
+    render(<Inventory items={{ rusted_key: 1 }} {...defaultProps} />)
 
     await user.click(screen.getByTitle('Rusted Key'))
     expect(screen.getByText('An old key given by a mysterious stranger.')).toBeInTheDocument()
@@ -79,7 +79,7 @@ describe('Inventory', () => {
   it('switches popover when clicking a different item', async () => {
     const user = userEvent.setup()
     render(
-      <Inventory items={['rusted_key', 'crystal_shard']} {...defaultProps} />
+      <Inventory items={{ rusted_key: 1, crystal_shard: 1 }} {...defaultProps} />
     )
 
     await user.click(screen.getByTitle('Rusted Key'))

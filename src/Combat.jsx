@@ -2,11 +2,12 @@ import { useState, useRef, useEffect } from 'react'
 import { rollD20, resolveAttack } from './combat.js'
 import './Combat.css'
 
-function Combat({ monster, playerStats, playerHp, labels, onVictory, onFlee, onPlayerDamage, onDefeat }) {
+function Combat({ monster, playerStats, playerHp, labels, inventory, itemDefs, onVictory, onFlee, onPlayerDamage, onDefeat, onUseItem }) {
   const [monsterHp, setMonsterHp] = useState(monster.hp)
   const [localPlayerHp, setLocalPlayerHp] = useState(playerHp)
   const [log, setLog] = useState([])
   const [phase, setPhase] = useState('player_turn')
+  const [showItems, setShowItems] = useState(false)
   const logEndRef = useRef(null)
 
   useEffect(() => {
@@ -15,58 +16,16 @@ function Combat({ monster, playerStats, playerHp, labels, onVictory, onFlee, onP
     }
   }, [log])
 
+  // Usable items: items in inventory with combat_damage
+  const usableItems = Object.entries(inventory)
+    .filter(([id, count]) => count > 0 && itemDefs[id]?.combat_damage)
+    .map(([id, count]) => ({ id, count, def: itemDefs[id] }))
+
   function addLog(text, type = 'info') {
     setLog((prev) => [...prev, { text, type }])
   }
 
-  function handleAttack() {
-    if (phase !== 'player_turn') return
-
-    let currentPlayerHp = localPlayerHp
-    let currentMonsterHp = monsterHp
-
-    // Player attacks
-    const playerRoll = rollD20()
-    const playerResult = resolveAttack(playerRoll, playerStats.attack, monster.ac)
-
-    if (playerResult.crit) {
-      addLog(`🎲 ${playerRoll} — ⚔️ Critical! ${playerResult.damage} damage!`, 'crit')
-    } else if (playerResult.hit) {
-      addLog(`🎲 ${playerRoll} — ⚔️ Hit! ${playerResult.damage} damage`, 'hit')
-    } else if (playerResult.fumble) {
-      addLog(`🎲 ${playerRoll} — 💥 Fumble! ${playerResult.selfDamage} self-damage`, 'fumble')
-    } else if (playerResult.stumble) {
-      addLog(`🎲 ${playerRoll} — 💥 Stumble! ${playerResult.selfDamage} self-damage`, 'stumble')
-    } else {
-      addLog(`🎲 ${playerRoll} — Miss!`, 'miss')
-    }
-
-    // Apply player attack damage to monster
-    if (playerResult.hit) {
-      currentMonsterHp = Math.max(0, currentMonsterHp - playerResult.damage)
-      setMonsterHp(currentMonsterHp)
-    }
-
-    // Apply self-damage to player
-    if (playerResult.selfDamage) {
-      currentPlayerHp = Math.max(0, currentPlayerHp - playerResult.selfDamage)
-      setLocalPlayerHp(currentPlayerHp)
-      onPlayerDamage(-playerResult.selfDamage)
-      if (currentPlayerHp <= 0) {
-        addLog(labels.combatDefeat || 'You have been defeated...', 'defeat')
-        setPhase('defeat')
-        return
-      }
-    }
-
-    // Check monster defeated
-    if (currentMonsterHp <= 0) {
-      addLog(labels.combatVictory?.replace('{name}', monster.name) || `You defeated ${monster.name}!`, 'victory')
-      setPhase('victory')
-      return
-    }
-
-    // Monster turn
+  function monsterTurn(currentPlayerHp, currentMonsterHp) {
     const monsterRoll = rollD20()
     const monsterResult = resolveAttack(monsterRoll, monster.attack, playerStats.ac)
 
@@ -103,6 +62,75 @@ function Combat({ monster, playerStats, playerHp, labels, onVictory, onFlee, onP
     }
   }
 
+  function handleAttack() {
+    if (phase !== 'player_turn') return
+    setShowItems(false)
+
+    let currentPlayerHp = localPlayerHp
+    let currentMonsterHp = monsterHp
+
+    const playerRoll = rollD20()
+    const playerResult = resolveAttack(playerRoll, playerStats.attack, monster.ac)
+
+    if (playerResult.crit) {
+      addLog(`🎲 ${playerRoll} — ⚔️ Critical! ${playerResult.damage} damage!`, 'crit')
+    } else if (playerResult.hit) {
+      addLog(`🎲 ${playerRoll} — ⚔️ Hit! ${playerResult.damage} damage`, 'hit')
+    } else if (playerResult.fumble) {
+      addLog(`🎲 ${playerRoll} — 💥 Fumble! ${playerResult.selfDamage} self-damage`, 'fumble')
+    } else if (playerResult.stumble) {
+      addLog(`🎲 ${playerRoll} — 💥 Stumble! ${playerResult.selfDamage} self-damage`, 'stumble')
+    } else {
+      addLog(`🎲 ${playerRoll} — Miss!`, 'miss')
+    }
+
+    if (playerResult.hit) {
+      currentMonsterHp = Math.max(0, currentMonsterHp - playerResult.damage)
+      setMonsterHp(currentMonsterHp)
+    }
+
+    if (playerResult.selfDamage) {
+      currentPlayerHp = Math.max(0, currentPlayerHp - playerResult.selfDamage)
+      setLocalPlayerHp(currentPlayerHp)
+      onPlayerDamage(-playerResult.selfDamage)
+      if (currentPlayerHp <= 0) {
+        addLog(labels.combatDefeat || 'You have been defeated...', 'defeat')
+        setPhase('defeat')
+        return
+      }
+    }
+
+    if (currentMonsterHp <= 0) {
+      addLog(labels.combatVictory?.replace('{name}', monster.name) || `You defeated ${monster.name}!`, 'victory')
+      setPhase('victory')
+      return
+    }
+
+    monsterTurn(currentPlayerHp, currentMonsterHp)
+  }
+
+  function handleUseItem(itemId) {
+    if (phase !== 'player_turn') return
+    setShowItems(false)
+
+    const def = itemDefs[itemId]
+    const damage = def.combat_damage
+
+    onUseItem(itemId)
+    addLog(`🧪 ${def.name} — ${damage} damage!`, 'hit')
+
+    let currentMonsterHp = Math.max(0, monsterHp - damage)
+    setMonsterHp(currentMonsterHp)
+
+    if (currentMonsterHp <= 0) {
+      addLog(labels.combatVictory?.replace('{name}', monster.name) || `You defeated ${monster.name}!`, 'victory')
+      setPhase('victory')
+      return
+    }
+
+    monsterTurn(localPlayerHp, currentMonsterHp)
+  }
+
   const hpPercent = Math.max(0, (monsterHp / monster.hp) * 100)
 
   return (
@@ -125,14 +153,32 @@ function Combat({ monster, playerStats, playerHp, labels, onVictory, onFlee, onP
       </div>
 
       {phase === 'player_turn' && (
-        <div className="combat-actions">
-          <button className="combat-btn attack" onClick={handleAttack}>
-            {labels.combatAttack || 'Attack'}
-          </button>
-          <button className="combat-btn flee" onClick={onFlee}>
-            {labels.combatFlee || 'Flee'}
-          </button>
-        </div>
+        <>
+          <div className="combat-actions">
+            <button className="combat-btn attack" onClick={handleAttack}>
+              {labels.combatAttack || 'Attack'}
+            </button>
+            {usableItems.length > 0 && (
+              <button className="combat-btn use" onClick={() => setShowItems((v) => !v)}>
+                🧪
+              </button>
+            )}
+            <button className="combat-btn flee" onClick={onFlee}>
+              {labels.combatFlee || 'Flee'}
+            </button>
+          </div>
+          {showItems && (
+            <div className="combat-items">
+              {usableItems.map(({ id, count, def }) => (
+                <button key={id} className="combat-item-btn" onClick={() => handleUseItem(id)}>
+                  {def.iconUrl && <img src={def.iconUrl} alt={def.name} className="combat-item-icon" />}
+                  <span>{def.name}</span>
+                  <span className="combat-item-count">×{count}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       {phase === 'victory' && (

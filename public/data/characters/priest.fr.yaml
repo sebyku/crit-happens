@@ -1,0 +1,80 @@
+greetings:
+  - "Que la paix soit avec vous, mon enfant. Comment puis-je vous aider ?"
+  - "Bienvenue dans cette humble maison de culte. Qu'est-ce qui vous amène ?"
+
+rules:
+  - keyword: "eau benite"
+    priority: 5
+    confirm: true
+    gold: -3
+    items_give:
+      - holy_water
+    patterns:
+      - decomposition: ".*eau benite(.*)"
+        reassemblies:
+          - "De l'eau bénite, consacrée par le divin. 3 pièces d'or en don pour l'église."
+          - "Cette fiole contient un pouvoir sacré. 3 pièces d'or pour l'église, et elle est à vous."
+
+  - keyword: "eau"
+    priority: 4
+    confirm: true
+    gold: -3
+    items_give:
+      - holy_water
+    patterns:
+      - decomposition: ".*eau(.*)"
+        reassemblies:
+          - "Je peux vous offrir de l'eau bénite, protégée contre le mal. 3 pièces d'or en don."
+          - "Une fiole d'eau bénite ? 3 pièces d'or pour l'église."
+
+  - keyword: "benir"
+    priority: 4
+    patterns:
+      - decomposition: ".*benir(.*)"
+        reassemblies:
+          - "Que la lumière vous protège dans votre voyage."
+          - "Je peux vous bénir avec de l'eau bénite. Elle brûle les créatures des ténèbres."
+
+  - keyword: "prier"
+    priority: 3
+    patterns:
+      - decomposition: ".*prier(.*)"
+        reassemblies:
+          - "La prière renforce l'âme. Prenez un moment de paix."
+          - "Le divin entend toutes les prières. Qu'est-ce qui pèse sur votre cœur ?"
+
+  - keyword: "donjon"
+    priority: 3
+    patterns:
+      - decomposition: ".*donjon(.*)"
+        reassemblies:
+          - "Le donjon est un lieu sombre. L'eau bénite pourrait vous sauver la vie là-bas."
+          - "Beaucoup y sont allés et ne sont jamais revenus. Prenez de l'eau bénite — elle brûle les impurs."
+
+  - keyword: "qui etes"
+    priority: 5
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Je suis le prêtre du village. Je veille sur cette église et ses fidèles."
+          - "Un humble serviteur du divin. Rien de plus."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "J'offre de l'eau bénite à ceux qui en ont besoin. Demandez simplement."
+          - "L'église accueille tous les voyageurs. Voulez-vous de l'eau bénite ?"
+          - "Si vous affrontez les ténèbres, l'eau bénite sera votre lumière."
+          - "Un petit don de 3 pièces d'or, et l'eau bénite est à vous."
+
+exits:
+  - keyword: "au revoir"
+    goto: 1_start
+  - keyword: "adieu"
+    goto: 1_start
+  - keyword: "partir"
+    goto: 1_start
+  - keyword: "merci"
+    goto: 1_start

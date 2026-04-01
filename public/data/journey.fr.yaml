@@ -24,11 +24,10 @@ steps:
         goto: 1_start
 
   18_church:
-    description: L'église est calme et fraîche. La lumière filtre à travers les vitraux, projetant des couleurs sur les bancs de bois. Un prêtre prie en silence près de l'autel.
+    description: L'église est calme et fraîche. La lumière filtre à travers les vitraux, projetant des couleurs sur les bancs de bois. Un prêtre vous remarque et s'approche avec un sourire bienveillant.
     image: church.jpg
+    character: priest
     reactions:
-      - label: Prier un moment
-        goto: 18_church
       - label: Retourner sur la place
         goto: 1_start
 
