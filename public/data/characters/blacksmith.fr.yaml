@@ -1,6 +1,6 @@
 greetings:
   - "Bienvenue dans ma forge ! Vous cherchez quelque chose de solide ?"
-  - "Ah, un client ! Regardez autour de vous — j'ai le meilleur acier du village."
+  - "Ah, un client ! Regardez autour de vous, j'ai le meilleur acier du village."
 
 rules:
   - keyword: "epee"
@@ -52,7 +52,7 @@ rules:
     patterns:
       - decomposition: ".*arme(.*)"
         reassemblies:
-          - "J'ai des épées — les meilleures de la région. Vous en voulez une ?"
+          - "J'ai des épées, les meilleures de la région. Vous en voulez une ?"
           - "Une bonne arme vaut son pesant d'or. Demandez-moi pour les épées."
 
   - keyword: "prix"
@@ -69,7 +69,7 @@ rules:
       - decomposition: ".*donjon(.*)"
         reassemblies:
           - "Vous allez au donjon ? Prenez au moins une bonne épée et un bouclier."
-          - "Beaucoup y sont allés sans préparation. Ne faites pas la même erreur — équipez-vous d'abord."
+          - "Beaucoup y sont allés sans préparation. Ne faites pas la même erreur, équipez-vous d'abord."
 
   - keyword: "qui etes"
     priority: 5

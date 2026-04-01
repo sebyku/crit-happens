@@ -232,10 +232,6 @@ steps:
     description: You leave the dungeon with pockets full of gold. Not the grandest haul, but enough to live comfortably for a while. Sometimes the smart play is knowing when to walk away.
     reactions: []
 
-  14_ending_hero:
-    description: You emerge from the dungeon victorious, carrying a legendary sword. The village will remember your name.
-    reactions: []
-
   15_ending_legendary:
     description: The crystal fills you with ancient power. You emerge from the dungeon forever changed — a living legend. But the crystal's whispers never quite stop...
     reactions: []

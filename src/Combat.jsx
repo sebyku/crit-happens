@@ -44,7 +44,7 @@ function Combat({ monster, playerStats, playerHp, labels, inventory, itemDefs, o
     if (monsterResult.hit) {
       currentPlayerHp = Math.max(0, currentPlayerHp - monsterResult.damage)
       setLocalPlayerHp(currentPlayerHp)
-      onPlayerDamage(-monsterResult.damage)
+      onPlayerDamage(monsterResult.damage)
       if (currentPlayerHp <= 0) {
         addLog(labels.combatDefeat || 'You have been defeated...', 'defeat')
         setPhase('defeat')
@@ -92,7 +92,7 @@ function Combat({ monster, playerStats, playerHp, labels, inventory, itemDefs, o
     if (playerResult.selfDamage) {
       currentPlayerHp = Math.max(0, currentPlayerHp - playerResult.selfDamage)
       setLocalPlayerHp(currentPlayerHp)
-      onPlayerDamage(-playerResult.selfDamage)
+      onPlayerDamage(playerResult.selfDamage)
       if (currentPlayerHp <= 0) {
         addLog(labels.combatDefeat || 'You have been defeated...', 'defeat')
         setPhase('defeat')
@@ -111,6 +111,7 @@ function Combat({ monster, playerStats, playerHp, labels, inventory, itemDefs, o
 
   function handleUseItem(itemId) {
     if (phase !== 'player_turn') return
+    if (!inventory[itemId] || inventory[itemId] <= 0) return
     setShowItems(false)
 
     const def = itemDefs[itemId]

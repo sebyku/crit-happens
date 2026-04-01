@@ -232,10 +232,6 @@ steps:
     description: Vous quittez le donjon les poches pleines d'or. Pas le plus grand butin, mais assez pour vivre confortablement un moment. Parfois, le bon choix est de savoir quand partir.
     reactions: []
 
-  14_ending_hero:
-    description: Vous émergez du donjon victorieux, portant une épée légendaire. Le village se souviendra de votre nom.
-    reactions: []
-
   15_ending_legendary:
     description: Le cristal vous remplit d'un pouvoir ancien. Vous émergez du donjon à jamais changé — une légende vivante. Mais les murmures du cristal ne s'arrêtent jamais vraiment...
     reactions: []

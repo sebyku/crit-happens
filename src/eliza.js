@@ -38,9 +38,11 @@ export class Eliza {
     const text = preprocess(input)
 
     // Collect matching rules
-    const matchingRules = this.rules.filter(
-      (rule) => rule.keyword !== '@none' && text.includes(stripAccents(rule.keyword))
-    )
+    const matchingRules = this.rules.filter((rule) => {
+      if (rule.keyword === '@none') return false
+      const kw = stripAccents(rule.keyword).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      return new RegExp(`\\b${kw}\\b`).test(text)
+    })
     // Sort by descending priority
     matchingRules.sort((a, b) => b.priority - a.priority)
 

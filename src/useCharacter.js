@@ -30,14 +30,14 @@ export function loadCharacter(characterId, language) {
 }
 
 export function useCharacter(characterId, language) {
-  const [character, setCharacter] = useState(null)
+  const [result, setResult] = useState({ id: null, data: null })
 
   useEffect(() => {
     if (!characterId) return
     let cancelled = false
     loadCharacter(characterId, language)
-      .then((result) => {
-        if (!cancelled) setCharacter(result)
+      .then((data) => {
+        if (!cancelled) setResult({ id: characterId, data })
       })
       .catch((err) => {
         if (!cancelled) console.error(`Failed to load character "${characterId}":`, err)
@@ -46,5 +46,6 @@ export function useCharacter(characterId, language) {
   }, [characterId, language])
 
   if (!characterId) return null
-  return character
+  if (result.id !== characterId) return null
+  return result.data
 }

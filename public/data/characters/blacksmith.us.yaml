@@ -1,6 +1,6 @@
 greetings:
   - "Welcome to my forge! Looking for something sturdy?"
-  - "Ah, a customer! Have a look around — I've got the finest steel in the village."
+  - "Ah, a customer! Have a look around, I've got the finest steel in the village."
 
 rules:
   - keyword: "sword"
@@ -52,7 +52,7 @@ rules:
     patterns:
       - decomposition: ".*weapon(.*)"
         reassemblies:
-          - "I've got swords — the finest in the region. Want one?"
+          - "I've got swords, the finest in the region. Want one?"
           - "A good weapon is worth its weight in gold. Ask me about swords."
 
   - keyword: "price"
@@ -69,7 +69,7 @@ rules:
       - decomposition: ".*dungeon(.*)"
         reassemblies:
           - "Heading to the dungeon? You'll want a good sword and a shield at least."
-          - "Many have gone in unprepared. Don't be one of them — buy some gear first."
+          - "Many have gone in unprepared. Don't be one of them, buy some gear first."
 
   - keyword: "who are you"
     priority: 5

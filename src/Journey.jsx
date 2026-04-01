@@ -33,7 +33,7 @@ function hasItem(inventory, itemId) {
   return (inventory[itemId] || 0) > 0
 }
 
-function applyStats(current, ...changes) {
+function applyStats(current, maxHp, ...changes) {
   let gold = current.gold
   let hp = current.hp
   for (const c of changes) {
@@ -41,7 +41,19 @@ function applyStats(current, ...changes) {
     if (c.gold != null) gold += c.gold
     if (c.hp != null) hp += c.hp
   }
-  return { gold: Math.max(0, gold), hp: Math.max(0, hp) }
+  return { gold: Math.max(0, gold), hp: Math.max(0, Math.min(hp, maxHp)) }
+}
+
+function cleanEquipment(inv, equip) {
+  const cleaned = { ...equip }
+  let changed = false
+  for (const [slot, itemId] of Object.entries(cleaned)) {
+    if (itemId && !hasItem(inv, itemId)) {
+      cleaned[slot] = null
+      changed = true
+    }
+  }
+  return changed ? cleaned : equip
 }
 
 function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
@@ -88,41 +100,17 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
     return true
   })
 
-  function cleanEquipment(inv, equip) {
-    const cleaned = { ...equip }
-    let changed = false
-    for (const [slot, itemId] of Object.entries(cleaned)) {
-      if (itemId && !hasItem(inv, itemId)) {
-        cleaned[slot] = null
-        changed = true
-      }
-    }
-    return changed ? cleaned : equip
-  }
-
   function handleChoice(goto, changes = {}) {
     const targetStep = journey.steps[goto]
 
-    let newInventory = applyItemChanges(
-      inventory,
-      changes.itemsGive,
-      changes.itemsTake,
-      itemDefs
-    )
-    newInventory = applyItemChanges(
-      newInventory,
-      targetStep?.items_give,
-      targetStep?.items_take,
-      itemDefs
-    )
-    setInventory(newInventory)
+    setInventory((prevInv) => {
+      let newInv = applyItemChanges(prevInv, changes.itemsGive, changes.itemsTake, itemDefs)
+      newInv = applyItemChanges(newInv, targetStep?.items_give, targetStep?.items_take, itemDefs)
+      setEquipment((prevEquip) => cleanEquipment(newInv, prevEquip))
+      return newInv
+    })
 
-    const cleaned = cleanEquipment(newInventory, equipment)
-    if (cleaned !== equipment) setEquipment(cleaned)
-
-    const newStats = applyStats(stats, changes, targetStep)
-    setStats(newStats)
-
+    setStats((prev) => applyStats(prev, startHp, changes, targetStep))
     setCurrentStepId(goto)
   }
 
@@ -180,8 +168,8 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
             itemDefs={itemDefs}
             onVictory={() => handleChoice(step.victory_goto)}
             onFlee={() => handleChoice(step.flee_goto)}
-            onPlayerDamage={(hp) => setStats((prev) =>
-              applyStats(prev, { hp })
+            onPlayerDamage={(damage) => setStats((prev) =>
+              applyStats(prev, startHp, { hp: -damage })
             )}
             onUseItem={(itemId) => setInventory((prev) =>
               applyItemChanges(prev, [], [itemId], itemDefs)
@@ -205,15 +193,14 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
             itemDefs={itemDefs}
             onExit={handleChoice}
             onItemChange={(changes) => {
-              setInventory((prev) => {
-                const newInv = applyItemChanges(prev, changes.itemsGive, changes.itemsTake, itemDefs)
-                const cleaned = cleanEquipment(newInv, equipment)
-                if (cleaned !== equipment) setEquipment(cleaned)
+              setInventory((prevInv) => {
+                const newInv = applyItemChanges(prevInv, changes.itemsGive, changes.itemsTake, itemDefs)
+                setEquipment((prevEquip) => cleanEquipment(newInv, prevEquip))
                 return newInv
               })
             }}
             onStatsChange={(changes) => setStats((prev) =>
-              applyStats(prev, changes)
+              applyStats(prev, startHp, changes)
             )}
           />
         </div>

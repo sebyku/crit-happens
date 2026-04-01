@@ -88,5 +88,5 @@ exits:
     goto: 2_dark_corridor
   - keyword: "leave"
     goto: 2_dark_corridor
-  - keyword: "go"
+  - keyword: "farewell"
     goto: 2_dark_corridor

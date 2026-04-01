@@ -49,7 +49,7 @@ rules:
       - decomposition: ".*donjon(.*)"
         reassemblies:
           - "Le donjon est un lieu sombre. L'eau bénite pourrait vous sauver la vie là-bas."
-          - "Beaucoup y sont allés et ne sont jamais revenus. Prenez de l'eau bénite — elle brûle les impurs."
+          - "Beaucoup y sont allés et ne sont jamais revenus. Prenez de l'eau bénite, elle brûle les impurs."
 
   - keyword: "qui etes"
     priority: 5

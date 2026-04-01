@@ -49,7 +49,7 @@ rules:
       - decomposition: ".*dungeon(.*)"
         reassemblies:
           - "The dungeon is a dark place. Holy water may save your life down there."
-          - "Many have gone and never returned. Take holy water — it burns the wicked."
+          - "Many have gone and never returned. Take holy water, it burns the wicked."
 
   - keyword: "who are you"
     priority: 5
