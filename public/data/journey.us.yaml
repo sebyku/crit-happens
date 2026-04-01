@@ -37,9 +37,14 @@ steps:
     reactions:
       - label: Enter the dungeon
         goto: 2_dark_corridor
+        requires_not: shadow_wolf_killed
+      - label: Enter the dungeon
+        goto: 2b_dark_corridor_cleared
+        requires: shadow_wolf_killed
       - label: Go back to the village
         goto: 1_start
 
+  # --- Dark corridor: two variants depending on wolf status ---
   2_dark_corridor:
     description: The corridor stretches ahead, splitting into two paths. From the left, you hear a faint growl. From the right, the glimmer of something shiny catches your eye.
     image: dark_corridor.jpg
@@ -48,6 +53,21 @@ steps:
         goto: 7_beast_lair
       - label: Chase the glimmer
         goto: 10_treasure_room
+      - label: Go back to the village
+        goto: 1_start
+
+  2b_dark_corridor_cleared:
+    description: The corridor stretches ahead. To the left, the passage where the beast once stood is now silent. To the right, you see a faint glimmer.
+    image: dark_corridor.jpg
+    reactions:
+      - label: Go to the beast's passage
+        goto: 20b_beast_passage
+      - label: Chase the glimmer
+        goto: 10_treasure_room
+        requires_not: treasure_looted
+      - label: Go to the treasure room
+        goto: 10b_treasure_looted
+        requires: treasure_looted
       - label: Go back to the village
         goto: 1_start
 
@@ -84,6 +104,7 @@ steps:
       - label: Return to the square
         goto: 1_start
 
+  # --- Beast encounter: only if wolf is alive ---
   7_beast_lair:
     description: A massive wolf-like creature blocks the passage. Its eyes glow a faint blue — it seems more curious than aggressive.
     image: beast_lair.jpg
@@ -109,36 +130,93 @@ steps:
     description: The creature lunges at you! Prepare for battle!
     monster: shadow_wolf
     victory_goto: 20_beast_defeated
-    flee_goto: 2_dark_corridor
+    flee_goto: 22_flee_corridor
     reactions: []
 
   20_beast_defeated:
-    description: The beast collapses. Its blue eyes dim as it lets out a final whimper. Behind its body, you notice a hidden passage carved into the stone wall.
+    description: The beast lies still. Behind its body, you notice a hidden passage carved into the stone wall. You find 80 gold coins scattered around its lair.
     image: beast_dead.jpg
+    gold: 80
+    items_give:
+      - shadow_wolf_killed
     reactions:
       - label: Enter the hidden passage
         goto: 12_secret_vault
         requires: rusted_key
       - label: Continue down the corridor
         goto: 10_treasure_room
+        requires_not: treasure_looted
+      - label: Go to the treasure room
+        goto: 10b_treasure_looted
+        requires: treasure_looted
 
+  20b_beast_passage:
+    description: The beast's lair is silent now. The hidden passage in the stone wall is still there.
+    image: beast_dead.jpg
+    reactions:
+      - label: Enter the hidden passage
+        goto: 12_secret_vault
+        requires: rusted_key
+      - label: Go back to the corridor
+        goto: 2b_dark_corridor_cleared
+
+  # --- Treasure room: two variants ---
   10_treasure_room:
     description: A small chamber glitters with gold coins scattered across the floor. In the center sits a wooden chest — and it's... humming?
     image: treasure_room.jpg
     reactions:
       - label: Open the chest
         goto: 11_mimic_encounter
+        requires_not: mimic_killed
       - label: Grab the loose coins and leave
         goto: 13_ending_modest
         gold: 15
+        items_give:
+          - treasure_looted
 
+  10b_treasure_looted:
+    description: The treasure room is empty now. Only dust and a few scattered coins remain. There is nothing left of value here.
+    image: treasure_room.jpg
+    reactions:
+      - label: Go back to the corridor
+        goto: 2b_dark_corridor_cleared
+        requires: shadow_wolf_killed
+      - label: Go back to the corridor
+        goto: 2_dark_corridor
+        requires_not: shadow_wolf_killed
+
+  # --- Mimic: only if not already killed ---
   11_mimic_encounter:
     description: The chest springs open, revealing rows of teeth! It's a mimic! Prepare for battle!
     image: mimic.jpg
     monster: mimic
-    victory_goto: 14_ending_hero
-    flee_goto: 2_dark_corridor
+    victory_goto: 21_mimic_defeated
+    flee_goto: 22_flee_corridor
     reactions: []
+
+  21_mimic_defeated:
+    description: The mimic shatters into pieces. Inside its hollow body, you find a legendary sword glowing with ancient power.
+    items_give:
+      - mimic_killed
+      - legendary_sword
+    reactions:
+      - label: Go back to the corridor
+        goto: 2_dark_corridor
+        requires_not: shadow_wolf_killed
+      - label: Go back to the corridor
+        goto: 2b_dark_corridor_cleared
+        requires: shadow_wolf_killed
+
+  22_flee_corridor:
+    description: You run back to the corridor, heart pounding.
+    image: dark_corridor.jpg
+    reactions:
+      - label: Catch your breath
+        goto: 2_dark_corridor
+        requires_not: shadow_wolf_killed
+      - label: Catch your breath
+        goto: 2b_dark_corridor_cleared
+        requires: shadow_wolf_killed
 
   12_secret_vault:
     description: You descend into a vast underground vault. Ancient treasures line the walls — relics of a forgotten civilization. At the far end, a glowing crystal pulses with energy.
@@ -155,7 +233,7 @@ steps:
     reactions: []
 
   14_ending_hero:
-    description: You defeat the mimic in an epic battle! Inside its hollow body, you find a legendary sword. Bards will sing of this day.
+    description: You emerge from the dungeon victorious, carrying a legendary sword. The village will remember your name.
     reactions: []
 
   15_ending_legendary:

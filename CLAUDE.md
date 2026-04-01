@@ -52,7 +52,7 @@ A character's `@none` rule in its specific config overrides the generic fallback
 - Roll 2: stumble (self-inflict 10% weapon damage, ceil)
 - Roll 1: fumble (self-inflict 20% weapon damage, ceil)
 
-`src/Combat.jsx` — combat UI with monster HP bar, scrolling log, Attack/Flee buttons. Tracks local HP to avoid stale state between player and monster turns in the same tick.
+`src/Combat.jsx` — combat UI with monster HP bar, scrolling log, Attack/Flee/Use buttons. Tracks local HP to avoid stale state between player and monster turns in the same tick. The Use button (🧪) shows usable combat items (items with `combat_damage`); using one deals direct damage (no dice roll) and consumes 1 from inventory.
 
 Monsters defined in `public/data/monsters/{id}.{lang}.yaml` with `name`, `hp`, `ac`, `attack`.
 
@@ -66,12 +66,14 @@ Equipment auto-cleared when items are removed from inventory (`cleanEquipment` i
 
 ### Inventory and stats
 
-`src/Inventory.jsx` — inventory bar with item icons, equipped badge ("E"), and stats (❤️ HP, 🛡️ AC, ⚔️ ATK, 💰 Gold). Clicking an item opens a dialog card with description, stat icons, and equip/unequip button. Stat values flash green/red on change. Escape key closes the dialog.
+`src/Inventory.jsx` — inventory bar with item icons, equipped badge ("E"), count badge (when count > 1), and stats (❤️ HP, 🛡️ AC, ⚔️ ATK, 💰 Gold). Clicking an item opens a dialog card with description, stat icons (⚔️ attack, 🛡️ AC, 💥 combat damage), and equip/unequip button. Stat values flash green/red on change. Escape key closes the dialog.
+
+Inventory is count-based (`{ item_id: count }`). Each item has a `max` property (default 1). Items with `hidden: true` are invisible in the UI but work as flags for conditional reactions (e.g., `shadow_wolf_killed`, `treasure_looted`).
 
 ### Conversation commerce
 
 When an ELIZA rule has `confirm: true`, the Conversation component shows a Yes/No confirmation bar instead of applying changes immediately. Rules without `confirm` apply instantly (for theft, damage, gifts). Before displaying a purchase, checks:
-- Already owned → shows "already owned" message
+- Item at max capacity → shows "already owned" message
 - Not enough gold → shows NPC response + "not enough gold" message
 
 ### YAML loading pattern
@@ -148,14 +150,17 @@ items:
   {item_id}:
     name: string                  # display name
     description: string           # flavor text (no stat numbers — shown via icons)
-    icon: filename.svg            # SVG file in public/items/
+    icon: filename.svg            # SVG file in public/items/ (optional if hidden)
+    max: number                   # optional — max stack count (default: 1)
     attack: number                # optional — attack bonus (for weapons)
     ac: number                    # optional — armor class bonus (for armor/shields)
+    combat_damage: number         # optional — direct damage when used in combat (consumable)
+    hidden: boolean               # optional — if true, invisible in inventory (used as flags)
     slots:                        # optional — if present, item is equippable
       - right_hand                # valid: head, torso, legs, feet, right_hand, left_hand
 ```
 
-Items without `slots` are not equippable (e.g., keys, quest items). Items can occupy multiple slots (e.g., `[right_hand, left_hand]` for two-handed weapons).
+Items without `slots` are not equippable (e.g., keys, quest items). Items can occupy multiple slots (e.g., `[right_hand, left_hand]` for two-handed weapons). Items with `hidden: true` are invisible flags used for game state tracking (e.g., `shadow_wolf_killed`) — they work with `requires`/`requires_not` on reactions but don't appear in the inventory bar. Items with `combat_damage` can be used in combat via the 🧪 button for direct damage (no dice roll, consumes 1 per use).
 
 ### `monsters/{id}.{lang}.yaml`
 

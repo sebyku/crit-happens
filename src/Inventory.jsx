@@ -43,7 +43,7 @@ function Inventory({ items, itemDefs, gold, hp, playerAc, playerAttack, equipmen
     setSelectedItem((prev) => (prev === itemId ? null : itemId))
   }
 
-  const itemIds = Object.keys(items).filter((id) => items[id] > 0)
+  const itemIds = Object.keys(items).filter((id) => items[id] > 0 && !itemDefs[id]?.hidden)
   const activeSelection = selectedItem && items[selectedItem] > 0 ? selectedItem : null
   const selected = activeSelection ? itemDefs[activeSelection] : null
   const selectedEquipped = activeSelection && isEquipped(activeSelection, equipment)

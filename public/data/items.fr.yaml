@@ -30,6 +30,30 @@ items:
     combat_damage: 10
     max: 5
 
+  shadow_wolf_killed:
+    name: Loup des Ombres tué
+    hidden: true
+    max: 1
+
+  mimic_killed:
+    name: Mimic tué
+    hidden: true
+    max: 1
+
+  treasure_looted:
+    name: Trésor pillé
+    hidden: true
+    max: 1
+
+  legendary_sword:
+    name: Épée légendaire
+    description: Une lame d'un pouvoir ancien trouvée à l'intérieur d'un mimic. Elle vibre d'énergie.
+    icon: legendary_sword.svg
+    attack: 12
+    max: 1
+    slots:
+      - right_hand
+
   iron_helmet:
     name: Casque en fer
     description: Un casque en fer simple mais fiable.
