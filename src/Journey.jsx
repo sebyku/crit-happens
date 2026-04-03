@@ -9,9 +9,21 @@ import Combat from './Combat.jsx'
 import Inventory from './Inventory.jsx'
 import './Journey.css'
 
+const SAVE_KEY = 'crit-happens-save'
+
 const EMPTY_EQUIPMENT = {
   head: null, torso: null, legs: null,
   feet: null, right_hand: null, left_hand: null,
+}
+
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY)
+    if (!raw) return null
+    return JSON.parse(raw)
+  } catch {
+    return null
+  }
 }
 
 function applyItemChanges(current, give = [], take = [], itemDefs = {}) {
@@ -56,19 +68,29 @@ function cleanEquipment(inv, equip) {
   return changed ? cleaned : equip
 }
 
-function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
+function Journey({ language = 'us', startGold = 10, startHp = 100, onRestart }) {
   const journey = useYaml(`data/journey.${language}.yaml`)
   const labels = useYaml(`data/messages.${language}.yaml`)
   const itemDefs = useItems(language)
-  const [currentStepId, setCurrentStepId] = useState('1_start')
-  const [inventory, setInventory] = useState({})
-  const [stats, setStats] = useState({ gold: startGold, hp: startHp })
-  const [equipment, setEquipment] = useState({ ...EMPTY_EQUIPMENT })
+
+  const save = loadSave()
+  const [currentStepId, setCurrentStepId] = useState(save?.currentStepId || '1_start')
+  const [inventory, setInventory] = useState(save?.inventory || {})
+  const [stats, setStats] = useState(save?.stats || { gold: startGold, hp: startHp })
+  const [equipment, setEquipment] = useState(save?.equipment || { ...EMPTY_EQUIPMENT })
+  const [buffs, setBuffs] = useState(save?.buffs || {})
 
   const step = journey?.steps?.[currentStepId]
   const character = useCharacter(step?.character, language)
   const monster = useMonster(step?.monster, language)
-  const playerStats = computePlayerStats(equipment, itemDefs)
+  const playerStats = computePlayerStats(equipment, itemDefs, buffs)
+
+  // Save game state to localStorage on every change
+  useEffect(() => {
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      currentStepId, inventory, stats, equipment, buffs,
+    }))
+  }, [currentStepId, inventory, stats, equipment, buffs])
 
   const stepImage = step?.image
     ? `${import.meta.env.BASE_URL}images/${step.image}`
@@ -95,6 +117,8 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
   const visibleReactions = (step.reactions || []).filter((r) => {
     if (r.requires && !hasItem(inventory, r.requires)) return false
     if (r.requires_not && hasItem(inventory, r.requires_not)) return false
+    if (r.requires_equipped && !Object.values(equipment).includes(r.requires_equipped)) return false
+    if (r.requires_not_equipped && Object.values(equipment).includes(r.requires_not_equipped)) return false
     if (r.min_gold != null && stats.gold < r.min_gold) return false
     if (r.min_hp != null && stats.hp < r.min_hp) return false
     return true
@@ -130,10 +154,13 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
   }
 
   function handleRestart() {
+    localStorage.removeItem(SAVE_KEY)
     setCurrentStepId('1_start')
     setInventory({})
     setStats({ gold: startGold, hp: startHp })
     setEquipment({ ...EMPTY_EQUIPMENT })
+    setBuffs({})
+    onRestart?.()
   }
 
   return (
@@ -166,8 +193,8 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
             labels={labels}
             inventory={inventory}
             itemDefs={itemDefs}
-            onVictory={() => handleChoice(step.victory_goto)}
-            onFlee={() => handleChoice(step.flee_goto)}
+            onVictory={() => { setBuffs({}); handleChoice(step.victory_goto) }}
+            onFlee={() => { setBuffs({}); handleChoice(step.flee_goto) }}
             onPlayerDamage={(damage) => setStats((prev) =>
               applyStats(prev, startHp, { hp: -damage })
             )}
@@ -175,6 +202,7 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
               applyItemChanges(prev, [], [itemId], itemDefs)
             )}
             onDefeat={() => {
+              setBuffs({})
               document.body.style.backgroundImage = `url(${import.meta.env.BASE_URL}images/game_over.jpg)`
               setCurrentStepId('game_over')
             }}
@@ -202,6 +230,10 @@ function Journey({ language = 'us', startGold = 10, startHp = 100 }) {
             onStatsChange={(changes) => setStats((prev) =>
               applyStats(prev, startHp, changes)
             )}
+            onBuff={(buff) => setBuffs((prev) => ({
+              attack: (prev.attack || 0) + (buff.attack || 0),
+              ac: (prev.ac || 0) + (buff.ac || 0),
+            }))}
           />
         </div>
       ) : (

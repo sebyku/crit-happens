@@ -201,4 +201,41 @@ describe('Eliza', () => {
     expect(response.text).toBe('Hmm.')
     expect(response.items_give).toBeUndefined()
   })
+
+  it('tracks insult count', () => {
+    const engine = makeEngine([
+      {
+        keyword: 'idiot',
+        priority: 5,
+        insult: true,
+        patterns: [
+          { decomposition: '.*', reassemblies: ['How rude!'] },
+        ],
+      },
+    ])
+    const r1 = engine.respond('you are an idiot')
+    expect(r1.insult).toBe(true)
+    expect(r1.insultCount).toBe(1)
+
+    const r2 = engine.respond('idiot')
+    expect(r2.insultCount).toBe(2)
+
+    const r3 = engine.respond('idiot')
+    expect(r3.insultCount).toBe(3)
+  })
+
+  it('does not increment insult count for non-insult rules', () => {
+    const engine = makeEngine([
+      {
+        keyword: 'hello',
+        priority: 3,
+        patterns: [
+          { decomposition: '.*', reassemblies: ['Hi!'] },
+        ],
+      },
+    ])
+    const response = engine.respond('hello')
+    expect(response.insult).toBeUndefined()
+    expect(response.insultCount).toBeUndefined()
+  })
 })

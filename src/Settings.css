@@ -1,0 +1,100 @@
+.settings {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 50;
+}
+
+.settings-gear {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  backdrop-filter: blur(8px);
+  font-size: 20px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: var(--accent);
+  }
+}
+
+.settings-menu {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  min-width: 180px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 95%, transparent);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.settings-label {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.settings-options {
+  display: flex;
+  gap: 4px;
+}
+
+.settings-option {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover {
+    border-color: var(--accent);
+  }
+
+  &.active {
+    border-color: var(--accent);
+    background: var(--accent-bg);
+    color: var(--accent);
+  }
+}
+
+.settings-restart {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #e53e3e;
+  background: color-mix(in srgb, #e53e3e 10%, transparent);
+  color: #e53e3e;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: color-mix(in srgb, #e53e3e 20%, transparent);
+  }
+}

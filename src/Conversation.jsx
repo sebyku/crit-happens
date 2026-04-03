@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useMemo } from 'react'
 import { Eliza, preprocess } from './eliza.js'
 import './Conversation.css'
 
-function Conversation({ character, labels, reactions, onExit, onItemChange, onStatsChange, gold, inventory, itemDefs }) {
+function Conversation({ character, labels, reactions, onExit, onItemChange, onStatsChange, onBuff, gold, inventory, itemDefs }) {
   const engine = useMemo(
     () => new Eliza(character.rules, character.reflections),
     [character]
@@ -55,6 +55,9 @@ function Conversation({ character, labels, reactions, onExit, onItemChange, onSt
     }
     if (response.gold || response.hp) {
       onStatsChange?.({ gold: response.gold, hp: response.hp })
+    }
+    if (response.buff_attack || response.buff_ac) {
+      onBuff?.({ attack: response.buff_attack, ac: response.buff_ac })
     }
   }
 

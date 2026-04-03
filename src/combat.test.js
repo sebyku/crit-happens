@@ -110,4 +110,21 @@ describe('computePlayerStats', () => {
     }
     expect(computePlayerStats(equipment, itemDefs)).toEqual({ ac: 10, attack: 1 })
   })
+
+  it('applies temporary buffs', () => {
+    const equipment = {
+      head: null, torso: null, legs: null,
+      feet: null, right_hand: 'iron_sword', left_hand: null,
+    }
+    const buffs = { attack: 3, ac: 2 }
+    expect(computePlayerStats(equipment, itemDefs, buffs)).toEqual({ ac: 12, attack: 9 })
+  })
+
+  it('applies buffs to base stats when no equipment', () => {
+    const equipment = {
+      head: null, torso: null, legs: null,
+      feet: null, right_hand: null, left_hand: null,
+    }
+    expect(computePlayerStats(equipment, itemDefs, { attack: 5 })).toEqual({ ac: 10, attack: 6 })
+  })
 })

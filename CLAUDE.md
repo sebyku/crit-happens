@@ -131,6 +131,8 @@ steps:
         goto: step_id             # target step
         requires: item_id         # optional — only shown if player has this item
         requires_not: item_id     # optional — only shown if player does NOT have this item
+        requires_equipped: item_id  # optional — only shown if item is equipped
+        requires_not_equipped: item_id  # optional — only shown if item is NOT equipped
         min_gold: number          # optional — only shown if player has >= this gold
         min_hp: number            # optional — only shown if player has >= this HP
         gold: number              # optional — gold change when choosing this reaction
@@ -212,8 +214,11 @@ rules:
   - keyword: string              # substring matched in preprocessed input (accent-free)
     priority: number             # higher wins; 0 for @none fallback
     confirm: boolean             # optional — if true, show Yes/No before applying changes
+    insult: boolean              # optional — if true, increments insult counter (for hostile NPCs)
     gold: number                 # optional — gold change when rule matches
     hp: number                   # optional — HP change when rule matches
+    buff_attack: number          # optional — temporary ATK buff (cleared after next combat)
+    buff_ac: number              # optional — temporary AC buff (cleared after next combat)
     items_give:                  # optional — items added when rule matches
       - item_id
     items_take:                  # optional — items removed when rule matches

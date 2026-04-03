@@ -6,6 +6,7 @@ import { clearYamlCache } from '../useYaml.js'
 
 beforeEach(() => {
   clearYamlCache()
+  localStorage.clear()
 })
 
 // Mock fetch to serve YAML files from public/ on disk

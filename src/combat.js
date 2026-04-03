@@ -22,7 +22,7 @@ export function resolveAttack(roll, attackerAttack, defenderAC) {
   return { hit: false, damage: 0 }
 }
 
-export function computePlayerStats(equipment, itemDefs) {
+export function computePlayerStats(equipment, itemDefs, buffs = {}) {
   let ac = 10
   let attack = 1
   const seen = new Set()
@@ -33,5 +33,7 @@ export function computePlayerStats(equipment, itemDefs) {
     if (def?.ac) ac += def.ac
     if (def?.attack) attack = Math.max(attack, def.attack)
   }
+  if (buffs.ac) ac += buffs.ac
+  if (buffs.attack) attack += buffs.attack
   return { ac, attack }
 }

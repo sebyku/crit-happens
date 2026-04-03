@@ -25,6 +25,7 @@ export class Eliza {
   constructor(rules, reflections) {
     this.rules = rules
     this.memory = []
+    this.insultCount = 0
     // Normalize reflection keys to accent-stripped lowercase
     this.reflections = {}
     for (const [key, value] of Object.entries(reflections)) {
@@ -53,6 +54,7 @@ export class Eliza {
       const response = this._applyRule(rule, text)
       storedMemory = storedMemory || this.memory.length > memSizeBefore
       if (response !== null) {
+        if (rule.insult) this.insultCount++
         return {
           text: response,
           items_give: rule.items_give,
@@ -60,6 +62,9 @@ export class Eliza {
           gold: rule.gold,
           hp: rule.hp,
           confirm: rule.confirm,
+          buff_attack: rule.buff_attack,
+          buff_ac: rule.buff_ac,
+          ...(rule.insult ? { insult: true, insultCount: this.insultCount } : {}),
         }
       }
     }
