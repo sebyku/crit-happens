@@ -22,26 +22,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `index.html` → `src/main.jsx` → `App` → `Journey` → `Conversation` | `Combat` | reactions
 
-**Journey** (`src/Journey.jsx`) is the game controller. It manages all state (current step, inventory, equipment, gold, HP) and renders one of three modes based on the current step:
+**Journey** (`src/Journey.jsx`) is the game controller. It manages all state (current step, inventory, equipment, gold, HP, buffs) and renders one of three modes based on the current step:
 - **Normal step**: description + reaction buttons
 - **Conversation step** (`character` field): ELIZA chat UI via `<Conversation>`
 - **Combat step** (`monster` field): D20 combat UI via `<Combat>`
 
+Game state is auto-saved to `localStorage` on every change. If a saved step ID no longer exists (e.g., after renumbering), the game auto-resets.
+
 ### ELIZA engine
 
-`src/eliza.js` — JS port of the [ELIZA chatbot](https://github.com/sebyku/eliza) (Weizenbaum's 1966 pattern-matching algorithm). Core algorithm: preprocess input (strip accents, lowercase) → match keywords → sort by priority → regex decomposition → fill response templates with reflected captures. Supports `@memory:` directives (store response, recall on fallback) and `@none` fallback rules. Keywords and decomposition patterns stay accent-free in YAML (engine strips both sides); only reassemblies keep proper accents. Returns `{ text, items_give, items_take, gold, hp, confirm }` — rules can trigger item/stat changes and optionally require confirmation.
+`src/eliza.js` — JS port of the [ELIZA chatbot](https://github.com/sebyku/eliza) (Weizenbaum's 1966 pattern-matching algorithm). Core algorithm: preprocess input (strip accents, lowercase) → match keywords (word-boundary regex) → sort by priority → regex decomposition → fill response templates with reflected captures. Supports `@memory:` directives (store response, recall on fallback) and `@none` fallback rules. Keywords and decomposition patterns stay accent-free in YAML (engine strips both sides); only reassemblies keep proper accents. Returns `{ text, items_give, items_take, gold, hp, confirm, buff_attack, buff_ac, insult, insultCount }`.
 
 ### Character system
 
 Characters are defined in `public/data/characters/`. Each character has an index file (e.g., `stranger.yaml`) referencing 3 config layers that get merged:
 
 1. **Generic** (`generic.{lang}.yaml`) — shared rules (greetings, yes/no, fallback)
-2. **Aggressivity** (`aggro_friendly.{lang}.yaml`) — personality tone rules
+2. **Aggressivity** (`aggro_friendly.{lang}.yaml` or `aggro_hostile.{lang}.yaml`) — personality tone rules
 3. **Specific** (`stranger.{lang}.yaml`) — character-unique rules, greetings, and `exits`
 
 Merging is done in `src/useCharacter.js`: rules arrays are concatenated (specific → aggressivity → generic); priority sorting in the engine handles precedence. Reflections come from shared `reflections.{lang}.yaml`.
 
-A character's `@none` rule in its specific config overrides the generic fallback (first match in rule order wins).
+A character's `@none` rule in its specific config overrides the generic fallback (first match in concatenated rule order).
+
+**Exit keywords** can navigate to different steps — including combat steps. This allows conversations to trigger fights (e.g., the thief attacks when insulted via exit keywords pointing to a monster step).
 
 ### D20 Combat system
 
@@ -52,7 +56,7 @@ A character's `@none` rule in its specific config overrides the generic fallback
 - Roll 2: stumble (self-inflict 10% weapon damage, ceil)
 - Roll 1: fumble (self-inflict 20% weapon damage, ceil)
 
-`src/Combat.jsx` — combat UI with monster HP bar, scrolling log, Attack/Flee/Use buttons. Tracks local HP to avoid stale state between player and monster turns in the same tick. The Use button (🧪) shows usable combat items (items with `combat_damage`); using one deals direct damage (no dice roll) and consumes 1 from inventory.
+`src/Combat.jsx` — combat UI with monster HP bar, scrolling log, Attack/Flee/Use buttons. Tracks local HP to avoid stale state between player and monster turns in the same tick. The Use button (🧪) shows usable combat items (items with `combat_damage` or `combat_hp`); using one deals direct damage (no dice roll) and consumes 1 from inventory. Items with `combat_hp` restore player HP instead of dealing damage.
 
 Monsters defined in `public/data/monsters/{id}.{lang}.yaml` with `name`, `hp`, `ac`, `attack`.
 
@@ -60,13 +64,13 @@ Monsters defined in `public/data/monsters/{id}.{lang}.yaml` with `name`, `hp`, `
 
 6 body slots: `head`, `torso`, `legs`, `feet`, `right_hand`, `left_hand`. Items define `slots` (array) and `ac`/`attack` bonuses in `public/data/items.{lang}.yaml`. Multi-slot items (e.g., two-handed weapons) occupy multiple slots.
 
-Player stats derived from equipment: base AC 10 + sum of equipped AC, attack = max(1, equipped weapon attack). `computePlayerStats()` in `combat.js` deduplicates multi-slot items to prevent double-counting.
+Player stats derived from equipment: base AC 10 + sum of equipped AC, attack = max(1, equipped weapon attack). `computePlayerStats()` in `combat.js` deduplicates multi-slot items to prevent double-counting. Temporary buffs (`buff_attack`, `buff_ac`) are added on top and cleared after each combat.
 
 Equipment auto-cleared when items are removed from inventory (`cleanEquipment` in Journey).
 
 ### Inventory and stats
 
-`src/Inventory.jsx` — inventory bar with item icons, equipped badge ("E"), count badge (when count > 1), and stats (❤️ HP, 🛡️ AC, ⚔️ ATK, 💰 Gold). Clicking an item opens a dialog card with description, stat icons (⚔️ attack, 🛡️ AC, 💥 combat damage), and equip/unequip button. Stat values flash green/red on change. Escape key closes the dialog.
+`src/Inventory.jsx` — inventory bar with item icons, equipped badge ("E"), count badge (when count > 1), and stats (❤️ HP, 🛡️ AC, ⚔️ ATK, 💰 Gold). Clicking an item opens a dialog card with description, stat icons (⚔️ attack, 🛡️ AC, 💥 combat damage, ❤️ combat HP), and equip/unequip button. Stat values flash green/red on change. Escape key closes the dialog.
 
 Inventory is count-based (`{ item_id: count }`). Each item has a `max` property (default 1). Items with `hidden: true` are invisible in the UI but work as flags for conditional reactions (e.g., `shadow_wolf_killed`, `treasure_looted`).
 
@@ -86,7 +90,17 @@ Journey steps can have an `image` field referencing a file in `public/images/`. 
 
 ### Internationalization
 
-Language set in `public/data/config.yaml` (`auto`, `fr`, or `us`). `auto` resolves from `navigator.language`. All user-facing text externalized in per-language YAML: journey, messages, characters, items, monsters.
+Language set in `public/data/config.yaml` (`auto`, `fr`, or `us`). `auto` resolves from `navigator.language`. All user-facing text externalized in per-language YAML: journey, messages, characters, items, monsters. Language can be changed at runtime via the Settings gear menu (top-right) without losing game progress.
+
+### Save system
+
+Game state (step, inventory, stats, equipment, buffs) saved to `localStorage` on every change. Restored on page reload. Cleared on "New Game" or language change. If a saved step ID doesn't exist in the journey (e.g., after content update), the game auto-resets to the start.
+
+### Settings
+
+`src/Settings.jsx` — gear icon (⚙) in top-right corner. Opens a menu with:
+- Language selector (EN/FR) — changes language without resetting progress
+- New Game button — clears save and restarts
 
 ### Deployment
 
@@ -107,6 +121,8 @@ startHp: 100          # starting HP for new game
 ### `journey.{lang}.yaml`
 
 Top-level: `title`, `description`, `steps` (map of step IDs).
+
+Step IDs follow scenario chapter numbering: `1_1_village`, `2_1_forest_trail`, `3_2_wolf_encounter`, etc.
 
 ```yaml
 title: Crit Happens
@@ -157,12 +173,13 @@ items:
     attack: number                # optional — attack bonus (for weapons)
     ac: number                    # optional — armor class bonus (for armor/shields)
     combat_damage: number         # optional — direct damage when used in combat (consumable)
+    combat_hp: number             # optional — HP restored when used in combat (consumable)
     hidden: boolean               # optional — if true, invisible in inventory (used as flags)
     slots:                        # optional — if present, item is equippable
       - right_hand                # valid: head, torso, legs, feet, right_hand, left_hand
 ```
 
-Items without `slots` are not equippable (e.g., keys, quest items). Items can occupy multiple slots (e.g., `[right_hand, left_hand]` for two-handed weapons). Items with `hidden: true` are invisible flags used for game state tracking (e.g., `shadow_wolf_killed`) — they work with `requires`/`requires_not` on reactions but don't appear in the inventory bar. Items with `combat_damage` can be used in combat via the 🧪 button for direct damage (no dice roll, consumes 1 per use).
+Items without `slots` are not equippable (e.g., keys, quest items). Items can occupy multiple slots (e.g., `[right_hand, left_hand]` for two-handed weapons). Items with `hidden: true` are invisible flags used for game state tracking (e.g., `shadow_wolf_killed`) — they work with `requires`/`requires_not` on reactions but don't appear in the inventory bar. Items with `combat_damage` can be used in combat via the 🧪 button for direct damage (no dice roll, consumes 1 per use). Items with `combat_hp` restore player HP when used in combat.
 
 ### `monsters/{id}.{lang}.yaml`
 
@@ -197,7 +214,7 @@ unequipButton: Unequip
 
 ```yaml
 generic: generic                 # generic rules layer name
-aggressivity: aggro_friendly     # aggressivity layer name
+aggressivity: aggro_friendly     # aggressivity layer name (or aggro_hostile)
 specific: blacksmith             # character-specific layer name
 reflections: reflections         # reflections file name
 ```
@@ -211,7 +228,7 @@ greetings:                       # optional — only in specific layer
   - "Welcome!"                   # random greeting shown on conversation start
 
 rules:
-  - keyword: string              # substring matched in preprocessed input (accent-free)
+  - keyword: string              # word-boundary matched in preprocessed input (accent-free)
     priority: number             # higher wins; 0 for @none fallback
     confirm: boolean             # optional — if true, show Yes/No before applying changes
     insult: boolean              # optional — if true, increments insult counter (for hostile NPCs)
@@ -242,6 +259,8 @@ exits:                           # optional — only in specific layer
 
 Rules with `keyword: "@none"` are fallback rules used when no other keyword matches. A specific layer's `@none` overrides the generic layer's (first match in concatenated rule order).
 
+Exit keywords can point to combat steps (`monster` field) to trigger fights from conversations (e.g., the thief's insult words exit to `2_4_3b_thief_fight`).
+
 ### `characters/reflections.{lang}.yaml`
 
 ```yaml
@@ -270,5 +289,7 @@ reflections:
 - Tests use `@testing-library/react` + `@testing-library/user-event`
 - Explicit `cleanup` in `afterEach` is required (tests share a document otherwise)
 - `fetch` is mocked globally to serve YAML files from `public/` on disk; `clearYamlCache()` called in `beforeEach`
+- `localStorage.clear()` called in `beforeEach` to prevent saved game state from leaking between tests
 - Journey/Conversation tests use async `findByText` since YAML loads asynchronously
+- US/FR YAML consistency tests (`yaml-consistency.test.js`) verify matching step IDs, item stats, message keys, monster stats, and character layers between languages
 - Base path is `/crit-happens/` (configured in `vite.config.js`)

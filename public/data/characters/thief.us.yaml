@@ -48,36 +48,9 @@ rules:
           - "Just a humble traveler, same as you. I know my way around, that's all."
           - "A friend! Or at least, not an enemy. That's rare around here."
 
-  - keyword: "steal"
-    priority: 6
-    insult: true
-    patterns:
-      - decomposition: ".*steal(.*)"
-        reassemblies:
-          - "Steal?! Me?! How dare you! I'm an honest man!"
-          - "That's a serious accusation! Watch your tongue!"
-
-  - keyword: "thief"
-    priority: 6
-    insult: true
-    patterns:
-      - decomposition: ".*thief(.*)"
-        reassemblies:
-          - "Thief?! You take that back right now!"
-          - "I've never stolen anything in my life! How rude!"
-
-  - keyword: "liar"
-    priority: 6
-    insult: true
-    patterns:
-      - decomposition: ".*liar(.*)"
-        reassemblies:
-          - "Liar?! That's it, I've had enough of you!"
-          - "You call me a liar?! You'll regret that!"
-
   - keyword: "gold"
     priority: 5
-    insult: true
+    gold: -1
     patterns:
       - decomposition: ".*gold(.*)"
         reassemblies:
@@ -96,6 +69,16 @@ rules:
           - "Hmm, interesting. Anyway, did I mention the goblin in the mine?"
 
 exits:
+  - keyword: "steal"
+    goto: 2_4_3b_thief_fight
+  - keyword: "thief"
+    goto: 2_4_3b_thief_fight
+  - keyword: "liar"
+    goto: 2_4_3b_thief_fight
+  - keyword: "fight"
+    goto: 2_4_3b_thief_fight
+  - keyword: "attack"
+    goto: 2_4_3b_thief_fight
   - keyword: "bye"
     goto: 2_4_4_forest_heart
   - keyword: "goodbye"

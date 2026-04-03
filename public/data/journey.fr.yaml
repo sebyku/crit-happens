@@ -88,7 +88,7 @@ steps:
   # --- Sortie du village ---
   1_5_village_exit:
     description: Vous quittez le village par un chemin de terre. La forêt se dresse devant vous, sombre et dense.
-    image: way_to_dungeon.jpg
+    image: 1_5_village_exit.jpg
     reactions:
       - label: Entrer dans la forêt
         goto: 2_1_forest_trail
@@ -98,12 +98,13 @@ steps:
   # ===== 2. FORÊT =====
   2_1_forest_trail:
     description: Un sentier forestier s'étend devant vous. Les arbres sont immenses, leurs branches bloquent la lumière. Des bruits étranges proviennent des profondeurs. Trois chemins se séparent.
+    image: 2_1_forest_trail.jpg
     reactions:
-      - label: Prendre le chemin de gauche (zone marécageuse)
+      - label: Prendre le chemin marécageux de gauche
         goto: 2_2_witch_path
-      - label: Prendre le chemin de droite (porte en pierre)
+      - label: Prendre le chemin de droite, on aperçoit une porte en pierre
         goto: 2_3_dungeon_entrance
-      - label: Aller tout droit (forêt profonde)
+      - label: Aller tout droit
         goto: 2_4_deep_forest
       - label: Retourner au village
         goto: 1_1_village
@@ -111,6 +112,7 @@ steps:
   # --- Sorcière ---
   2_2_witch_path:
     description: Le chemin mène dans une zone marécageuse. L'air est lourd, une brume verdâtre flotte au ras du sol. Plus loin, une cabane tordue se dresse dans une clairière.
+    image: 2_2_witch_path.jpg
     reactions:
       - label: Approcher la cabane
         goto: 2_2_1_witch_clearing
@@ -119,6 +121,7 @@ steps:
 
   2_2_1_witch_clearing:
     description: Une cabane tordue se dresse dans la clairière. De la fumée verte s'échappe de la cheminée. Une sorcière vous observe avec méfiance depuis le seuil.
+    image: 2_2_1_witch_clearing.jpg
     character: witch
     reactions:
       - label: Quitter la clairière
@@ -127,6 +130,7 @@ steps:
   # --- Entrée du souterrain ---
   2_3_dungeon_entrance:
     description: Une grande porte en pierre couverte de lierre bloque le chemin. D'anciennes runes sont gravées sur sa surface.
+    image: 2_3_dungeon_entrance.jpg
     reactions:
       - label: Ouvrir la porte avec la clé
         goto: 3_1_dungeon_descent
@@ -145,48 +149,40 @@ steps:
 
   # --- Forêt profonde ---
   2_4_deep_forest:
-    description: La forêt devient de plus en plus sombre et dense. Les arbres sont si serrés qu'il est difficile de passer. Des yeux brillent dans l'obscurité.
+    description: La forêt devient de plus en plus sombre et dense. Les arbres sont si serrés qu'il est difficile de passer.
+    image: 2_4_deep_forest.jpg
     reactions:
       - label: Se frayer un chemin dans la végétation
         goto: 2_4_2_vegetation_wall
         requires: legendary_sword
         requires_not: forest_cleared
-      - label: Continuer sur le chemin dégagé
-        goto: 2_4_3_thief_area
+      - label: Continuer
+        goto: 2_4_3a_thief_talk
         requires: forest_cleared
+        requires_not: thief_killed
+      - label: Continuer vers le cœur de la forêt
+        goto: 2_4_4_forest_heart
+        requires: thief_killed
       - label: Faire demi-tour
         goto: 2_1_forest_trail
 
   2_4_2_vegetation_wall:
     description: Un mur de ronces et de branches épaisses bloque le passage. Vous dégainez votre épée légendaire et taillez dans la végétation. Les ronces griffent vos bras.
+    image: 2_4_2_vegetation_wall.jpg
     hp: -5
     items_give:
       - forest_cleared
     reactions:
       - label: Continuer
-        goto: 2_4_3_thief_area
-
-  2_4_3_thief_area:
-    description: Au-delà de la végétation dégagée, vous apercevez une silhouette adossée à un arbre. Un homme en haillons vous fait signe avec un large sourire.
-    reactions:
-      - label: Parler à l'inconnu
         goto: 2_4_3a_thief_talk
-        requires_not: thief_killed
-      - label: Continuer vers le cœur de la forêt
-        goto: 2_4_4_forest_heart
-        requires: thief_killed
-      - label: Continuer vers le cœur de la forêt
-        goto: 2_4_4_forest_heart
-        requires_not: thief_killed
 
   2_4_3a_thief_talk:
-    description: L'homme commence à parler immédiatement. Il semble en savoir long sur la forêt, mais quelque chose ne va pas...
+    description: Un homme en haillons bloque le chemin. Il commence à parler avant même que vous n'ouvriez la bouche. Quelque chose ne va pas...
+    image: 2_4_3_thief_area.jpg
     character: thief
     reactions:
-      - label: Passer devant lui
+      - label: Le pousser et passer
         goto: 2_4_4_forest_heart
-      - label: Attaquer le voleur !
-        goto: 2_4_3b_thief_fight
 
   2_4_3b_thief_fight:
     description: Le voleur sort un couteau caché ! "Personne ne me traite de voleur et s'en sort vivant !"
@@ -240,6 +236,7 @@ steps:
   # ===== 3. SOUTERRAIN =====
   3_1_dungeon_descent:
     description: Vous tournez la clé rouillée dans la serrure. La porte de pierre grince et s'ouvre. Vous descendez dans l'obscurité. L'air est humide et sent la pierre moussue.
+    image: 3_1_dungeon_descent.jpg
     items_take:
       - rusted_key
     reactions:
@@ -252,7 +249,7 @@ steps:
 
   3_2_wolf_encounter:
     description: Deux yeux bleus brillent dans l'obscurité devant vous.
-    image: beast_lair.jpg
+    image: 3_2_wolf_encounter.jpeg
     reactions:
       - label: Vous voyez des yeux brillants — vous êtes terrifié !
         goto: 3_2_1_wolf_dark
@@ -263,7 +260,6 @@ steps:
 
   3_2_1_wolf_dark:
     description: Vous voyez deux yeux brillants dans le noir total ! La panique vous saisit ! Le loup, effrayé par votre réaction, bondit et vous griffe avant que vous ne puissiez réagir.
-    image: beast_lair.jpg
     hp: -20
     reactions:
       - label: Combattre le loup !

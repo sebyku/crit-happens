@@ -134,36 +134,39 @@ Le souterrain est fermé à clé.
 
 ### 2.4.1. L'orée de la forêt profonde
 
-La forêt devient de plus en plus sombre et dense. Les arbres sont si serrés qu'il est difficile de passer. Des yeux brillent dans l'obscurité. Le joueur peut entendre des craquements inquiétants.
+La forêt devient de plus en plus sombre et dense. Les arbres sont si serrés qu'il est difficile de passer. Le joueur peut entendre des craquements inquiétants.
 
 ### 2.4.2. Le mur de végétation
 
-`[requires: legendary_sword]`
-`[condition: requires_not forest_cleared]`
+`[requires: legendary_sword, requires_not: forest_cleared]`
 
 Le passage est complètement bloqué par un mur de ronces et de branches épaisses. Il faut l'épée légendaire pour se frayer un chemin.
 
 - Avec l'épée légendaire : le joueur taille dans la végétation et progresse `[hp: -5, les ronces griffent]`
-- Sans épée légendaire : impossible d'avancer, il faut retourner en arrière
+- Sans épée légendaire : le choix n'apparaît pas, il faut retourner en arrière
 
 `[flag: forest_cleared quand traversé]`
+
+Après avoir coupé le mur, le joueur arrive directement face au voleur (2.4.3) s'il est vivant, ou au cœur de la forêt (2.4.4) sinon.
 
 ### 2.4.3. Le voleur
 
 `[condition: requires forest_cleared, requires_not thief_killed]`
 
-À l'endroit où se trouvait le mur de végétation, un voleur attend les voyageurs venant du village.
+À l'endroit où se trouvait le mur de végétation, un voleur bloque le passage. La conversation est obligatoire — le joueur ne peut que lui parler ou le pousser pour passer.
 
-La conversation est obligatoire. Le voleur est bavard et connaît beaucoup de choses sur la forêt profonde et ses dangers. Mais il vole discrètement 1 pièce d'or à chaque échange `[gold: -1, pas de confirm]`.
+Le voleur est bavard et connaît beaucoup de choses sur la forêt profonde et ses dangers (la mine, le gobelin, les orques). Mais il vole discrètement 1 pièce d'or à chaque échange `[gold: -1, pas de confirm]`.
 
-Si le joueur lui fait remarquer le vol ou l'insulte, il s'énerve. `[Mécanique ELIZA : compteur d'insultes. Au bout de 3, combat obligatoire.]`
+Le seul choix visible est "Le pousser et passer" → `2_4_4_forest_heart`.
+
+Si le joueur l'insulte dans la conversation (dire "voleur", "menteur", "voler", etc.), cela déclenche immédiatement un combat via un exit ELIZA vers le step de combat `[exit keywords: steal/thief/liar/voleur/menteur → 2_4_3b_thief_fight]`.
 
 **Stats du Voleur :**
 - HP : 30, CA : 11, ATK : 5
 
 Mort, il donne 30 pièces d'or. `[flag: thief_killed, gold: +30]`
 
-Si le joueur ne l'énerve pas et ne le tue pas, il peut le quitter et continuer. Mais il le retrouvera au prochain passage (tant que `thief_killed` n'est pas actif).
+Si le joueur ne l'insulte pas et le pousse simplement, il le retrouvera au prochain passage (tant que `thief_killed` n'est pas actif).
 
 ### 2.4.4. Le cœur de la forêt
 

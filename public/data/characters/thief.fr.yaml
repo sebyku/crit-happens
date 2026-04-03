@@ -48,36 +48,9 @@ rules:
           - "Juste un humble voyageur, comme vous. Je connais le coin, c'est tout."
           - "Un ami ! Ou du moins, pas un ennemi. C'est rare par ici."
 
-  - keyword: "voler"
-    priority: 6
-    insult: true
-    patterns:
-      - decomposition: ".*voler(.*)"
-        reassemblies:
-          - "Voler ?! Moi ?! Comment osez-vous ! Je suis honnête !"
-          - "C'est une accusation grave ! Surveillez vos paroles !"
-
-  - keyword: "voleur"
-    priority: 6
-    insult: true
-    patterns:
-      - decomposition: ".*voleur(.*)"
-        reassemblies:
-          - "Voleur ?! Retirez ça immédiatement !"
-          - "Je n'ai jamais rien volé de ma vie ! Quel culot !"
-
-  - keyword: "menteur"
-    priority: 6
-    insult: true
-    patterns:
-      - decomposition: ".*menteur(.*)"
-        reassemblies:
-          - "Menteur ?! Ça suffit, j'en ai assez de vous !"
-          - "Vous me traitez de menteur ?! Vous allez le regretter !"
-
   - keyword: "or"
     priority: 5
-    insult: true
+    gold: -1
     patterns:
       - decomposition: ".*\\bor\\b(.*)"
         reassemblies:
@@ -96,6 +69,16 @@ rules:
           - "Hmm, intéressant. Au fait, je vous ai parlé du gobelin dans la mine ?"
 
 exits:
+  - keyword: "voler"
+    goto: 2_4_3b_thief_fight
+  - keyword: "voleur"
+    goto: 2_4_3b_thief_fight
+  - keyword: "menteur"
+    goto: 2_4_3b_thief_fight
+  - keyword: "combattre"
+    goto: 2_4_3b_thief_fight
+  - keyword: "attaquer"
+    goto: 2_4_3b_thief_fight
   - keyword: "au revoir"
     goto: 2_4_4_forest_heart
   - keyword: "adieu"
