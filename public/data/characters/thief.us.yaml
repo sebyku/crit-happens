@@ -1,0 +1,106 @@
+greetings:
+  - "Well, well, well... a traveler! Let me tell you about this forest."
+  - "Hey there! You look lost. I know these woods like the back of my hand."
+
+rules:
+  - keyword: "forest"
+    priority: 4
+    gold: -1
+    patterns:
+      - decomposition: ".*forest(.*)"
+        reassemblies:
+          - "The forest gets darker ahead. There's a mine at the end. Very dangerous."
+          - "Strange creatures in these parts. I've seen things you wouldn't believe."
+
+  - keyword: "mine"
+    priority: 4
+    gold: -1
+    patterns:
+      - decomposition: ".*mine(.*)"
+        reassemblies:
+          - "The mine? A goblin lives there. Big, mean, and ugly. Has a forge down there."
+          - "Miners abandoned it years ago. The goblin took over. Hoards steel like a dragon hoards gold."
+
+  - keyword: "goblin"
+    priority: 4
+    gold: -1
+    patterns:
+      - decomposition: ".*goblin(.*)"
+        reassemblies:
+          - "Nasty piece of work. Fights with a massive hammer. Very tough."
+          - "He never sleeps. Can see in the dark, too. Good luck with that."
+
+  - keyword: "danger"
+    priority: 3
+    gold: -1
+    patterns:
+      - decomposition: ".*danger(.*)"
+        reassemblies:
+          - "Everything is dangerous around here. That's why you need a guide... like me."
+          - "Wolves, goblins, orcs... this forest has it all."
+
+  - keyword: "who are you"
+    priority: 5
+    gold: -1
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Just a humble traveler, same as you. I know my way around, that's all."
+          - "A friend! Or at least, not an enemy. That's rare around here."
+
+  - keyword: "steal"
+    priority: 6
+    insult: true
+    patterns:
+      - decomposition: ".*steal(.*)"
+        reassemblies:
+          - "Steal?! Me?! How dare you! I'm an honest man!"
+          - "That's a serious accusation! Watch your tongue!"
+
+  - keyword: "thief"
+    priority: 6
+    insult: true
+    patterns:
+      - decomposition: ".*thief(.*)"
+        reassemblies:
+          - "Thief?! You take that back right now!"
+          - "I've never stolen anything in my life! How rude!"
+
+  - keyword: "liar"
+    priority: 6
+    insult: true
+    patterns:
+      - decomposition: ".*liar(.*)"
+        reassemblies:
+          - "Liar?! That's it, I've had enough of you!"
+          - "You call me a liar?! You'll regret that!"
+
+  - keyword: "gold"
+    priority: 5
+    insult: true
+    patterns:
+      - decomposition: ".*gold(.*)"
+        reassemblies:
+          - "Gold? What gold? I don't know what you're talking about!"
+          - "Are you accusing me of something?!"
+
+  - keyword: "@none"
+    priority: 0
+    gold: -1
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "As I was saying... these woods are full of surprises. Ask me anything."
+          - "Where was I? Oh yes, the forest. Fascinating place, really."
+          - "You know, I've been through here many times. Want to know about the mine? The orcs?"
+          - "Hmm, interesting. Anyway, did I mention the goblin in the mine?"
+
+exits:
+  - keyword: "bye"
+    goto: 2_4_4_forest_heart
+  - keyword: "goodbye"
+    goto: 2_4_4_forest_heart
+  - keyword: "leave"
+    goto: 2_4_4_forest_heart
+  - keyword: "enough"
+    goto: 2_4_4_forest_heart

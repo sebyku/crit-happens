@@ -1,0 +1,138 @@
+greetings:
+  - "Bienvenue ! Qu'est-ce que je vous sers ?"
+  - "Asseyez-vous, l'ami. Qu'est-ce qui vous ferait plaisir ?"
+
+rules:
+  - keyword: "manger"
+    priority: 5
+    confirm: true
+    gold: -2
+    hp: 20
+    patterns:
+      - decomposition: ".*manger(.*)"
+        reassemblies:
+          - "Un bon ragoût et du pain frais. 2 pièces d'or. Vous vous sentirez mieux."
+          - "Le meilleur repas du village. 2 pièces d'or."
+
+  - keyword: "repas"
+    priority: 5
+    confirm: true
+    gold: -2
+    hp: 20
+    patterns:
+      - decomposition: ".*repas(.*)"
+        reassemblies:
+          - "Un ragoût bien chaud, ça arrive. 2 pièces d'or."
+
+  - keyword: "boire"
+    priority: 4
+    confirm: true
+    gold: -2
+    hp: 20
+    patterns:
+      - decomposition: ".*boire(.*)"
+        reassemblies:
+          - "Une bière fraîche et un morceau de pain. 2 pièces d'or."
+          - "Voilà de quoi vous requinquer. 2 pièces d'or."
+
+  - keyword: "verre"
+    priority: 4
+    confirm: true
+    gold: -2
+    hp: 20
+    patterns:
+      - decomposition: ".*verre(.*)"
+        reassemblies:
+          - "Un verre de bière, ça marche ! 2 pièces d'or."
+          - "Voilà un bon verre. 2 pièces d'or."
+
+  - keyword: "biere"
+    priority: 4
+    confirm: true
+    gold: -2
+    hp: 20
+    patterns:
+      - decomposition: ".*biere(.*)"
+        reassemblies:
+          - "Une bière bien fraîche ! 2 pièces d'or."
+          - "La meilleure bière du village. 2 pièces d'or."
+
+  - keyword: "dormir"
+    priority: 5
+    confirm: true
+    gold: -5
+    hp: 999
+    patterns:
+      - decomposition: ".*dormir(.*)"
+        reassemblies:
+          - "Une chambre pour la nuit. 5 pièces d'or. Vous serez reposé au matin."
+          - "Les meilleurs lits du village. 5 pièces d'or."
+
+  - keyword: "auberge"
+    priority: 5
+    confirm: true
+    gold: -5
+    hp: 999
+    patterns:
+      - decomposition: ".*auberge(.*)"
+        reassemblies:
+          - "Une chambre confortable à l'étage. 5 pièces d'or pour une nuit complète."
+
+  - keyword: "foret"
+    priority: 3
+    patterns:
+      - decomposition: ".*foret(.*)"
+        reassemblies:
+          - "La forêt est dangereuse. D'étranges créatures rôdent dans le noir."
+          - "On raconte qu'une sorcière vit au fond des bois. Elle vend des potions, paraît-il."
+
+  - keyword: "sorciere"
+    priority: 3
+    patterns:
+      - decomposition: ".*sorciere(.*)"
+        reassemblies:
+          - "Elle est bizarre, mais ses potions marchent. Ne l'insultez surtout pas."
+          - "Elle vit dans une clairière marécageuse, à l'ouest du sentier."
+
+  - keyword: "souterrain"
+    priority: 3
+    patterns:
+      - decomposition: ".*souterrain(.*)"
+        reassemblies:
+          - "Il y a une entrée verrouillée dans la forêt. L'étranger dans le coin en sait peut-être plus."
+          - "Des rumeurs parlent d'un trésor caché sous terre."
+
+  - keyword: "mine"
+    priority: 3
+    patterns:
+      - decomposition: ".*mine(.*)"
+        reassemblies:
+          - "La vieille mine ? Abandonnée depuis des années. On dit qu'un gobelin s'y est installé."
+          - "Au fond de la forêt, derrière les broussailles. Il faut une bonne lame pour passer."
+
+  - keyword: "etranger"
+    priority: 3
+    patterns:
+      - decomposition: ".*etranger(.*)"
+        reassemblies:
+          - "L'encapuchonné ? Il est là depuis des jours, à murmurer des histoires de donjon et de clé."
+          - "Allez lui parler si vous êtes d'humeur aventureuse."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Un repas ? Un verre ? Ou une chambre pour dormir ? Dites le mot."
+          - "Dites manger, boire ou dormir, et je m'en occupe !"
+          - "Je peux aussi vous parler de la forêt, de la mine, ou de l'étranger dans le coin."
+
+exits:
+  - keyword: "au revoir"
+    goto: 1_2_tavern
+  - keyword: "adieu"
+    goto: 1_2_tavern
+  - keyword: "partir"
+    goto: 1_2_tavern
+  - keyword: "merci"
+    goto: 1_2_tavern

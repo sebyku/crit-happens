@@ -79,22 +79,56 @@ rules:
           - "I'm the village blacksmith. Been forging steel since I was a boy."
           - "Name's not important. What matters is the quality of my work."
 
+  - keyword: "torch"
+    priority: 5
+    confirm: true
+    gold: -1
+    items_give:
+      - torch
+    patterns:
+      - decomposition: ".*torch(.*)"
+        reassemblies:
+          - "A sturdy torch, soaked in oil. 1 gold. Essential for dark places."
+          - "You'll need light down there. 1 gold for a torch."
+
+  - keyword: "steel"
+    priority: 5
+    confirm: true
+    gold: -15
+    items_give:
+      - steel_armor
+    items_take:
+      - acier_qualite
+    patterns:
+      - decomposition: ".*steel(.*)"
+        reassemblies:
+          - "This is magnificent steel! I can forge you an armor. 15 gold for the work."
+          - "Quality steel indeed! An armor for 15 gold. My finest work."
+
+  - keyword: "armor"
+    priority: 4
+    patterns:
+      - decomposition: ".*armor(.*)"
+        reassemblies:
+          - "I've got shields and helmets. For real armor, bring me quality steel from the mine."
+          - "If you find steel in the goblin's mine, I can forge something special."
+
   - keyword: "@none"
     priority: 0
     patterns:
       - decomposition: ".*"
         reassemblies:
-          - "I sell swords, shields, and helmets. What would you like?"
-          - "Need a sword? A shield? A helmet? Just say the word."
-          - "Everything here is hand-forged. Ask about my swords, shields, or helmets."
+          - "I sell swords, shields, helmets, and torches. What would you like?"
+          - "Need a sword? A shield? A helmet? A torch? Just say the word."
+          - "Everything here is hand-forged. Ask about my swords, shields, helmets, or torches."
           - "The dungeon is no place for the unarmed. Can I interest you in something?"
 
 exits:
   - keyword: "bye"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "goodbye"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "leave"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "thanks"
-    goto: 1_start
+    goto: 1_1_village

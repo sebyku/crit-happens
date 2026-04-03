@@ -74,13 +74,27 @@ function Journey({ language = 'us', startGold = 10, startHp = 100, onRestart }) 
   const itemDefs = useItems(language)
 
   const save = loadSave()
-  const [currentStepId, setCurrentStepId] = useState(save?.currentStepId || '1_start')
+  const [currentStepId, setCurrentStepId] = useState(save?.currentStepId || '1_1_village')
   const [inventory, setInventory] = useState(save?.inventory || {})
   const [stats, setStats] = useState(save?.stats || { gold: startGold, hp: startHp })
   const [equipment, setEquipment] = useState(save?.equipment || { ...EMPTY_EQUIPMENT })
   const [buffs, setBuffs] = useState(save?.buffs || {})
 
-  const step = journey?.steps?.[currentStepId]
+  let step = journey?.steps?.[currentStepId]
+
+  // Auto-reset if saved step ID no longer exists (e.g., after renumbering)
+  if (journey && !step) {
+    localStorage.removeItem(SAVE_KEY)
+    step = journey.steps['1_1_village']
+    if (currentStepId !== '1_1_village') {
+      setCurrentStepId('1_1_village')
+      setInventory({})
+      setStats({ gold: startGold, hp: startHp })
+      setEquipment({ ...EMPTY_EQUIPMENT })
+      setBuffs({})
+    }
+  }
+
   const character = useCharacter(step?.character, language)
   const monster = useMonster(step?.monster, language)
   const playerStats = computePlayerStats(equipment, itemDefs, buffs)
@@ -155,7 +169,7 @@ function Journey({ language = 'us', startGold = 10, startHp = 100, onRestart }) 
 
   function handleRestart() {
     localStorage.removeItem(SAVE_KEY)
-    setCurrentStepId('1_start')
+    setCurrentStepId('1_1_village')
     setInventory({})
     setStats({ gold: startGold, hp: startHp })
     setEquipment({ ...EMPTY_EQUIPMENT })

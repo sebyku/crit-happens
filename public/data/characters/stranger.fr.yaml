@@ -16,10 +16,11 @@ rules:
     priority: 5
     items_give:
       - rusted_key
+      - cle_donnee
     patterns:
       - decomposition: ".*cle(.*)"
         reassemblies:
-          - "Cette clé ouvre une porte cachée derrière le repaire de la bête. Tenez, prenez-la."
+          - "Cette clé ouvre une porte dans la forêt. Tenez, prenez-la."
           - "Prenez-la. Vous saurez quand l'utiliser."
 
   - keyword: "donjon"
@@ -83,10 +84,10 @@ rules:
 
 exits:
   - keyword: "au revoir"
-    goto: 2_dark_corridor
+    goto: 1_2_tavern
   - keyword: "adieu"
-    goto: 2_dark_corridor
+    goto: 1_2_tavern
   - keyword: "partir"
-    goto: 2_dark_corridor
+    goto: 1_2_tavern
   - keyword: "quitter"
-    goto: 2_dark_corridor
+    goto: 1_2_tavern

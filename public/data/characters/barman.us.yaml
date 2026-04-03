@@ -1,0 +1,139 @@
+greetings:
+  - "Welcome! What can I get you?"
+  - "Pull up a chair, friend. What'll it be?"
+
+rules:
+  - keyword: "eat"
+    priority: 5
+    confirm: true
+    gold: -2
+    hp: 20
+    patterns:
+      - decomposition: ".*eat(.*)"
+        reassemblies:
+          - "A warm stew and fresh bread. 2 gold. You'll feel better in no time."
+          - "Best meal in the village. 2 gold and you'll be good as new."
+
+  - keyword: "food"
+    priority: 5
+    confirm: true
+    gold: -2
+    hp: 20
+    patterns:
+      - decomposition: ".*food(.*)"
+        reassemblies:
+          - "Hot stew coming right up. 2 gold."
+          - "Hungry? I've got just the thing. 2 gold."
+
+  - keyword: "drink"
+    priority: 4
+    confirm: true
+    gold: -2
+    hp: 20
+    patterns:
+      - decomposition: ".*drink(.*)"
+        reassemblies:
+          - "A cold ale and some bread. 2 gold. Just what you need."
+          - "Here's a drink and a bite. 2 gold."
+
+  - keyword: "ale"
+    priority: 4
+    confirm: true
+    gold: -2
+    hp: 20
+    patterns:
+      - decomposition: ".*ale(.*)"
+        reassemblies:
+          - "One cold ale, coming right up! 2 gold."
+          - "The finest ale in the village. 2 gold."
+
+  - keyword: "beer"
+    priority: 4
+    confirm: true
+    gold: -2
+    hp: 20
+    patterns:
+      - decomposition: ".*beer(.*)"
+        reassemblies:
+          - "A nice cold beer. 2 gold."
+          - "Best beer around. 2 gold."
+
+  - keyword: "sleep"
+    priority: 5
+    confirm: true
+    gold: -5
+    hp: 999
+    patterns:
+      - decomposition: ".*sleep(.*)"
+        reassemblies:
+          - "A room for the night. 5 gold. You'll wake up fully rested."
+          - "Best beds in the village. 5 gold and a full night's rest."
+
+  - keyword: "inn"
+    priority: 5
+    confirm: true
+    gold: -5
+    hp: 999
+    patterns:
+      - decomposition: ".*inn(.*)"
+        reassemblies:
+          - "A comfortable room upstairs. 5 gold for a full rest."
+
+  - keyword: "forest"
+    priority: 3
+    patterns:
+      - decomposition: ".*forest(.*)"
+        reassemblies:
+          - "The forest is dangerous. Strange creatures roam in the dark."
+          - "I've heard tales of a witch living deep in the woods. Sells potions, they say."
+
+  - keyword: "witch"
+    priority: 3
+    patterns:
+      - decomposition: ".*witch(.*)"
+        reassemblies:
+          - "She's odd, but her potions work. Just don't insult her."
+          - "Lives in a swamp clearing, west of the forest trail."
+
+  - keyword: "dungeon"
+    priority: 3
+    patterns:
+      - decomposition: ".*dungeon(.*)"
+        reassemblies:
+          - "There's a locked entrance in the forest. Some stranger at that corner table might know more."
+          - "I've heard rumors of a treasure hidden underground."
+
+  - keyword: "mine"
+    priority: 3
+    patterns:
+      - decomposition: ".*mine(.*)"
+        reassemblies:
+          - "The old mine? Abandoned years ago. They say a goblin moved in."
+          - "Deep in the forest, past the thick brush. You'd need a good blade to get through."
+
+  - keyword: "stranger"
+    priority: 3
+    patterns:
+      - decomposition: ".*stranger(.*)"
+        reassemblies:
+          - "That hooded fellow? He's been here for days, whispering about dungeons and keys."
+          - "Go talk to him if you're feeling adventurous."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Say eat, drink, or sleep, and I'll sort you out!"
+          - "Want to eat, drink, or sleep? Just say the word."
+          - "I can also tell you about the forest, the mine, or that stranger in the corner."
+
+exits:
+  - keyword: "bye"
+    goto: 1_2_tavern
+  - keyword: "goodbye"
+    goto: 1_2_tavern
+  - keyword: "leave"
+    goto: 1_2_tavern
+  - keyword: "thanks"
+    goto: 1_2_tavern

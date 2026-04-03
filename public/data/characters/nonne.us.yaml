@@ -1,0 +1,76 @@
+greetings:
+  - "Welcome, child. These are dark times for our church."
+  - "Peace be with you. I have grave news, I'm afraid."
+
+rules:
+  - keyword: "priest"
+    priority: 5
+    patterns:
+      - decomposition: ".*priest(.*)"
+        reassemblies:
+          - "Father Aldric was taken by the orcs during a pilgrimage. He... did not survive."
+          - "The orcs killed him on the gloomy path in the forest. His body is still there."
+
+  - keyword: "orc"
+    priority: 5
+    patterns:
+      - decomposition: ".*orc(.*)"
+        reassemblies:
+          - "The orcs have a lair deep in the forest. I have a map that might help you find it."
+          - "They are savage creatures. But Father Aldric deserves a proper burial."
+
+  - keyword: "map"
+    priority: 5
+    items_give:
+      - carte_orques
+    patterns:
+      - decomposition: ".*map(.*)"
+        reassemblies:
+          - "Here, take this map. It shows the path to the orc lair. Be careful."
+          - "This map was drawn by a survivor. Follow it to find the orcs."
+
+  - keyword: "quest"
+    priority: 4
+    patterns:
+      - decomposition: ".*quest(.*)"
+        reassemblies:
+          - "Please, bring back Father Aldric's remains. He deserves to rest in peace."
+          - "Find the orc lair, recover his body, and return here. I will bless you for your courage."
+
+  - keyword: "heal"
+    priority: 4
+    hp: 10
+    patterns:
+      - decomposition: ".*heal(.*)"
+        reassemblies:
+          - "Let me tend to your wounds. May the light restore you."
+          - "Be still. The divine will heal you."
+
+  - keyword: "bless"
+    priority: 4
+    hp: 10
+    patterns:
+      - decomposition: ".*bless(.*)"
+        reassemblies:
+          - "May the light protect you on your journey. You are healed."
+          - "I offer you my blessing and healing. Go with courage."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Father Aldric was killed by orcs. I have a map to their lair if you wish to help."
+          - "I can heal your wounds. Just ask."
+          - "Will you help recover Father Aldric's remains from the orcs?"
+          - "Ask me about the orcs, the priest, or if you need healing."
+
+exits:
+  - keyword: "bye"
+    goto: 1_1_village
+  - keyword: "goodbye"
+    goto: 1_1_village
+  - keyword: "leave"
+    goto: 1_1_village
+  - keyword: "thanks"
+    goto: 1_1_village

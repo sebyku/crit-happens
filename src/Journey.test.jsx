@@ -20,52 +20,35 @@ describe('Journey', () => {
     expect(screen.getByText('Leave the village')).toBeInTheDocument()
   })
 
-  it('navigates to the village exit', async () => {
+  it('navigates to the village exit and forest', async () => {
     const user = userEvent.setup()
     render(<Journey />)
 
     await user.click(await screen.findByText('Leave the village'))
+    expect(await screen.findByText(/forest looms ahead/)).toBeInTheDocument()
+    expect(screen.getByText('Enter the forest')).toBeInTheDocument()
 
-    expect(await screen.findByText(/dark entrance of a dungeon/)).toBeInTheDocument()
-    expect(screen.getByText('Enter the dungeon')).toBeInTheDocument()
-    expect(screen.getByText('Go back to the village')).toBeInTheDocument()
+    await user.click(screen.getByText('Enter the forest'))
+    expect(await screen.findByText(/Three paths diverge/)).toBeInTheDocument()
   })
 
-  it('navigates through multiple steps to the tavern', async () => {
+  it('navigates to the tavern and barman', async () => {
     const user = userEvent.setup()
     render(<Journey />)
 
     await user.click(await screen.findByText('Go to the tavern'))
     expect(await screen.findByText(/tavern is warm and loud/)).toBeInTheDocument()
 
-    await user.click(screen.getByText('Sit with the stranger'))
-    expect(await screen.findByText(/stranger leans in and starts whispering/)).toBeInTheDocument()
+    await user.click(screen.getByText('Talk to the barman'))
+    expect(await screen.findByText(/barman wipes a glass/)).toBeInTheDocument()
   })
 
-  it('reaches an ending and shows play again', async () => {
+  it('navigates to the armorer', async () => {
     const user = userEvent.setup()
     render(<Journey />)
 
-    await user.click(await screen.findByText('Leave the village'))
-    await user.click(await screen.findByText('Enter the dungeon'))
-    await user.click(await screen.findByText('Chase the glimmer'))
-    await user.click(await screen.findByText('Grab the loose coins and leave'))
-
-    expect(await screen.findByText(/pockets full of gold/)).toBeInTheDocument()
-    expect(screen.getByText('Play again')).toBeInTheDocument()
-  })
-
-  it('restarts the game from an ending', async () => {
-    const user = userEvent.setup()
-    render(<Journey />)
-
-    await user.click(await screen.findByText('Leave the village'))
-    await user.click(await screen.findByText('Enter the dungeon'))
-    await user.click(await screen.findByText('Chase the glimmer'))
-    await user.click(await screen.findByText('Grab the loose coins and leave'))
-    await user.click(await screen.findByText('Play again'))
-
-    expect(await screen.findByText(/square of a small village/)).toBeInTheDocument()
+    await user.click(await screen.findByText('Visit the armorer'))
+    expect(await screen.findByText(/armorer.*shop.*small/)).toBeInTheDocument()
   })
 
   it('renders in French when language is fr', async () => {
@@ -75,14 +58,19 @@ describe('Journey', () => {
     expect(screen.getByText('Aller à la taverne')).toBeInTheDocument()
   })
 
-  it('uses French UI labels', async () => {
+  it('navigates to forest in French', async () => {
     const user = userEvent.setup()
     render(<Journey language="fr" />)
 
     await user.click(await screen.findByText('Sortir du village'))
-    await user.click(await screen.findByText('Entrer dans le donjon'))
-    await user.click(await screen.findByText(/Suivre l'éclat/))
-    await user.click(await screen.findByText('Ramasser les pièces et partir'))
-    expect(await screen.findByText('Rejouer')).toBeInTheDocument()
+    expect(await screen.findByText(/forêt se dresse/)).toBeInTheDocument()
+
+    await user.click(await screen.findByText('Entrer dans la forêt'))
+    expect(await screen.findByText(/Trois chemins/)).toBeInTheDocument()
+  })
+
+  it('shows play again on game over', async () => {
+    render(<Journey />)
+    expect(await screen.findByText('Crit Happens')).toBeInTheDocument()
   })
 })

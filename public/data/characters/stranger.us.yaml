@@ -16,10 +16,11 @@ rules:
     priority: 5
     items_give:
       - rusted_key
+      - cle_donnee
     patterns:
       - decomposition: ".*key(.*)"
         reassemblies:
-          - "This key opens a door hidden behind the beast's lair. Here, take it."
+          - "This key opens a door in the forest. Here, take it."
           - "Take it. You'll know when to use it."
 
   - keyword: "dungeon"
@@ -83,10 +84,10 @@ rules:
 
 exits:
   - keyword: "bye"
-    goto: 2_dark_corridor
+    goto: 1_2_tavern
   - keyword: "goodbye"
-    goto: 2_dark_corridor
+    goto: 1_2_tavern
   - keyword: "leave"
-    goto: 2_dark_corridor
+    goto: 1_2_tavern
   - keyword: "farewell"
-    goto: 2_dark_corridor
+    goto: 1_2_tavern

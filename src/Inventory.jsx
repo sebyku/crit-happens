@@ -102,11 +102,12 @@ function Inventory({ items, itemDefs, gold, hp, playerAc, playerAttack, equipmen
             <div className="item-card-divider" />
             <h2 className="item-card-name">{selected.name}</h2>
             <p className="item-card-description">{selected.description}</p>
-            {(selected.ac || selected.attack || selected.combat_damage) && (
+            {(selected.ac || selected.attack || selected.combat_damage || selected.combat_hp) && (
               <div className="item-card-stats">
                 {selected.attack > 0 && <span className="item-stat">⚔️ +{selected.attack}</span>}
                 {selected.ac > 0 && <span className="item-stat">🛡️ +{selected.ac}</span>}
                 {selected.combat_damage > 0 && <span className="item-stat">💥 {selected.combat_damage}</span>}
+                {selected.combat_hp > 0 && <span className="item-stat">❤️ +{selected.combat_hp}</span>}
               </div>
             )}
             {selected.slots && (

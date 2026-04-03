@@ -1,0 +1,76 @@
+greetings:
+  - "Bienvenue, mon enfant. Ce sont des temps sombres pour notre église."
+  - "La paix soit avec vous. J'ai de tristes nouvelles, hélas."
+
+rules:
+  - keyword: "pretre"
+    priority: 5
+    patterns:
+      - decomposition: ".*pretre(.*)"
+        reassemblies:
+          - "Le père Aldric a été enlevé par les orques lors d'un pèlerinage. Il... n'a pas survécu."
+          - "Les orques l'ont tué sur le chemin lugubre dans la forêt. Son corps est encore là-bas."
+
+  - keyword: "orque"
+    priority: 5
+    patterns:
+      - decomposition: ".*orque(.*)"
+        reassemblies:
+          - "Les orques ont un repaire au fond de la forêt. J'ai une carte qui pourrait vous aider."
+          - "Ce sont des créatures sauvages. Mais le père Aldric mérite une sépulture digne."
+
+  - keyword: "carte"
+    priority: 5
+    items_give:
+      - carte_orques
+    patterns:
+      - decomposition: ".*carte(.*)"
+        reassemblies:
+          - "Tenez, prenez cette carte. Elle montre le chemin vers le repaire des orques. Soyez prudent."
+          - "Cette carte a été dessinée par un survivant. Suivez-la pour trouver les orques."
+
+  - keyword: "quete"
+    priority: 4
+    patterns:
+      - decomposition: ".*quete(.*)"
+        reassemblies:
+          - "Je vous en prie, ramenez la dépouille du père Aldric. Il mérite de reposer en paix."
+          - "Trouvez le repaire des orques, récupérez son corps et revenez ici. Je vous bénirai."
+
+  - keyword: "soigner"
+    priority: 4
+    hp: 10
+    patterns:
+      - decomposition: ".*soigner(.*)"
+        reassemblies:
+          - "Laissez-moi soigner vos blessures. Que la lumière vous restaure."
+          - "Ne bougez pas. Le divin vous guérira."
+
+  - keyword: "benir"
+    priority: 4
+    hp: 10
+    patterns:
+      - decomposition: ".*benir(.*)"
+        reassemblies:
+          - "Que la lumière vous protège dans votre voyage. Vous êtes soigné."
+          - "Je vous offre ma bénédiction et mes soins. Allez avec courage."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Le père Aldric a été tué par les orques. J'ai une carte de leur repaire si vous voulez aider."
+          - "Je peux soigner vos blessures. Demandez simplement."
+          - "Voulez-vous aider à récupérer la dépouille du père Aldric ?"
+          - "Demandez-moi à propos des orques, du prêtre, ou si vous avez besoin de soins."
+
+exits:
+  - keyword: "au revoir"
+    goto: 1_1_village
+  - keyword: "adieu"
+    goto: 1_1_village
+  - keyword: "partir"
+    goto: 1_1_village
+  - keyword: "merci"
+    goto: 1_1_village

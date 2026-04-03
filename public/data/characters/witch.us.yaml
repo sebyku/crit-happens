@@ -1,0 +1,120 @@
+greetings:
+  - "What do you want? Can't you see I'm busy?"
+  - "Another fool at my door. Speak quickly or leave."
+
+rules:
+  - keyword: "potion"
+    priority: 5
+    patterns:
+      - decomposition: ".*potion(.*)"
+        reassemblies:
+          - "Potions? I have healing, strength, and protection. Which one?"
+          - "I brew the best potions in this wretched forest. What do you need?"
+
+  - keyword: "healing"
+    priority: 5
+    confirm: true
+    gold: -5
+    items_give:
+      - healing_potion
+    patterns:
+      - decomposition: ".*heal(.*)"
+        reassemblies:
+          - "A healing potion. 5 gold. It'll mend your pathetic wounds."
+          - "Green and bubbling. 5 gold. Don't ask what's in it."
+
+  - keyword: "strength"
+    priority: 5
+    confirm: true
+    gold: -8
+    buff_attack: 3
+    patterns:
+      - decomposition: ".*strength(.*)"
+        reassemblies:
+          - "Strength potion. 8 gold. You'll hit harder for a while."
+          - "Liquid courage. 8 gold. The effect won't last long."
+
+  - keyword: "force"
+    priority: 5
+    confirm: true
+    gold: -8
+    buff_attack: 3
+    patterns:
+      - decomposition: ".*force(.*)"
+        reassemblies:
+          - "A strength brew. 8 gold. Temporary, of course."
+
+  - keyword: "protection"
+    priority: 5
+    confirm: true
+    gold: -8
+    buff_ac: 3
+    patterns:
+      - decomposition: ".*protect(.*)"
+        reassemblies:
+          - "Protection potion. 8 gold. Your skin will harden temporarily."
+          - "Armor in a bottle. 8 gold. Don't waste it."
+
+  - keyword: "stupid"
+    priority: 6
+    insult: true
+    hp: -15
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "You dare?! Feel my wrath!"
+          - "Insolent worm! That'll cost you!"
+
+  - keyword: "ugly"
+    priority: 6
+    insult: true
+    hp: -15
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "How dare you! Take this!"
+          - "Mirror, mirror... ZAP!"
+
+  - keyword: "old"
+    priority: 6
+    insult: true
+    hp: -15
+    patterns:
+      - decomposition: ".*old(.*)"
+        reassemblies:
+          - "OLD?! I'll show you old!"
+          - "Age brings power, you fool!"
+
+  - keyword: "who are you"
+    priority: 5
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "I am none of your business. Buy something or leave."
+          - "A witch. Isn't it obvious? Now state your purpose."
+
+  - keyword: "forest"
+    priority: 3
+    patterns:
+      - decomposition: ".*forest(.*)"
+        reassemblies:
+          - "This forest is mine. The creatures here answer to me."
+          - "Dangerous place for someone as weak as you."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "I sell potions. Healing, strength, protection. Buy or leave."
+          - "Stop wasting my time. Do you want a potion or not?"
+          - "Healing for 5 gold, strength or protection for 8. Decide."
+          - "You're still here? Buy something or get out."
+
+exits:
+  - keyword: "bye"
+    goto: 2_1_forest_trail
+  - keyword: "goodbye"
+    goto: 2_1_forest_trail
+  - keyword: "leave"
+    goto: 2_1_forest_trail

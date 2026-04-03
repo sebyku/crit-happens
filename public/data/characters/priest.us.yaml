@@ -71,10 +71,10 @@ rules:
 
 exits:
   - keyword: "bye"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "goodbye"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "leave"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "thanks"
-    goto: 1_start
+    goto: 1_1_village

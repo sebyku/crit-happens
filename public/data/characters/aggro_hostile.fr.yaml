@@ -1,0 +1,24 @@
+rules:
+  - keyword: "s'il vous plait"
+    priority: 2
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Ne mendiez pas. C'est pathétique."
+          - "Les bonnes manières ne vous sauveront pas ici."
+
+  - keyword: "merci"
+    priority: 2
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Gardez vos remerciements. Ça m'est égal."
+          - "La gratitude ne vaut rien pour moi."
+
+  - keyword: "aide"
+    priority: 2
+    patterns:
+      - decomposition: ".*aide(.*)"
+        reassemblies:
+          - "Débrouillez-vous. Je ne suis pas votre servante."
+          - "Pourquoi devrais-je aider quelqu'un comme vous ?"

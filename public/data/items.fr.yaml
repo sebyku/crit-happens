@@ -23,12 +23,72 @@ items:
     slots:
       - left_hand
 
+  iron_helmet:
+    name: Casque en fer
+    description: Un casque en fer simple mais fiable.
+    icon: iron_helmet.svg
+    ac: 1
+    max: 1
+    slots:
+      - head
+
+  torch:
+    name: Torche
+    description: Une torche en bois imbibée d'huile. Indispensable dans les lieux sombres.
+    icon: torch.svg
+    max: 1
+    slots:
+      - left_hand
+
   holy_water:
     name: Eau bénite
     description: Une fiole d'eau consacrée. Lancez-la sur un monstre pour infliger des dégâts.
     icon: holy_water.svg
     combat_damage: 10
     max: 5
+
+  healing_potion:
+    name: Potion de soin
+    description: Une potion verte bouillonnante. Restaure de la vie en combat.
+    icon: healing_potion.svg
+    combat_hp: 30
+    max: 3
+
+  legendary_sword:
+    name: Épée légendaire
+    description: Une lame d'un pouvoir ancien trouvée à l'intérieur d'un mimic. Elle vibre d'énergie.
+    icon: legendary_sword.svg
+    attack: 12
+    max: 1
+    slots:
+      - right_hand
+
+  acier_qualite:
+    name: Acier de qualité
+    description: Un lingot d'acier rare récupéré dans le repaire du gobelin.
+    icon: acier_qualite.svg
+    max: 1
+
+  steel_armor:
+    name: Armure en acier
+    description: Une armure forgée dans un acier de qualité exceptionnelle.
+    icon: steel_armor.svg
+    ac: 4
+    max: 1
+    slots:
+      - torso
+
+  carte_orques:
+    name: Carte des orques
+    description: Une carte dessinée à la main montrant le chemin vers le repaire des orques.
+    icon: carte_orques.svg
+    max: 1
+
+  # Flags cachés
+  cle_donnee:
+    name: Clé donnée
+    hidden: true
+    max: 1
 
   shadow_wolf_killed:
     name: Loup des Ombres tué
@@ -45,20 +105,37 @@ items:
     hidden: true
     max: 1
 
-  legendary_sword:
-    name: Épée légendaire
-    description: Une lame d'un pouvoir ancien trouvée à l'intérieur d'un mimic. Elle vibre d'énergie.
-    icon: legendary_sword.svg
-    attack: 12
+  forest_cleared:
+    name: Forêt dégagée
+    hidden: true
     max: 1
-    slots:
-      - right_hand
 
-  iron_helmet:
-    name: Casque en fer
-    description: Un casque en fer simple mais fiable.
-    icon: iron_helmet.svg
-    ac: 1
+  thief_killed:
+    name: Voleur tué
+    hidden: true
     max: 1
-    slots:
-      - head
+
+  pretre_mort:
+    name: Prêtre mort
+    hidden: true
+    max: 1
+
+  mine_repos_fouille:
+    name: Salle de repos fouillée
+    hidden: true
+    max: 1
+
+  mine_coffre_ouvert:
+    name: Coffre ouvert
+    hidden: true
+    max: 1
+
+  mine_eboulement_degage:
+    name: Éboulement dégagé
+    hidden: true
+    max: 1
+
+  gobelin_killed:
+    name: Gobelin tué
+    hidden: true
+    max: 1

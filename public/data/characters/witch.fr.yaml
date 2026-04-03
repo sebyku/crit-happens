@@ -1,0 +1,121 @@
+greetings:
+  - "Qu'est-ce que vous voulez ? Vous voyez pas que je suis occupée ?"
+  - "Encore un imbécile à ma porte. Parlez vite ou partez."
+
+rules:
+  - keyword: "potion"
+    priority: 5
+    patterns:
+      - decomposition: ".*potion(.*)"
+        reassemblies:
+          - "Des potions ? J'ai soin, force et protection. Laquelle ?"
+          - "Je prépare les meilleures potions de cette forêt maudite. Que voulez-vous ?"
+
+  - keyword: "soin"
+    priority: 5
+    confirm: true
+    gold: -5
+    items_give:
+      - healing_potion
+    patterns:
+      - decomposition: ".*soin(.*)"
+        reassemblies:
+          - "Une potion de soin. 5 pièces d'or. Ça soignera vos blessures pathétiques."
+          - "Verte et bouillonnante. 5 pièces d'or. Ne demandez pas ce qu'il y a dedans."
+
+  - keyword: "guerir"
+    priority: 5
+    confirm: true
+    gold: -5
+    items_give:
+      - healing_potion
+    patterns:
+      - decomposition: ".*guerir(.*)"
+        reassemblies:
+          - "Une potion de soin. 5 pièces d'or."
+
+  - keyword: "force"
+    priority: 5
+    confirm: true
+    gold: -8
+    buff_attack: 3
+    patterns:
+      - decomposition: ".*force(.*)"
+        reassemblies:
+          - "Potion de force. 8 pièces d'or. Vous frapperez plus fort un moment."
+          - "Du courage liquide. 8 pièces d'or. L'effet ne dure pas."
+
+  - keyword: "protection"
+    priority: 5
+    confirm: true
+    gold: -8
+    buff_ac: 3
+    patterns:
+      - decomposition: ".*protect(.*)"
+        reassemblies:
+          - "Potion de protection. 8 pièces d'or. Votre peau durcira temporairement."
+          - "Une armure en bouteille. 8 pièces d'or. Ne la gaspillez pas."
+
+  - keyword: "stupide"
+    priority: 6
+    insult: true
+    hp: -15
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Vous osez ?! Subissez ma colère !"
+          - "Ver insolent ! Ça va vous coûter cher !"
+
+  - keyword: "moche"
+    priority: 6
+    insult: true
+    hp: -15
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Comment osez-vous ! Prenez ça !"
+          - "Miroir, miroir... ZAP !"
+
+  - keyword: "vieille"
+    priority: 6
+    insult: true
+    hp: -15
+    patterns:
+      - decomposition: ".*vieille(.*)"
+        reassemblies:
+          - "VIEILLE ?! Je vais vous montrer !"
+          - "L'âge apporte le pouvoir, imbécile !"
+
+  - keyword: "qui etes"
+    priority: 5
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Ça ne vous regarde pas. Achetez quelque chose ou partez."
+          - "Une sorcière. C'est pas évident ? Dites ce que vous voulez."
+
+  - keyword: "foret"
+    priority: 3
+    patterns:
+      - decomposition: ".*foret(.*)"
+        reassemblies:
+          - "Cette forêt est à moi. Les créatures ici m'obéissent."
+          - "Endroit dangereux pour quelqu'un d'aussi faible que vous."
+
+  - keyword: "@none"
+    priority: 0
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Je vends des potions. Soin, force, protection. Achetez ou partez."
+          - "Arrêtez de me faire perdre mon temps. Vous voulez une potion ou non ?"
+          - "Soin 5 pièces, force ou protection 8 pièces. Décidez-vous."
+          - "Vous êtes encore là ? Achetez ou dégagez."
+
+exits:
+  - keyword: "au revoir"
+    goto: 2_1_forest_trail
+  - keyword: "adieu"
+    goto: 2_1_forest_trail
+  - keyword: "partir"
+    goto: 2_1_forest_trail

@@ -2,242 +2,536 @@ title: Crit Happens
 description: Un voyage où chaque choix compte
 
 steps:
-  1_start:
+  # ===== 1. VILLAGE =====
+  1_1_village:
     description: Vous êtes sur la place d'un petit village. Une fontaine coule doucement au centre. Autour de vous, quelques bâtiments attirent votre attention.
     image: village_square.jpg
     reactions:
       - label: Aller à la taverne
-        goto: 3_tavern
+        goto: 1_2_tavern
       - label: Aller chez l'armurier
-        goto: 17_armorer
+        goto: 1_3_armorer
       - label: Aller à l'église
-        goto: 18_church
+        goto: 1_4_1_church
+        requires_not: pretre_mort
+      - label: Aller à l'église
+        goto: 1_4_2_church_nonne
+        requires: pretre_mort
       - label: Sortir du village
-        goto: 19_village_exit
+        goto: 1_5_village_exit
 
-  17_armorer:
-    description: L'échoppe de l'armurier est petite mais bien rangée. Des épées, boucliers et casques s'alignent sur les murs. Le forgeron vous accueille avec un sourire chaleureux.
+  # --- Taverne ---
+  1_2_tavern:
+    description: La taverne est chaleureuse et bruyante. Un étranger encapuchonné vous fait signe depuis une table dans un coin.
+    image: tavern.jpg
+    reactions:
+      - label: Parler au barman
+        goto: 1_2_1_barman
+      - label: S'asseoir avec l'étranger
+        goto: 1_2_2_stranger
+        requires_not: cle_donnee
+      - label: Regarder la table vide dans le coin
+        goto: 1_2_3_empty_corner
+        requires: cle_donnee
+      - label: Retourner sur la place
+        goto: 1_1_village
+
+  1_2_1_barman:
+    description: Le barman essuie un verre et vous regarde avec un sourire amical.
+    image: tavern.jpg
+    character: barman
+    reactions:
+      - label: Retourner à la taverne
+        goto: 1_2_tavern
+
+  1_2_2_stranger:
+    description: Un étranger encapuchonné se penche vers vous et commence à murmurer. Il semble connaître des choses sur le donjon.
+    image: tavern_stranger.jpg
+    character: stranger
+    reactions:
+      - label: Retourner à la taverne
+        goto: 1_2_tavern
+
+  1_2_3_empty_corner:
+    description: La table dans le coin où l'étranger était assis est vide. Seule une légère odeur de tabac à pipe persiste.
+    image: tavern.jpg
+    reactions:
+      - label: Retourner à la taverne
+        goto: 1_2_tavern
+
+  # --- Armurier ---
+  1_3_armorer:
+    description: L'échoppe de l'armurier est petite mais bien rangée. Des épées, boucliers, casques et torches s'alignent sur les murs. Le forgeron vous accueille avec un sourire chaleureux.
     image: armorer.jpg
     character: blacksmith
     reactions:
       - label: Retourner sur la place
-        goto: 1_start
+        goto: 1_1_village
 
-  18_church:
+  # --- Église ---
+  1_4_1_church:
     description: L'église est calme et fraîche. La lumière filtre à travers les vitraux, projetant des couleurs sur les bancs de bois. Un prêtre vous remarque et s'approche avec un sourire bienveillant.
     image: church.jpg
     character: priest
     reactions:
       - label: Retourner sur la place
-        goto: 1_start
+        goto: 1_1_village
 
-  19_village_exit:
-    description: Vous quittez le village par un chemin de terre. Au loin, à travers les arbres, vous apercevez l'entrée sombre d'un donjon. Le chemin y mène directement.
+  1_4_2_church_nonne:
+    description: L'église est sombre. Des draps noirs couvrent l'autel. Une nonne est agenouillée en prière. Elle lève les yeux, embués de larmes, en vous voyant entrer.
+    image: church.jpg
+    character: nonne
+    reactions:
+      - label: Retourner sur la place
+        goto: 1_1_village
+
+  # --- Sortie du village ---
+  1_5_village_exit:
+    description: Vous quittez le village par un chemin de terre. La forêt se dresse devant vous, sombre et dense.
     image: way_to_dungeon.jpg
     reactions:
-      - label: Entrer dans le donjon
-        goto: 2_dark_corridor
-        requires_not: shadow_wolf_killed
-      - label: Entrer dans le donjon
-        goto: 2b_dark_corridor_cleared
-        requires: shadow_wolf_killed
+      - label: Entrer dans la forêt
+        goto: 2_1_forest_trail
       - label: Retourner au village
-        goto: 1_start
+        goto: 1_1_village
 
-  # --- Couloir sombre : deux variantes selon le loup ---
-  2_dark_corridor:
-    description: Le couloir s'étend devant vous, se divisant en deux chemins. À gauche, vous entendez un grognement sourd. À droite, l'éclat de quelque chose de brillant attire votre regard.
-    image: dark_corridor.jpg
+  # ===== 2. FORÊT =====
+  2_1_forest_trail:
+    description: Un sentier forestier s'étend devant vous. Les arbres sont immenses, leurs branches bloquent la lumière. Des bruits étranges proviennent des profondeurs. Trois chemins se séparent.
     reactions:
-      - label: Suivre le grognement
-        goto: 7_beast_lair
-      - label: Suivre l'éclat
-        goto: 10_treasure_room
+      - label: Prendre le chemin de gauche (zone marécageuse)
+        goto: 2_2_witch_path
+      - label: Prendre le chemin de droite (porte en pierre)
+        goto: 2_3_dungeon_entrance
+      - label: Aller tout droit (forêt profonde)
+        goto: 2_4_deep_forest
       - label: Retourner au village
-        goto: 1_start
+        goto: 1_1_village
 
-  2b_dark_corridor_cleared:
-    description: Le couloir s'étend devant vous. À gauche, le passage où se tenait la bête est maintenant silencieux. À droite, vous apercevez un faible éclat.
-    image: dark_corridor.jpg
+  # --- Sorcière ---
+  2_2_witch_path:
+    description: Le chemin mène dans une zone marécageuse. L'air est lourd, une brume verdâtre flotte au ras du sol. Plus loin, une cabane tordue se dresse dans une clairière.
     reactions:
-      - label: Aller au passage de la bête
-        goto: 20b_beast_passage
-      - label: Suivre l'éclat
-        goto: 10_treasure_room
-        requires_not: treasure_looted
-      - label: Aller à la salle du trésor
-        goto: 10b_treasure_looted
-        requires: treasure_looted
-      - label: Retourner au village
-        goto: 1_start
+      - label: Approcher la cabane
+        goto: 2_2_1_witch_clearing
+      - label: Retourner au sentier
+        goto: 2_1_forest_trail
 
-  3_tavern:
-    description: La taverne est chaleureuse et bruyante. Un étranger encapuchonné vous fait signe depuis une table dans un coin, glissant une carte usée sur le bois.
-    image: tavern.jpg
+  2_2_1_witch_clearing:
+    description: Une cabane tordue se dresse dans la clairière. De la fumée verte s'échappe de la cheminée. Une sorcière vous observe avec méfiance depuis le seuil.
+    character: witch
     reactions:
-      - label: S'asseoir avec l'étranger
-        goto: 4_stranger_quest
-      - label: L'ignorer et commander à boire
-        goto: 6_tavern_rest
-      - label: Retourner sur la place
-        goto: 1_start
+      - label: Quitter la clairière
+        goto: 2_1_forest_trail
 
-  4_stranger_quest:
-    description: Un étranger encapuchonné se penche vers vous et commence à murmurer. Il semble connaître des choses sur le donjon.
-    image: tavern_stranger.jpg
-    character: stranger
+  # --- Entrée du souterrain ---
+  2_3_dungeon_entrance:
+    description: Une grande porte en pierre couverte de lierre bloque le chemin. D'anciennes runes sont gravées sur sa surface.
     reactions:
-      - label: Quitter la taverne
-        goto: 1_start
-
-  5_stranger_details:
-    description: '"Ne faites confiance à personne là-bas," dit-il. "Surtout pas au coffre qui parle." Il disparaît dans la foule avant que vous ne puissiez répondre.'
-    reactions:
-      - label: Retourner sur la place
-        goto: 1_start
-
-  6_tavern_rest:
-    description: Vous savourez un repas chaud et une bière fraîche. Reposé et prêt, vous sentez l'appel de l'aventure vous attirer à nouveau.
-    gold: -2
-    hp: 20
-    reactions:
-      - label: Retourner sur la place
-        goto: 1_start
-
-  # --- Rencontre avec la bête : seulement si le loup est vivant ---
-  7_beast_lair:
-    description: Une créature massive semblable à un loup bloque le passage. Ses yeux luisent d'un bleu pâle — elle semble plus curieuse qu'agressive.
-    image: beast_lair.jpg
-    reactions:
-      - label: Essayer de calmer la bête
-        goto: 8_beast_ally
-      - label: Dégainer votre arme
-        goto: 9_beast_fight
-      - label: Reculer lentement
-        goto: 2_dark_corridor
-
-  8_beast_ally:
-    description: Vous tendez la main. La bête renifle prudemment, puis se blottit contre elle. Elle s'écarte, révélant un passage caché derrière elle.
-    image: beast_ally.jpg
-    reactions:
-      - label: Entrer dans le passage caché
-        goto: 12_secret_vault
+      - label: Ouvrir la porte avec la clé
+        goto: 3_1_dungeon_descent
         requires: rusted_key
-      - label: Continuer dans le couloir
-        goto: 10_treasure_room
+      - label: Essayer de forcer la porte
+        goto: 2_3_1_dungeon_locked
+        requires_not: rusted_key
+      - label: Retourner au sentier
+        goto: 2_1_forest_trail
 
-  9_beast_fight:
-    description: La créature bondit sur vous ! Préparez-vous au combat !
-    monster: shadow_wolf
-    victory_goto: 20_beast_defeated
-    flee_goto: 22_flee_corridor
+  2_3_1_dungeon_locked:
+    description: Vous poussez, tirez et frappez la porte. Elle ne bouge pas. La pierre est trop épaisse. Il vous faut une clé.
+    reactions:
+      - label: Retourner au sentier
+        goto: 2_1_forest_trail
+
+  # --- Forêt profonde ---
+  2_4_deep_forest:
+    description: La forêt devient de plus en plus sombre et dense. Les arbres sont si serrés qu'il est difficile de passer. Des yeux brillent dans l'obscurité.
+    reactions:
+      - label: Se frayer un chemin dans la végétation
+        goto: 2_4_2_vegetation_wall
+        requires: legendary_sword
+        requires_not: forest_cleared
+      - label: Continuer sur le chemin dégagé
+        goto: 2_4_3_thief_area
+        requires: forest_cleared
+      - label: Faire demi-tour
+        goto: 2_1_forest_trail
+
+  2_4_2_vegetation_wall:
+    description: Un mur de ronces et de branches épaisses bloque le passage. Vous dégainez votre épée légendaire et taillez dans la végétation. Les ronces griffent vos bras.
+    hp: -5
+    items_give:
+      - forest_cleared
+    reactions:
+      - label: Continuer
+        goto: 2_4_3_thief_area
+
+  2_4_3_thief_area:
+    description: Au-delà de la végétation dégagée, vous apercevez une silhouette adossée à un arbre. Un homme en haillons vous fait signe avec un large sourire.
+    reactions:
+      - label: Parler à l'inconnu
+        goto: 2_4_3a_thief_talk
+        requires_not: thief_killed
+      - label: Continuer vers le cœur de la forêt
+        goto: 2_4_4_forest_heart
+        requires: thief_killed
+      - label: Continuer vers le cœur de la forêt
+        goto: 2_4_4_forest_heart
+        requires_not: thief_killed
+
+  2_4_3a_thief_talk:
+    description: L'homme commence à parler immédiatement. Il semble en savoir long sur la forêt, mais quelque chose ne va pas...
+    character: thief
+    reactions:
+      - label: Passer devant lui
+        goto: 2_4_4_forest_heart
+      - label: Attaquer le voleur !
+        goto: 2_4_3b_thief_fight
+
+  2_4_3b_thief_fight:
+    description: Le voleur sort un couteau caché ! "Personne ne me traite de voleur et s'en sort vivant !"
+    monster: thief
+    victory_goto: 2_4_3c_thief_dead
+    flee_goto: 2_4_deep_forest
     reactions: []
 
-  20_beast_defeated:
-    description: La bête gît, immobile. Derrière son corps, vous remarquez un passage caché creusé dans la paroi de pierre. Vous trouvez 80 pièces d'or éparpillées dans son repaire.
+  2_4_3c_thief_dead:
+    description: Le voleur tombe. Vous trouvez 30 pièces d'or dans ses poches. Pas étonnant qu'il était si bavard — il vous faisait les poches tout du long.
+    gold: 30
+    items_give:
+      - thief_killed
+    reactions:
+      - label: Continuer vers le cœur de la forêt
+        goto: 2_4_4_forest_heart
+
+  # --- Cœur de la forêt ---
+  2_4_4_forest_heart:
+    description: Un carrefour au cœur de la forêt profonde. Deux chemins s'offrent à vous. L'un mène tout droit à travers des tunnels de racines, l'autre bifurque à gauche dans un couloir lugubre et verdâtre.
+    reactions:
+      - label: Aller tout droit vers la mine
+        goto: 4_1_mine_entrance
+      - label: Prendre le chemin lugubre à gauche
+        goto: 2_5_1_gloomy_path
+        requires_not: pretre_mort
+      - label: Prendre le chemin lugubre à gauche
+        goto: 2_5_2_gloomy_with_map
+        requires: pretre_mort
+      - label: Faire demi-tour
+        goto: 2_4_deep_forest
+
+  2_5_1_gloomy_path:
+    description: Vous vous engagez sur un chemin humide et verdâtre. L'air pue la pourriture. Des traces de pas lourdes marquent la boue. Soudain, des cris derrière vous — des orques attaquent un pèlerin sur le sentier principal ! Vous êtes trop loin pour intervenir. Il est trop tard.
+    items_give:
+      - pretre_mort
+    reactions:
+      - label: Le chemin est trop dangereux. Faire demi-tour.
+        goto: 2_4_4_forest_heart
+
+  2_5_2_gloomy_with_map:
+    description: Avec la carte de la nonne en main, vous naviguez sur le chemin lugubre. Les traces d'orques mènent plus profondément dans la forêt.
+    reactions:
+      - label: Suivre les traces vers le repaire des orques
+        goto: 5_1_orc_lair
+        requires: carte_orques
+      - label: Vous n'avez pas la carte. Faire demi-tour.
+        goto: 2_4_4_forest_heart
+        requires_not: carte_orques
+
+  # ===== 3. SOUTERRAIN =====
+  3_1_dungeon_descent:
+    description: Vous tournez la clé rouillée dans la serrure. La porte de pierre grince et s'ouvre. Vous descendez dans l'obscurité. L'air est humide et sent la pierre moussue.
+    items_take:
+      - rusted_key
+    reactions:
+      - label: Continuer plus profondément
+        goto: 3_2_wolf_encounter
+        requires_not: shadow_wolf_killed
+      - label: Continuer plus profondément
+        goto: 3_3_behind_wolf
+        requires: shadow_wolf_killed
+
+  3_2_wolf_encounter:
+    description: Deux yeux bleus brillent dans l'obscurité devant vous.
+    image: beast_lair.jpg
+    reactions:
+      - label: Vous voyez des yeux brillants — vous êtes terrifié !
+        goto: 3_2_1_wolf_dark
+        requires_not_equipped: torch
+      - label: Votre torche illumine un grand loup
+        goto: 3_2_2_wolf_light
+        requires_equipped: torch
+
+  3_2_1_wolf_dark:
+    description: Vous voyez deux yeux brillants dans le noir total ! La panique vous saisit ! Le loup, effrayé par votre réaction, bondit et vous griffe avant que vous ne puissiez réagir.
+    image: beast_lair.jpg
+    hp: -20
+    reactions:
+      - label: Combattre le loup !
+        goto: 3_2_3_wolf_fight
+      - label: Fuir vers la sortie !
+        goto: 3_5_flee_dungeon
+
+  3_2_2_wolf_light:
+    description: Votre torche illumine la caverne. Un grand loup aux yeux bleus luminescents vous observe. Il semble curieux, pas agressif.
+    image: beast_lair.jpg
+    reactions:
+      - label: Calmer la bête — tendre la main
+        goto: 3_2_5_wolf_calmed
+      - label: Attaquer le loup
+        goto: 3_2_3_wolf_fight
+
+  3_2_3_wolf_fight:
+    description: Le loup bondit sur vous ! Préparez-vous au combat !
+    image: beast_lair.jpg
+    monster: shadow_wolf
+    victory_goto: 3_2_4_wolf_defeated
+    flee_goto: 3_5_flee_dungeon
+    reactions: []
+
+  3_2_4_wolf_defeated:
+    description: La bête s'effondre. Ses yeux bleus s'éteignent. Derrière son corps, vous remarquez un passage caché dans la paroi de pierre.
     image: beast_dead.jpg
-    gold: 80
     items_give:
       - shadow_wolf_killed
     reactions:
-      - label: Entrer dans le passage caché
-        goto: 12_secret_vault
-        requires: rusted_key
+      - label: Entrer dans le passage
+        goto: 3_3_behind_wolf
       - label: Continuer dans le couloir
-        goto: 10_treasure_room
+        goto: 3_4_treasure_room
         requires_not: treasure_looted
       - label: Aller à la salle du trésor
-        goto: 10b_treasure_looted
+        goto: 3_4_1_treasure_looted
         requires: treasure_looted
 
-  20b_beast_passage:
-    description: Le repaire de la bête est silencieux maintenant. Le passage caché dans la paroi de pierre est toujours là.
-    image: beast_dead.jpg
+  3_2_5_wolf_calmed:
+    description: Vous tendez la main lentement. Le loup renifle prudemment, puis se blottit contre elle. Il s'écarte, révélant un passage caché derrière lui.
+    image: beast_ally.jpg
     reactions:
       - label: Entrer dans le passage caché
-        goto: 12_secret_vault
-        requires: rusted_key
-      - label: Retourner dans le couloir
-        goto: 2b_dark_corridor_cleared
+        goto: 3_3_behind_wolf
+      - label: Continuer dans le couloir
+        goto: 3_4_treasure_room
 
-  # --- Salle du trésor : deux variantes ---
-  10_treasure_room:
+  3_3_behind_wolf:
+    description: Un couloir étroit mène à une pièce chaude et sèche. Une lueur dorée émane de plus loin.
+    reactions:
+      - label: Continuer vers la salle du trésor
+        goto: 3_4_treasure_room
+        requires_not: treasure_looted
+      - label: La salle du trésor est vide
+        goto: 3_4_1_treasure_looted
+        requires: treasure_looted
+
+  3_4_treasure_room:
     description: Une petite salle scintille de pièces d'or éparpillées sur le sol. Au centre trône un coffre en bois — et il... fredonne ?
     image: treasure_room.jpg
     reactions:
       - label: Ouvrir le coffre
-        goto: 11_mimic_encounter
+        goto: 3_4_3_mimic
         requires_not: mimic_killed
-      - label: Ramasser les pièces et partir
-        goto: 13_ending_modest
-        gold: 15
+      - label: Ramasser les pièces d'or
+        goto: 3_4_2_coins_grabbed
+        gold: 50
         items_give:
           - treasure_looted
 
-  10b_treasure_looted:
-    description: La salle du trésor est vide maintenant. Il ne reste que de la poussière et quelques pièces éparpillées. Il n'y a plus rien de valeur ici.
+  3_4_1_treasure_looted:
+    description: La salle du trésor est vide maintenant. Il ne reste que de la poussière et quelques pièces éparpillées.
     image: treasure_room.jpg
     reactions:
-      - label: Retourner dans le couloir
-        goto: 2b_dark_corridor_cleared
-        requires: shadow_wolf_killed
-      - label: Retourner dans le couloir
-        goto: 2_dark_corridor
-        requires_not: shadow_wolf_killed
+      - label: Retourner dans la forêt
+        goto: 2_1_forest_trail
 
-  # --- Mimic : seulement si pas déjà tué ---
-  11_mimic_encounter:
+  3_4_2_coins_grabbed:
+    description: Vous ramassez les pièces d'or. 50 pièces ! Pas mal pour une journée de travail.
+    reactions:
+      - label: Retourner dans la forêt
+        goto: 2_1_forest_trail
+
+  3_4_3_mimic:
     description: Le coffre s'ouvre brusquement, révélant des rangées de dents ! C'est un mimic ! Préparez-vous au combat !
     image: mimic.jpg
     monster: mimic
-    victory_goto: 21_mimic_defeated
-    flee_goto: 22_flee_corridor
+    victory_goto: 3_4_4_mimic_defeated
+    flee_goto: 3_5_flee_dungeon
     reactions: []
 
-  21_mimic_defeated:
+  3_4_4_mimic_defeated:
     description: Le mimic se brise en morceaux. Dans son corps creux, vous trouvez une épée légendaire qui brille d'un pouvoir ancien.
     items_give:
       - mimic_killed
       - legendary_sword
     reactions:
-      - label: Retourner dans le couloir
-        goto: 2_dark_corridor
-        requires_not: shadow_wolf_killed
-      - label: Retourner dans le couloir
-        goto: 2b_dark_corridor_cleared
-        requires: shadow_wolf_killed
+      - label: Ramasser les pièces aussi
+        goto: 3_4_2_coins_grabbed
+        gold: 50
+        items_give:
+          - treasure_looted
+        requires_not: treasure_looted
+      - label: Retourner dans la forêt
+        goto: 2_1_forest_trail
 
-  22_flee_corridor:
-    description: Vous fuyez vers le couloir, le cœur battant.
-    image: dark_corridor.jpg
+  3_5_flee_dungeon:
+    description: Vous fuyez vers la sortie du souterrain, le cœur battant.
     reactions:
       - label: Reprendre votre souffle
-        goto: 2_dark_corridor
-        requires_not: shadow_wolf_killed
-      - label: Reprendre votre souffle
-        goto: 2b_dark_corridor_cleared
-        requires: shadow_wolf_killed
+        goto: 2_1_forest_trail
 
-  12_secret_vault:
-    description: Vous descendez dans une vaste chambre forte souterraine. D'anciens trésors tapissent les murs — des reliques d'une civilisation oubliée. Au fond, un cristal lumineux pulse d'énergie.
-    items_take:
-      - rusted_key
+  # ===== 4. MINE =====
+  4_1_mine_entrance:
+    description: Des rails rouillés disparaissent dans l'obscurité. L'air est froid et humide. Un bruit métallique lointain résonne dans les profondeurs.
     reactions:
-      - label: Prendre le cristal
-        goto: 15_ending_legendary
-      - label: Le laisser intact
-        goto: 16_ending_wise
+      - label: Entrer dans la mine
+        goto: 4_2_mine_gallery
+        requires_equipped: torch
+      - label: Il fait trop sombre sans torche
+        goto: 4_1_mine_entrance
+        requires_not_equipped: torch
+      - label: Retourner dans la forêt
+        goto: 2_4_4_forest_heart
 
-  13_ending_modest:
-    description: Vous quittez le donjon les poches pleines d'or. Pas le plus grand butin, mais assez pour vivre confortablement un moment. Parfois, le bon choix est de savoir quand partir.
+  4_2_mine_gallery:
+    description: Un long couloir soutenu par des poutres en bois vermoulues. Des outils de mineur rouillés jonchent le sol. Les rails continuent. Le chemin se divise en trois.
+    reactions:
+      - label: Aller à gauche (courant d'air froid)
+        goto: 4_3_mine_rest_room
+      - label: Aller à droite (porte cassée)
+        goto: 4_4_mine_office
+      - label: Aller tout droit (les rails descendent)
+        goto: 4_5_mine_tunnel
+      - label: Retourner à l'entrée
+        goto: 4_1_mine_entrance
+
+  4_3_mine_rest_room:
+    description: Une petite salle avec des couchettes en bois pourries. Une table renversée, des bouteilles cassées. Sur une couchette, le squelette d'un mineur encore vêtu de ses habits déchirés.
+    reactions:
+      - label: Fouiller la salle
+        goto: 4_3_1_mine_rest_search
+        requires_not: mine_repos_fouille
+      - label: La salle a déjà été fouillée
+        goto: 4_2_mine_gallery
+        requires: mine_repos_fouille
+
+  4_3_1_mine_rest_search:
+    description: Vous trouvez 5 pièces d'or dans la poche du squelette et une potion de soin cachée derrière une couchette. Un vieux journal mentionne "le gobelin dans le tunnel du fond" et "l'éboulement qui a piégé l'équipe de nuit."
+    gold: 5
+    items_give:
+      - mine_repos_fouille
+      - healing_potion
+    reactions:
+      - label: Retourner à la galerie
+        goto: 4_2_mine_gallery
+
+  4_4_mine_office:
+    description: Une pièce relativement bien conservée. Un bureau massif couvert de poussière, des étagères avec des registres moisis. Un coffre fermé se trouve sous le bureau.
+    reactions:
+      - label: Forcer le coffre
+        goto: 4_4_1_mine_chest
+        requires_not: mine_coffre_ouvert
+      - label: Le coffre est déjà ouvert
+        goto: 4_2_mine_gallery
+        requires: mine_coffre_ouvert
+
+  4_4_1_mine_chest:
+    description: Le cadenas rouillé cède facilement. À l'intérieur, 10 pièces d'or et une note. "Si tu lis ça, fuis. Le gobelin ne dort jamais. Il entend tout. Il voit dans le noir."
+    gold: 10
+    items_give:
+      - mine_coffre_ouvert
+    reactions:
+      - label: Retourner à la galerie
+        goto: 4_2_mine_gallery
+
+  4_5_mine_tunnel:
+    description: Les rails descendent en pente douce. L'air devient chaud et chargé de poussière. Les parois brillent par endroits — des veines de minerai.
+    reactions:
+      - label: Continuer plus profondément
+        goto: 4_5_1_mine_cavein
+        requires_not: mine_eboulement_degage
+      - label: Passer les gravats dégagés
+        goto: 4_6_mine_cavern
+        requires: mine_eboulement_degage
+      - label: Retourner à la galerie
+        goto: 4_2_mine_gallery
+
+  4_5_1_mine_cavein:
+    description: Un amas de rochers bloque le passage. Vous apercevez une faible lueur de l'autre côté.
+    reactions:
+      - label: Dégager les rochers (-10 HP)
+        goto: 4_5_2_mine_cleared
+        hp: -10
+      - label: Utiliser de l'eau bénite sur les rochers
+        goto: 4_5_2_mine_cleared
+        requires: holy_water
+        items_take:
+          - holy_water
+      - label: Retourner en arrière
+        goto: 4_2_mine_gallery
+
+  4_5_2_mine_cleared:
+    description: Le passage s'ouvre ! Au-delà des gravats, vous apercevez une vaste caverne éclairée par les lueurs d'une forge.
+    items_give:
+      - mine_eboulement_degage
+    reactions:
+      - label: Entrer dans la caverne
+        goto: 4_6_mine_cavern
+
+  4_6_mine_cavern:
+    description: Une vaste caverne naturelle. Des stalactites pendent du plafond. Au fond, une forge improvisée crache des étincelles. Un gobelin martèle l'acier sur son enclume, dos tourné.
+    reactions:
+      - label: S'approcher discrètement
+        goto: 4_6_1_mine_stealth
+      - label: Charger !
+        goto: 4_7_mine_frontal
+      - label: Retourner dans le tunnel
+        goto: 4_5_mine_tunnel
+
+  4_6_1_mine_stealth:
+    description: Vous vous faufilez entre les stalagmites. Le gobelin est concentré sur son travail. Vous voyez des armes et des pièces d'armure empilées autour de lui. Vous frappez depuis les ombres !
+    reactions:
+      - label: Attaquer par surprise !
+        goto: 4_8_goblin_fight
+
+  4_7_mine_frontal:
+    description: Vous chargez en criant ! Le gobelin vous a entendu venir de loin — comme le disait la note. Il attrape son marteau de forge massif, prêt à combattre.
+    reactions:
+      - label: Combattre le gobelin !
+        goto: 4_8_goblin_fight
+
+  4_8_goblin_fight:
+    description: Le gobelin rugit et fait tournoyer son marteau de forge massif !
+    monster: goblin
+    victory_goto: 4_8_1_goblin_defeated
+    flee_goto: 4_6_mine_cavern
     reactions: []
 
-  15_ending_legendary:
-    description: Le cristal vous remplit d'un pouvoir ancien. Vous émergez du donjon à jamais changé — une légende vivante. Mais les murmures du cristal ne s'arrêtent jamais vraiment...
+  4_8_1_goblin_defeated:
+    description: Le gobelin s'effondre. Parmi les armes et armures éparpillées, vous trouvez un magnifique lingot d'acier. 100 pièces d'or sont empilées dans un coin.
+    gold: 100
+    items_give:
+      - gobelin_killed
+      - acier_qualite
+    reactions:
+      - label: Prendre l'acier et partir
+        goto: 2_4_4_forest_heart
+
+  # ===== 5. REPAIRE DES ORQUES (TBD) =====
+  5_1_orc_lair:
+    description: En suivant la carte, vous trouvez le campement des orques. Des tentes grossières entourent un feu de camp. Les orques sont nombreux et féroces. Cette zone n'est pas encore prête à être explorée.
+    reactions:
+      - label: Faire demi-tour pour l'instant
+        goto: 2_4_4_forest_heart
+
+  # ===== FINS =====
+  6_1_ending_modest:
+    description: Vous quittez le donjon les poches pleines d'or. Pas le plus grand butin, mais assez pour vivre confortablement. Parfois, le bon choix est de savoir quand partir.
     reactions: []
 
-  16_ending_wise:
-    description: Vous quittez la chambre forte telle que vous l'avez trouvée. Certains trésors ne sont pas faits pour être pris. Le donjon se souvient de votre respect, et le chemin du retour est étrangement facile.
+  6_2_ending_legendary:
+    description: Le cristal vous remplit d'un pouvoir ancien. Vous émergez à jamais changé — une légende vivante. Mais les murmures du cristal ne s'arrêtent jamais vraiment...
+    reactions: []
+
+  6_3_ending_wise:
+    description: Vous quittez la chambre forte telle que vous l'avez trouvée. Certains trésors ne sont pas faits pour être pris. Le donjon se souvient de votre respect.
     reactions: []
 
   game_over:

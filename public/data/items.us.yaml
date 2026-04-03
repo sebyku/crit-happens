@@ -23,12 +23,72 @@ items:
     slots:
       - left_hand
 
+  iron_helmet:
+    name: Iron Helmet
+    description: A simple but reliable iron helmet.
+    icon: iron_helmet.svg
+    ac: 1
+    max: 1
+    slots:
+      - head
+
+  torch:
+    name: Torch
+    description: A wooden torch soaked in oil. Essential for dark places.
+    icon: torch.svg
+    max: 1
+    slots:
+      - left_hand
+
   holy_water:
     name: Holy Water
     description: A vial of blessed water. Throw it at a monster to deal damage.
     icon: holy_water.svg
     combat_damage: 10
     max: 5
+
+  healing_potion:
+    name: Healing Potion
+    description: A bubbling green potion. Restores health in combat.
+    icon: healing_potion.svg
+    combat_hp: 30
+    max: 3
+
+  legendary_sword:
+    name: Legendary Sword
+    description: A blade of ancient power found inside a mimic. It hums with energy.
+    icon: legendary_sword.svg
+    attack: 12
+    max: 1
+    slots:
+      - right_hand
+
+  acier_qualite:
+    name: Quality Steel
+    description: A rare steel ingot recovered from the goblin's lair.
+    icon: acier_qualite.svg
+    max: 1
+
+  steel_armor:
+    name: Steel Armor
+    description: A masterwork armor forged from quality steel.
+    icon: steel_armor.svg
+    ac: 4
+    max: 1
+    slots:
+      - torso
+
+  carte_orques:
+    name: Orc Map
+    description: A hand-drawn map showing the path to the orc lair.
+    icon: carte_orques.svg
+    max: 1
+
+  # Hidden flags
+  cle_donnee:
+    name: Key Given
+    hidden: true
+    max: 1
 
   shadow_wolf_killed:
     name: Shadow Wolf Killed
@@ -45,20 +105,37 @@ items:
     hidden: true
     max: 1
 
-  legendary_sword:
-    name: Legendary Sword
-    description: A blade of ancient power found inside a mimic. It hums with energy.
-    icon: legendary_sword.svg
-    attack: 12
+  forest_cleared:
+    name: Forest Cleared
+    hidden: true
     max: 1
-    slots:
-      - right_hand
 
-  iron_helmet:
-    name: Iron Helmet
-    description: A simple but reliable iron helmet.
-    icon: iron_helmet.svg
-    ac: 1
+  thief_killed:
+    name: Thief Killed
+    hidden: true
     max: 1
-    slots:
-      - head
+
+  pretre_mort:
+    name: Priest Dead
+    hidden: true
+    max: 1
+
+  mine_repos_fouille:
+    name: Rest Room Searched
+    hidden: true
+    max: 1
+
+  mine_coffre_ouvert:
+    name: Chest Opened
+    hidden: true
+    max: 1
+
+  mine_eboulement_degage:
+    name: Cave-in Cleared
+    hidden: true
+    max: 1
+
+  gobelin_killed:
+    name: Goblin Killed
+    hidden: true
+    max: 1

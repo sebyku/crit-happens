@@ -71,10 +71,10 @@ rules:
 
 exits:
   - keyword: "au revoir"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "adieu"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "partir"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "merci"
-    goto: 1_start
+    goto: 1_1_village

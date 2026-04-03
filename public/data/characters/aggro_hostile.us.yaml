@@ -1,0 +1,24 @@
+rules:
+  - keyword: "please"
+    priority: 2
+    patterns:
+      - decomposition: ".*please(.*)"
+        reassemblies:
+          - "Don't beg. It's pathetic."
+          - "Manners won't save you here."
+
+  - keyword: "thank"
+    priority: 2
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Save your thanks. I don't care."
+          - "Gratitude is worthless to me."
+
+  - keyword: "help"
+    priority: 2
+    patterns:
+      - decomposition: ".*help(.*)"
+        reassemblies:
+          - "Help yourself. I'm not your servant."
+          - "Why should I help the likes of you?"

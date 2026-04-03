@@ -82,6 +82,11 @@
   opacity: 0.7;
 }
 
+.combat-log-entry.heal {
+  color: #38a169;
+  font-weight: 600;
+}
+
 .combat-log-entry.fumble,
 .combat-log-entry.stumble {
   color: #e53e3e;

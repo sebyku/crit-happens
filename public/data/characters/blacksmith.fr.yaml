@@ -79,22 +79,56 @@ rules:
           - "Je suis le forgeron du village. Je forge l'acier depuis mon enfance."
           - "Mon nom importe peu. Ce qui compte, c'est la qualité de mon travail."
 
+  - keyword: "torche"
+    priority: 5
+    confirm: true
+    gold: -1
+    items_give:
+      - torch
+    patterns:
+      - decomposition: ".*torche(.*)"
+        reassemblies:
+          - "Une torche solide, imbibée d'huile. 1 pièce d'or. Indispensable dans le noir."
+          - "Vous aurez besoin de lumière là-dessous. 1 pièce d'or."
+
+  - keyword: "acier"
+    priority: 5
+    confirm: true
+    gold: -15
+    items_give:
+      - steel_armor
+    items_take:
+      - acier_qualite
+    patterns:
+      - decomposition: ".*acier(.*)"
+        reassemblies:
+          - "Cet acier est magnifique ! Je peux vous forger une armure. 15 pièces d'or pour le travail."
+          - "De l'acier de qualité ! Une armure pour 15 pièces d'or. Mon plus beau travail."
+
+  - keyword: "armure"
+    priority: 4
+    patterns:
+      - decomposition: ".*armure(.*)"
+        reassemblies:
+          - "J'ai des boucliers et des casques. Pour une vraie armure, rapportez-moi de l'acier de la mine."
+          - "Si vous trouvez de l'acier dans la mine du gobelin, je peux forger quelque chose de spécial."
+
   - keyword: "@none"
     priority: 0
     patterns:
       - decomposition: ".*"
         reassemblies:
-          - "Je vends des épées, des boucliers et des casques. Que désirez-vous ?"
-          - "Une épée ? Un bouclier ? Un casque ? Dites le mot."
-          - "Tout ici est forgé à la main. Demandez pour les épées, boucliers ou casques."
+          - "Je vends des épées, des boucliers, des casques et des torches. Que désirez-vous ?"
+          - "Une épée ? Un bouclier ? Un casque ? Une torche ? Dites le mot."
+          - "Tout ici est forgé à la main. Demandez pour les épées, boucliers, casques ou torches."
           - "Le donjon n'est pas un endroit pour les désarmés. Puis-je vous proposer quelque chose ?"
 
 exits:
   - keyword: "au revoir"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "adieu"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "partir"
-    goto: 1_start
+    goto: 1_1_village
   - keyword: "merci"
-    goto: 1_start
+    goto: 1_1_village

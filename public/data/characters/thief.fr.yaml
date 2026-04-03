@@ -1,0 +1,106 @@
+greetings:
+  - "Tiens, tiens, tiens... un voyageur ! Laissez-moi vous parler de cette forêt."
+  - "Hé, vous ! Vous avez l'air perdu. Je connais ces bois comme ma poche."
+
+rules:
+  - keyword: "foret"
+    priority: 4
+    gold: -1
+    patterns:
+      - decomposition: ".*foret(.*)"
+        reassemblies:
+          - "La forêt s'assombrit plus loin. Il y a une mine au bout. Très dangereux."
+          - "D'étranges créatures rôdent par ici. J'ai vu des choses que vous ne croiriez pas."
+
+  - keyword: "mine"
+    priority: 4
+    gold: -1
+    patterns:
+      - decomposition: ".*mine(.*)"
+        reassemblies:
+          - "La mine ? Un gobelin y vit. Gros, méchant et laid. Il a une forge là-dedans."
+          - "Les mineurs l'ont abandonnée il y a des années. Le gobelin a pris la place."
+
+  - keyword: "gobelin"
+    priority: 4
+    gold: -1
+    patterns:
+      - decomposition: ".*gobelin(.*)"
+        reassemblies:
+          - "Un sacré morceau. Il se bat avec un marteau énorme. Très coriace."
+          - "Il ne dort jamais. Il voit dans le noir, en plus. Bonne chance."
+
+  - keyword: "danger"
+    priority: 3
+    gold: -1
+    patterns:
+      - decomposition: ".*danger(.*)"
+        reassemblies:
+          - "Tout est dangereux par ici. C'est pour ça qu'il vous faut un guide... comme moi."
+          - "Loups, gobelins, orques... cette forêt a tout."
+
+  - keyword: "qui etes"
+    priority: 5
+    gold: -1
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Juste un humble voyageur, comme vous. Je connais le coin, c'est tout."
+          - "Un ami ! Ou du moins, pas un ennemi. C'est rare par ici."
+
+  - keyword: "voler"
+    priority: 6
+    insult: true
+    patterns:
+      - decomposition: ".*voler(.*)"
+        reassemblies:
+          - "Voler ?! Moi ?! Comment osez-vous ! Je suis honnête !"
+          - "C'est une accusation grave ! Surveillez vos paroles !"
+
+  - keyword: "voleur"
+    priority: 6
+    insult: true
+    patterns:
+      - decomposition: ".*voleur(.*)"
+        reassemblies:
+          - "Voleur ?! Retirez ça immédiatement !"
+          - "Je n'ai jamais rien volé de ma vie ! Quel culot !"
+
+  - keyword: "menteur"
+    priority: 6
+    insult: true
+    patterns:
+      - decomposition: ".*menteur(.*)"
+        reassemblies:
+          - "Menteur ?! Ça suffit, j'en ai assez de vous !"
+          - "Vous me traitez de menteur ?! Vous allez le regretter !"
+
+  - keyword: "or"
+    priority: 5
+    insult: true
+    patterns:
+      - decomposition: ".*\\bor\\b(.*)"
+        reassemblies:
+          - "De l'or ? Quel or ? Je ne vois pas de quoi vous parlez !"
+          - "Vous m'accusez de quelque chose ?!"
+
+  - keyword: "@none"
+    priority: 0
+    gold: -1
+    patterns:
+      - decomposition: ".*"
+        reassemblies:
+          - "Comme je disais... ces bois sont pleins de surprises. Demandez-moi ce que vous voulez."
+          - "Où en étais-je ? Ah oui, la forêt. Un endroit fascinant, vraiment."
+          - "Vous savez, je suis passé par ici de nombreuses fois. La mine ? Les orques ?"
+          - "Hmm, intéressant. Au fait, je vous ai parlé du gobelin dans la mine ?"
+
+exits:
+  - keyword: "au revoir"
+    goto: 2_4_4_forest_heart
+  - keyword: "adieu"
+    goto: 2_4_4_forest_heart
+  - keyword: "partir"
+    goto: 2_4_4_forest_heart
+  - keyword: "assez"
+    goto: 2_4_4_forest_heart

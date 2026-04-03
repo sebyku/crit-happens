@@ -23,8 +23,8 @@ const character = {
   ],
   reflections: {},
   exits: [
-    { keyword: 'bye', goto: '2_dark_corridor' },
-    { keyword: 'leave', goto: '3_tavern' },
+    { keyword: 'bye', goto: '1_2_tavern' },
+    { keyword: 'leave', goto: '1_2_tavern' },
   ],
 }
 
@@ -78,7 +78,7 @@ describe('Conversation', () => {
     await user.type(input, 'bye')
     await user.click(screen.getByRole('button', { name: 'Send' }))
 
-    expect(onExit).toHaveBeenCalledWith('2_dark_corridor', {
+    expect(onExit).toHaveBeenCalledWith('1_2_tavern', {
       itemsGive: undefined,
       itemsTake: undefined,
     })
@@ -86,7 +86,7 @@ describe('Conversation', () => {
 
   it('renders journey reactions as action buttons', () => {
     const reactions = [
-      { label: 'Take the key', goto: '2_dark_corridor' },
+      { label: 'Take the key', goto: '1_2_tavern' },
     ]
     render(<Conversation character={character} labels={labels} reactions={reactions} onExit={() => {}} />)
     expect(screen.getByText('Take the key')).toBeInTheDocument()
@@ -288,12 +288,12 @@ describe('Conversation', () => {
     const onExit = vi.fn()
     const user = userEvent.setup()
     const reactions = [
-      { label: 'Take the key', goto: '2_dark_corridor' },
+      { label: 'Take the key', goto: '1_2_tavern' },
     ]
     render(<Conversation character={character} labels={labels} reactions={reactions} onExit={onExit} />)
 
     await user.click(screen.getByText('Take the key'))
-    expect(onExit).toHaveBeenCalledWith('2_dark_corridor', {
+    expect(onExit).toHaveBeenCalledWith('1_2_tavern', {
       itemsGive: undefined,
       itemsTake: undefined,
     })

@@ -16,9 +16,9 @@ function Combat({ monster, playerStats, playerHp, labels, inventory, itemDefs, o
     }
   }, [log])
 
-  // Usable items: items in inventory with combat_damage
+  // Usable items: items in inventory with combat_damage or combat_hp
   const usableItems = Object.entries(inventory)
-    .filter(([id, count]) => count > 0 && itemDefs[id]?.combat_damage)
+    .filter(([id, count]) => count > 0 && (itemDefs[id]?.combat_damage || itemDefs[id]?.combat_hp))
     .map(([id, count]) => ({ id, count, def: itemDefs[id] }))
 
   function addLog(text, type = 'info') {
@@ -115,9 +115,21 @@ function Combat({ monster, playerStats, playerHp, labels, inventory, itemDefs, o
     setShowItems(false)
 
     const def = itemDefs[itemId]
-    const damage = def.combat_damage
-
     onUseItem(itemId)
+
+    // Healing item
+    if (def.combat_hp) {
+      const healed = def.combat_hp
+      const newHp = Math.min(localPlayerHp + healed, playerHp > localPlayerHp ? playerHp : localPlayerHp + healed)
+      setLocalPlayerHp(newHp)
+      onPlayerDamage(-healed) // negative damage = healing
+      addLog(`🧪 ${def.name} — +${healed} HP!`, 'heal')
+      monsterTurn(newHp, monsterHp)
+      return
+    }
+
+    // Damage item
+    const damage = def.combat_damage
     addLog(`🧪 ${def.name} — ${damage} damage!`, 'hit')
 
     let currentMonsterHp = Math.max(0, monsterHp - damage)
