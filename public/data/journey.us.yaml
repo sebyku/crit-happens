@@ -135,9 +135,12 @@ steps:
       - label: Open the door with the key
         goto: 3_1_dungeon_descent
         requires: rusted_key
+      - label: Enter the open door
+        goto: 3_1_dungeon_descent
+        requires: dungeon_open
       - label: Try to force the door
         goto: 2_3_1_dungeon_locked
-        requires_not: rusted_key
+        requires_not: dungeon_open
       - label: Go back to the trail
         goto: 2_1_forest_trail
 
@@ -239,6 +242,8 @@ steps:
     image: 3_1_dungeon_descent.jpg
     items_take:
       - rusted_key
+    items_give:
+      - dungeon_open
     reactions:
       - label: Continue deeper
         goto: 3_2_wolf_encounter
@@ -259,11 +264,9 @@ steps:
         requires_equipped: torch
 
   3_2_1_wolf_dark:
-    description: You see two glowing eyes in the pitch black! Panic seizes you! The wolf, startled by your fear, lunges and scratches you before you can react.
+    description: You see two glowing eyes in the pitch black! Panic seizes you! The wolf, startled by your fear, lunges and scratches you before you can react. You can't fight what you can't see!
     hp: -20
     reactions:
-      - label: Fight the wolf!
-        goto: 3_2_3_wolf_fight
       - label: Flee back to the entrance!
         goto: 3_5_flee_dungeon
 

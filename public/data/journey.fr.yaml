@@ -135,9 +135,12 @@ steps:
       - label: Ouvrir la porte avec la clé
         goto: 3_1_dungeon_descent
         requires: rusted_key
+      - label: Entrer par la porte ouverte
+        goto: 3_1_dungeon_descent
+        requires: dungeon_open
       - label: Essayer de forcer la porte
         goto: 2_3_1_dungeon_locked
-        requires_not: rusted_key
+        requires_not: dungeon_open
       - label: Retourner au sentier
         goto: 2_1_forest_trail
 
@@ -239,6 +242,8 @@ steps:
     image: 3_1_dungeon_descent.jpg
     items_take:
       - rusted_key
+    items_give:
+      - dungeon_open
     reactions:
       - label: Continuer plus profondément
         goto: 3_2_wolf_encounter
@@ -259,11 +264,9 @@ steps:
         requires_equipped: torch
 
   3_2_1_wolf_dark:
-    description: Vous voyez deux yeux brillants dans le noir total ! La panique vous saisit ! Le loup, effrayé par votre réaction, bondit et vous griffe avant que vous ne puissiez réagir.
+    description: Vous voyez deux yeux brillants dans le noir total ! La panique vous saisit ! Le loup, effrayé par votre réaction, bondit et vous griffe avant que vous ne puissiez réagir. Impossible de combattre ce que vous ne voyez pas !
     hp: -20
     reactions:
-      - label: Combattre le loup !
-        goto: 3_2_3_wolf_fight
       - label: Fuir vers la sortie !
         goto: 3_5_flee_dungeon
 

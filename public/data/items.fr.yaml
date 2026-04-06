@@ -90,6 +90,11 @@ items:
     hidden: true
     max: 1
 
+  dungeon_open:
+    name: Souterrain ouvert
+    hidden: true
+    max: 1
+
   shadow_wolf_killed:
     name: Loup des Ombres tué
     hidden: true

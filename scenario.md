@@ -127,8 +127,9 @@ On aperçoit au fond du chemin une grande porte en pierre couverte de lierre.
 
 Le souterrain est fermé à clé.
 
-- `[requires: rusted_key]` Si le joueur a la clé, il peut ouvrir la porte et entrer.
-- `[requires_not: rusted_key]` Sans la clé, le joueur peut tenter d'ouvrir la porte mais elle ne bouge pas. Il peut essayer de la forcer (échec), de la crocheter (échec), ou de chercher une autre entrée (échec). Il doit retourner en arrière.
+- `[requires: rusted_key]` Si le joueur a la clé, il peut ouvrir la porte et entrer. La clé est consommée mais la porte reste ouverte `[items_take: rusted_key, items_give: dungeon_open]`.
+- `[requires: dungeon_open]` Si la porte a déjà été ouverte, le joueur peut entrer librement.
+- `[requires_not: dungeon_open]` Sans la clé et porte jamais ouverte, le joueur peut tenter de forcer la porte (échec). Il doit retourner en arrière.
 
 ## 2.4. Le chemin tout droit — La Forêt Profonde
 
@@ -206,7 +207,7 @@ Sans la carte `[requires_not: carte_orques]` : le joueur se perd et doit retourn
 
 ## 3.1. Descente dans le souterrain
 
-`[requires: rusted_key, items_take: rusted_key]`
+`[requires: rusted_key, items_take: rusted_key, items_give: dungeon_open]`
 
 La descente est de plus en plus sombre. L'air est humide et sent la pierre moussue. Les murs suintent.
 
@@ -222,11 +223,9 @@ Deux yeux bleus brillent dans l'obscurité.
 
 Vous voyez deux yeux brillants dans le noir. Vous êtes pris de panique ! Le loup, effrayé par votre réaction, vous attaque par réflexe.
 
-`[hp: -20, le joueur perd des HP automatiquement avant le choix]`
+`[hp: -20, le joueur perd des HP automatiquement]`
 
-Le joueur peut ensuite :
-- Combattre le loup (combat D20)
-- Fuir vers la sortie
+Impossible de combattre ce qu'on ne voit pas ! Le joueur ne peut que fuir vers la sortie.
 
 ### 3.2.2. Avec torche équipée
 
@@ -466,6 +465,7 @@ Le joueur commence avec 10 pièces d'or, ce qui lui permet d'acheter une épée 
 | Flag | Déclenché par | Effet |
 |---|---|---|
 | `cle_donnee` | L'étranger donne la clé | L'étranger disparaît de la taverne |
+| `dungeon_open` | Ouvrir la porte du souterrain | La porte reste ouverte (retour possible après fuite) |
 | `shadow_wolf_killed` | Tuer le loup | Couloir sombre alternatif, pas de re-combat |
 | `mimic_killed` | Tuer le mimic | Coffre ne peut plus être ouvert |
 | `treasure_looted` | Ramasser les pièces | Salle vide au retour |
